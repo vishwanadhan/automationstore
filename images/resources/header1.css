@@ -1,0 +1,2088 @@
+/* Default Styles */
+body {
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:10px;
+	font-weight:normal;
+	color:#454545;
+	background-repeat:repeat-x;
+}
+
+
+a:link {
+	font-family:Arial,Helvetica,sans-serif;
+	color:#0067C5;
+	text-decoration:none;
+}
+a:visited {
+	font-family:Arial,Helvetica,sans-serif;
+	color:#009FDA;
+	text-decoration:none;
+}
+a:link:hover {
+	font-family:Arial,Helvetica,sans-serif;
+	color:#0067C5;
+	text-decoration:underline;
+}
+a:visited:hover {
+	font-family:Arial,Helvetica,sans-serif;
+	color:#0067C5;
+	font-weight:normal;
+	text-decoration:underline;
+}
+
+a{
+	line-height:12px;
+	font-size:1.0em;
+}
+
+p a{
+	font-size:12px;
+}
+
+td{
+	font-size:12px;
+	line-height:normal
+}
+
+td.linkDisplay a{
+	font-size:12px;
+	font-family:Arial,Helvetica,sans-serif;
+	color:#0067C5;
+	text-decoration:none;
+	display:block;
+	padding:3px 0px 3px 0px;
+}
+
+td.linkDisplay a:visited{
+	font-family:Arial,Helvetica,sans-serif;
+	color:#009FDA;
+	text-decoration:none;
+	padding:3px 0px 3px 0px;
+}
+
+td.linkDisplay a:hover{
+	font-family:Arial,Helvetica,sans-serif;
+	color:#0067C5;
+	text-decoration:underline;
+	padding:3px 0px 3px 0px;
+
+}
+td.linkDisplay a:visited:hover{
+	font-family:Arial,Helvetica,sans-serif;
+	color:#0067C5;
+	font-weight:normal;
+	text-decoration:underline;
+	padding:3px 0px 3px 0px;
+
+}
+/*#headerBlock input{
+	background:transparent url(/NOW/images/bg-search-shadow-middle1x18.jpg) repeat scroll 0 0;
+	border:1px solid #65BFDA;
+	color:#454545;
+	font-size:100%;
+	height:16px;
+	line-height:16px;
+	padding-top:2px;
+}*/
+
+#headerBlock input[type="text"]{
+	background:transparent url(/NOW/images/bg-search-shadow-middle1x18.jpg) repeat scroll 0 0;
+	border:1px solid #65BFDA;
+	color:#454545;
+	font-size:100%;
+	height:16px;
+	line-height:16px;
+	padding-top:2px;
+}
+
+select{
+	color:#454545;
+	font-size:100%;
+	/*font-size:1.2em;*/
+	
+}
+select input{
+	font-size:100%;
+}
+
+label{
+	font-size:1.3em;
+}
+
+p{
+	margin-top:.5em;
+	line-height:1.5em;
+	margin-bottom:.5em;
+	font-size:1.3em;
+}
+p a{
+	margin-top:.5em;
+	line-height:1.5em;
+	margin-bottom:.5em;
+}
+
+/* Header Layout CSS */
+
+#headerBlock{
+	clear:left;
+	height:150px;
+	padding:10px 0px 0px 0px;
+	margin:0px;
+	width:950px;
+}
+
+#headerBlockMiddle {
+	float:left;
+	overflow:hidden;
+	height:144px;
+	padding:6px 0px 0px 0px;
+	margin:0px 0px 0px 0px;
+	width:563px;
+}
+
+#headerBlockRight {
+	background-color:#FFFFFF;
+	float:right;
+	height:150px;
+	padding:0px;
+	margin:0px;
+	width:310px;
+	height:150px;
+	overflow:hidden;
+}
+
+#topLogoBox {
+	float:left;
+	height:130px;
+	padding:20px 0px 0px 10px;
+	margin:0px;
+	width:66px;
+}
+
+#topMenuBox {
+	float:left;
+	margin:0;
+	padding:0px 0px 26px 230px;
+	text-align:right;
+}
+
+#communityHeaderBanner {
+	background:url(/NOW/images/now-registration-masthead.jpg);	
+	float:left;
+	margin:0px;
+	padding:0px 0px 0px 0px;
+	width:560px;
+	text-align:left;
+	height:118px;
+
+}
+
+#communityHeaderBanner h1{
+	color:#FFFFFF;
+	font-size:4em;
+	font-weight:normal;
+	margin:0px;
+	padding:21px 0px 0px 65px;
+	letter-spacing:1px;
+}
+
+#headerBanner {
+	background:url(/NOW/images/now-header-banner.jpg);
+	float:left;
+	margin:0px;
+	padding:0px 0px 0px 0px;
+	width:560px;
+	text-align:left;
+	height:118px;
+
+}
+
+#headerBanner  h1{
+	color:#FFFFFF;
+	font-size:4em;
+	font-weight:normal;
+	margin:0px;
+	padding:21px 0px 0px 65px;
+	letter-spacing:1px;
+}
+
+#headerSearchBox{
+	padding:0px 15px 0px 15px;
+	text-align:left;
+	margin:0px;
+	overflow:hidden;
+	height:25px;
+	margin-bottom:5px;
+	margin-top:8px;
+}
+#headerSearch{
+	padding:10px 5px 10px 20px;
+	float:left;
+}
+
+#headerSearch a{
+	margin:0px;
+	padding:0px;
+
+}
+#headerSearchBox.searchButtonNew{
+	width:21px;
+	border:0px; 
+	height:19px;
+	background:transparent url(/NOW/images/searchButton.gif) no-repeat 0 0;
+}
+
+input.checkboxItem{
+	background-image:none;
+	padding:0px;
+	border:0px solid #454545;
+}
+
+.bodySearchIcon{
+	background-image:url(/NOW/images/iconsearchgreen16x16.gif);
+	background-repeat:no-repeat;
+	background-position: 0px 2px;
+	padding-left:22px;
+	}
+	
+#headerSearchAdvanced{
+	padding:15px 20px 0px 11px;
+	text-align:left;
+	background-image:url(/NOW/images/arrow-wrap.gif);
+	background-repeat:no-repeat;
+	background-position: 0px 16px;
+	margin:0px 0px 0px 5px;
+	float:left;
+
+}
+
+/*--updated  by Ravi ---*/
+.modWhiteBordered form {
+	font-size:100%;
+
+}
+
+h1, h2, h3, h4{
+	color:#454545;
+	font-family:Arial,Helvetica,sans-serif;
+}
+
+h1 {
+	font-size:2.7em;
+	font-weight:normal;
+	padding:.7em 0 0.4em 0;
+	
+}
+
+td h1{
+	font-size:20pt !important;
+	font-weight:normal;
+	padding:.7em 0 0.4em 0;
+}
+
+
+h2{
+	font-size:2em;
+	font-weight:normal;
+	margin-bottom:.7em;
+	margin-top:.5em;
+}
+
+h3{
+	font-size:1.7em;
+	font-weight:bold;
+	margin-bottom:.7em;
+	margin-top:.5em;
+}
+form h3{
+	font-size:12pt;
+	font-weight:bold;
+	margin-bottom:.7em;
+	margin-top:.5em;
+
+}
+td h3{
+	font-size:12pt;
+	font-weight:bold;
+	margin-bottom:.7em;
+	margin-top:.5em;
+}
+
+h3 label{
+	font-size:12pt;
+	font-weight:bold;
+	margin-bottom:.7em;
+	margin-top:.5em;
+}
+
+td h3 label{
+	font-size:12pt;
+	font-weight:bold;
+	margin-bottom:.7em;
+	margin-top:.5em;
+}
+
+
+h4{
+	font-size:1.3em;
+	font-weight:bold;
+	margin-bottom:1em;
+	margin-top:0.5em;
+}
+
+h4.afterbar{
+	font-size:16px;
+	font-weight:bold;
+}
+
+strong{
+	font-weight:bold;
+}
+.floatLft{
+	float:left;
+	margin-right:10px;
+}
+
+.floatBlock{
+	float:left;
+	display:block;
+}
+
+.floatBlockLft{
+	float:left;
+	margin-right:15px;
+}
+
+.noMargin{
+	margin:0px;
+}
+
+.greenArrow, .horizontalGreenArrow {
+	 margin:5px 0px 10px 0px;
+	 padding:0px 0px 0px 0px !important;
+}
+
+/* -------- Appended for list links ------------*/
+.greenArrow a{
+	font-size:12px;
+	font-family:Arial,Helvetica,sans-serif;
+	color:#0067C5;
+	text-decoration:none;
+}
+.greenArrow a:visited{
+	font-size:12px;
+	font-family:Arial,Helvetica,sans-serif;
+	color:#009FDA;
+	text-decoration:none;
+}
+.greenArrow a:hover{
+	font-size:12px;
+	font-family:Arial,Helvetica,sans-serif;
+	color:#0067C5;
+	text-decoration:underline;
+}
+/*----- for 1667 UI Issue -----------*/
+
+.greenArrow, .horizontalGreenArrow {
+ margin:5px 0px 10px 0px !important;
+}
+
+.greenArrow li,.horizontalGreenArrow li{
+  /*background-image:url(/NOW/images/arrow-wrap.gif)!important;
+   background-position:0px 0px;
+   background-repeat:no-repeat;*/
+   list-style-image:none;
+   list-style-position:outside;
+   list-style-type:none;
+   margin:0;
+   padding:0px 8px 10px 10px;
+   background:url(/NOW/images/arrow-wrap.gif) no-repeat 0 2px !important;
+   position:relative;
+
+}
+
+
+.horizontalGreenArrow li{
+	display:inline;
+	background-position:0 2px;
+}
+
+.iconBulletList {
+	height:25px;
+	margin:10px 0px 30px 0px;
+}
+
+.iconBulletList li{
+	display:inline;
+	padding:2px 10px 2px 40px;
+	height:16px;
+	line-height:16px;
+}
+
+li.removeArrow{
+	background-image:none;
+	background:none;
+	padding-left:0px;
+}
+
+.iconBulletListNew {
+	height:25px;
+	margin:5px 0px 20px 0px;
+}
+
+.iconBulletListNew li{
+	display:inline;
+	padding:2px 10px 2px 40px;
+	height:16px;
+	line-height:16px;
+}
+
+li.removeArrow{
+	background-image:none;
+	background:none;
+	padding-left:0px;
+}
+
+/*  Custom Styles*/
+
+#headerBlockRight a{
+	font-size:1em;
+}
+
+.linkNote{
+	font-size:1.1em;
+	line-height:1.3em;
+}
+
+.modSelect,.modInput{
+	margin:15px 0px 5px 0px;
+	width:200px;
+}
+
+.description{
+	font-size:1.5em;
+	font-weight:normal;
+	margin-bottom:1em;
+}
+
+.spotlightDate{
+	font-weight:bold;
+	margin-bottom:.5em;
+}
+
+.searchIcon{
+	background-image:url(/NOW/images/iconsearchgreen16x16.gif);
+	background-position:20px 50%;
+	background-repeat:no-repeat;
+}
+
+.arrowIcon{
+	background-image:url(/NOW/images/arrow-wrap.gif);
+	background-position:25px 2px;
+	background-repeat:no-repeat;
+}
+
+/* Check Boxes */
+.homeCheckBoxes div{
+	float:left;
+}
+
+.homeCheckBoxes label{
+	float:left;
+	display:block;
+}
+
+
+/* Text with Green Arrow Styles */
+
+.bodyLinkBullets li, .bodyLinkBulletsLft li, .bodyLinkBulletsRt li{
+	background-image:url(/NOW/images/arrow-wrap.gif);
+	background-position:0px 6px;
+	background-repeat:no-repeat;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin:0;
+	padding:5px 10px 0px 10px;
+}
+
+.forgotPass, .greenArrowTxt{
+	background-image:url(/NOW/images/arrow-wrap.gif);
+	background-position:0 1px;
+	background-repeat:no-repeat;
+	float:left;
+	margin:0 0 0 5px;
+	padding:0px 0px 0px 11px;
+	text-align:left;
+	width:150px;
+}
+
+a.greenArrow, {
+	background-image:url(/NOW/images/arrow-wrap.gif);
+	background-position:0px 2px;
+	background-repeat:no-repeat;
+	padding-left:10px;
+	color:#0067C5;
+}
+
+
+/* Layout CSS */
+
+#outerMain {
+	margin:0 auto;
+	width:100%;
+}
+
+.bodyContentMainContainer{
+	overflow:none;
+	clear:both;
+	width:950px;
+	margin:0 auto;
+	margin-bottom:20px;
+	font-size:100%;
+}
+.bodyContentMainContainer p{
+	font-size:12px;
+	font-style:normal;
+}
+
+/*-----------------   appended for bullets & numbers       -----------------*/
+
+.bodyContentMainContainer ul{
+	margin:3px 0px 3px 15px;
+	list-style-type:disc;
+	font-size:12px;
+	padding:0px 0px 10px 12px;
+}
+.bodyContentMainContainer ul li{
+	padding-top:2px;
+	padding-bottom:2px;
+	line-height:15px;
+
+}
+.bodyContentMainContainer ol{
+	margin:3px 0px 3px 22px;
+	list-style-type:decimal;
+	font-size:12px;
+	padding:0px 0px 10px 12px;
+}
+.bodyContentMainContainer ol PRE{
+	font-size:12px;
+}
+
+.bodyContentMainContainer ol li{
+	padding-top:2px;
+	padding-bottom:2px;
+	line-height:15px;
+	
+}
+
+.bodyContentMainContainer ol a, .bodyContentMainContainer ul a {
+	
+	font-size:12px;
+}
+/*------------------ Ends here  ------------------*/
+.colLft{
+	width:625px;
+	float:left;
+	margin-right:15px;
+	overflow:hidden;
+}
+
+.colOldLft{
+	width:645px;
+	float:left;
+	margin-right:10px;
+	overflow:hidden;
+}
+
+/* updated for form font size*/
+.colLft form{
+	font-size:12px;
+
+}
+
+.colRt{
+	width:310px;
+	float:left;
+	overflow:hidden;
+}
+
+
+.colLftMoreRes{
+	width:645px;
+	float:left;
+	margin-right:15px;
+	overflow:hidden;
+}
+
+.colRtMoreRes{
+	width:290px;
+	float:left;
+	overflow:hidden;
+}
+/* --- for 50% columns----------*/
+.colLft50per{
+	width:468px;
+	float:left;
+	margin-right:7px;
+	overflow:hidden;
+}
+.colRt50per{
+	width:467px;
+	float:left;
+	margin-left:8px;
+	overflow:hidden;
+
+}
+.colLft49per{
+	width:455px;
+	float:left;
+	margin-right:7px;
+	overflow:hidden;
+}
+.colRt49per{
+	width:455px;
+	float:right;
+	margin-left:8px;
+	overflow:hidden;
+
+}
+
+.modWhiteBordered, .modBlueBordered{
+	height:1%;
+	overflow:hidden;
+	padding:20px;
+	margin-bottom:15px;
+	border:1px solid #B2B4B3;
+	position:relative;
+}
+
+.modGrayBox50Lft,.modGrayBox50Rt{
+	height:1%;
+	overflow:hidden;
+	padding:15px;
+	margin-bottom:15px;
+	width:305px;
+	float:left;
+}
+
+.modBlueBordered{
+	background-color:#F5FAFE;
+}
+
+.modGrayBox100,.modWhiteBox,.content100{
+	width:100%;
+	overflow:hidden;
+	padding:15px;
+	margin-bottom:15px;
+	clear:both;
+}
+
+.modGrayBoxNoWidth{
+	overflow:hidden;
+	padding:15px;
+	margin-bottom:15px;
+	clear:both;
+	background:#f0f0f0;
+}
+
+
+.modGrayBox100,.modGrayBox,.modGrayBox50Lft,.modGrayBox50Rt{
+	background:#f0f0f0;
+}
+
+.content50Lft{
+	float:left;
+	width:305px;
+	margin-right:15px;
+}
+.content50Lft P span{
+	color:#454545;
+	padding:0px 5px 0px 5px !important;
+}
+.content50Rt{
+	float:left;
+	width:305px;
+}
+
+.content50Rt P span{
+	color:#454545;
+	padding:0px 5px 0px 5px !important;
+}
+.modGrayBox50Lft{
+	float:left;
+	width:275px;
+	margin-right:15px;
+}
+
+.modGrayBox50Rt{
+	float:left;
+	width:275px;
+}
+
+.content40Lft{
+	width:232px;
+	margin-right:15px;
+	float:left;
+}
+
+.content60Rt{
+	width:348px;
+	float:left;
+}
+
+.content60Lft{
+	width:348px;
+	float:left;
+	margin-right:15px;
+}
+
+.content40Rt{
+	width:232px;
+	float:left;
+}
+
+.content33{
+	width:200px;
+	float:left;
+	margin-right:10px;
+}
+
+.content33Rt{
+	width:200px;
+	float:left;
+}
+
+.content100{
+	padding:0px;
+}
+
+/*------------product Documentation--------*/
+
+.content33Percent{
+	width:33%;
+	float:left;
+	margin-right:10px;
+
+}
+					
+.content33RtPercent{
+	width:31%;
+	float:left;
+}
+
+ #footer {
+	overflow:hidden;
+	margin-left:0px;
+	padding-top:29px;
+	padding-bottom:25px;
+	width:950px;
+	background-image:url(/NOW/images/footer-top-border.jpg);
+	background-repeat:repeat-x;
+	background-position:top;
+}
+
+
+.sideBarGreenCarretTD{
+	padding:0px 0px 0px 11px;
+	background-image:url(/NOW/images/arrow-wrap.gif);
+	background-repeat:no-repeat;
+	background-position: 0px 1px;
+}
+.sideBarGreenCarretTD a:link, .sideBarGreenCarretTD a:visited, .sideBarGreenCarretTD a:link:hover, .sideBarGreenCarretTD a:visited:hover{
+	font-size:1.1em;
+}
+.bodyGreenCarretTD{
+	padding:0px 0px 0px 11px;
+	background-image:url(/NOW/images/arrow-wrap.gif);
+	background-repeat:no-repeat;
+	background-position: 0px 1px;
+}
+
+
+input.butRegisterWithNow {
+	width:117px;
+	height:25px;
+	border:0px;
+	padding:0px;
+	margin:0px;
+}
+
+input#textBoxSearch {
+	width:136px;
+	margin:2px 2px 0px 0px;
+}
+select#selectBoxSearch{
+	width:125px;
+	border:1px solid #65BFDA;
+
+}
+select.selectBoxBodySearch{
+	width:160px;
+	border:1px solid #65BFDA;
+}
+
+#headerSearchRegisterNow{
+	padding-left:20px;
+	margin:0px;
+	clear:both;
+	height:25px;
+	margin-top:27px;
+}
+
+select.selectBoxSideBar{
+	width:197px;
+	border:1px solid #65BFDA;
+}
+
+/* BreadcrumbsHome */
+
+#breadCrumbsHome {
+	height:22px;
+	margin:0;
+	padding:8px 0px 0px 5px;
+	vertical-align:top;
+	text-align:left;
+}
+#breadCrumbsHome ul {
+	font-size:1.1em;
+	margin:0;
+	padding:0;
+}
+#breadCrumbsHome ul li {
+	display:inline;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	line-height:1.5;
+}
+#breadCrumbsHome ul li span {
+	background:transparent url(/NOW/images/newui/menu_arrow_1.jpg) no-repeat scroll right center;
+	height:10px;
+	white-space:normal;
+	width:6px;
+}
+#breadCrumbsHome ul li a {
+	color:#454545;
+	font-size:1.1em;
+	margin:0;
+	padding:0 0.2em 0 0.2em;
+	text-decoration:none;
+	font-weight:bold;
+	line-height:1.5;
+}
+#breadCrumbsHome ul li a:hover {
+	color:#454545;
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+#breadCrumbsHome .breadcontLeft{
+	float:left;
+}
+#breadCrumbsHome .breadcontRight{
+	float:right;
+	font-size:1.1em;
+	line-height:1.5;
+	padding:0px 3px 0px 3px;
+	
+}
+#breadCrumbsHome .breadcontRight a {
+	font-size:1.1em;
+	color:#454545;
+	padding:0 0.2em 0 0.2em;
+	text-decoration:none;
+	font-weight:bold;
+}
+#breadCrumbsHome .breadcontRight a:hover {
+	font-size:1.1em;
+	color:#454545;
+	text-decoration:underline;
+}
+/* Breadcrumbs */
+
+#breadCrumbs {
+	height:22px;
+	padding:8px 0px 0px 5px;
+	vertical-align:top;
+	width:950px;
+	margin:0 auto;
+	margin-bottom:20px;	
+}
+#breadCrumbs ul {
+	font-size:1.1em;
+	margin:0;
+	padding:0;
+}
+#breadCrumbs ul li {
+	display:inline;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	line-height:1.5;
+}
+#breadCrumbs ul li span {
+	background:transparent url(/NOW/images/newui/menu_arrow_1.jpg) no-repeat scroll right center;
+	height:10px;
+	white-space:normal;
+	width:6px;
+}
+#breadCrumbs ul li a {
+	color:#454545;
+	font-size:1.1em;
+	margin:0;
+	padding:0 0.4em 0 0.2em;
+	text-decoration:none;
+	font-weight:bold;
+	line-height:1.5;
+}
+#breadCrumbs ul li a:hover {
+	color:#454545;
+	text-decoration:underline;
+	font-weight:bold;
+}
+#breadCrumbs .breadcontLeft{
+	float:left;
+	
+}
+#breadCrumbs .breadcontRight{
+	float:right;
+	font-size:1.1em;
+	padding:0px 3px 0px 3px;
+	
+}
+#breadCrumbs .breadcontRight a {
+	font-size:1.1em;
+	color:#454545;
+	padding:0 0.2em 0 0.2em;
+	text-decoration:none;
+	font-weight:bold;
+	line-height:1.5;
+}
+#breadCrumbs .breadcontRight a:hover {
+	font-size:1.1em;
+	color:#454545;
+	text-decoration:underline;
+}
+/* Footer CSS */
+
+div#footerMenu {
+	float:left;
+	padding:0px 0px 0px 9px;
+}
+#footerMenu ul {
+	font-size:10px;
+	margin:0px;
+	padding:0px;
+}
+#footerMenu ul li {
+	display:inline;
+	list-style-type:none;
+	padding:0px 2px 0px 0px;
+}
+#footerMenu ul li.tagLineImg {
+	display:inline;
+	padding:2px 2px 0px 0px;
+	vertical-align:middle;
+}
+#footerMenu ul li span {
+	background:url(/NOW/images/footermenudevider.gif) no-repeat scroll right center !important;
+}
+#footerMenu ul li a {
+	color:#454545;
+	padding:0px 0.4em;
+	text-decoration:none;
+	font-size:1em;
+}
+
+#footerMenu ul li a:hover {
+	color:#454545;
+	text-decoration:underline;
+	font-size:1em;
+}
+
+/* Content Layout CSS  */
+
+.grayBox{
+	background:#f0f0f0;
+	float:left;
+	width:100%;
+	padding:20px;
+	overflow:hidden;
+}
+
+.grayBoxNoWidth{
+	background:#f0f0f0;
+	padding:20px;
+	overflow:hidden;
+}
+.grayBoxNoWidth10{
+	background:#f0f0f0;
+	padding:10px;
+	overflow:hidden;
+}
+
+
+.grayBoxContentLft, .contentBoxLft{
+	float:left;
+	width:250px;
+	padding-right:15px;
+}
+.grayBoxContentLft2{
+	float:left;
+	width:350px;
+	padding-right:15px;
+	overflow:hidden;
+	margin-bottom:25px;
+}
+
+.grayBoxContentRt,.contentBoxRt{
+	float:left;
+	width:315px;
+}
+.grayBoxContentRt2{
+	float:left;
+	width:215px;
+}
+
+.contentBox{
+	clear:both;
+	width:100%;
+	padding:20px 0px;
+}
+
+.contentBoxBorder{
+	clear:both;
+	border:1px solid #B2B4B3;
+	padding:20px;
+	margin-bottom:15px;
+	height:1%;
+	overflow:hidden;
+}
+
+.contentBoxBorder10padding{
+	clear:both;
+	border:1px solid #B2B4B3;
+	padding:10px;
+	margin-bottom:15px;
+	min-height:1%;
+	height:auto;
+	overflow:hidden;
+}
+
+.blueContentBoxBorder{
+	clear:both;
+	border:1px solid #B2B4B3;
+	padding:20px;
+	background:#F5FAFE;
+	margin-bottom:15px;
+}
+
+/* ++++++++++++++++ Custom Styles +++++++++++++++++++++++ */
+
+input.TextBoxSearchLogin {
+	width:180px;
+	margin:2px 2px 0px 0px;
+}
+input.sideBarTextBox {
+	width:195px;
+	margin:1px 2px 0px 0px;
+}
+
+
+.bodyLinkBulletsLft, .bodyLinkBulletsRt{
+	float:left;
+	margin:5px 5px 5px 0px;
+}
+
+.searchBtn{
+	margin:10px 0px 5px 0px;
+}
+
+.loginInput{
+	width:180px;
+	margin-top:5px;
+	margin-bottom:20px;
+}
+
+.loginBtn{
+	margin-bottom:20px;
+}
+
+.password{
+	width:70px;
+	clear:both;
+	float:left;
+}
+
+.memberBenefits, .memberBenefitsLast{
+	float:left;
+	width:140px;
+	margin-right:10px;
+}
+
+.memberBenefitsLast{
+	margin-right:0px;
+}
+
+.memberRegister{
+	clear:both;
+	padding:20px 0px 20px 0px;
+}
+
+.spotlightLinks{
+	font-size:1.1em;
+}
+
+.globalContentBorderDown{
+	background-image:url(/NOW/images/body-border.jpg);
+	background-position:center bottom;
+	background-repeat:no-repeat;
+	padding-bottom:7px;
+}
+
+/* Home Page Styles*/
+
+.productSearch, .homeSearch{
+	overflow:hidden;
+	width:100%;
+}
+
+.productSearch li a{
+	padding-left:30px;
+	line-height:18px;
+	background-position:10px -1px;
+}
+
+.homeSearch li a{
+	padding-left:30px;
+	padding-top:2px;
+	line-height:25px;
+	background-position:10px 0px;
+}
+
+ul.homeSearch{
+	margin-bottom:10px;
+}
+
+.homeCheckBoxes{
+	clear:both;
+	height:auto !important;
+	padding-top:10px;
+}
+
+.homeCheckBoxes div{
+	display:block;
+	float:left;
+	height:14px!important;
+}
+
+.homeCheckBoxes input{
+	border:none;
+	padding:0px;
+	padding-top:0px;
+	background:none;
+	height:14px!important;
+	width:14px;
+	display:block;
+	float:left;
+}
+
+.homeCheckBoxes label{
+	float:left;
+	display:block;
+	height:14px!important;
+	padding:0px 20px 0px 5px;
+	line-height:1.5;
+}
+
+.myProfile{
+	background-image:url(/NOW/images/pencile.gif);
+	background-position:0px 3px;
+	background-repeat:no-repeat;
+	position:absolute;
+	top:0px;
+	right:20px;
+	padding:5px 0px 5px 20px;
+	font-size:1.2em;
+	color:#0067C5;
+}
+
+
+/* Logged In Search Box*/
+
+#headerBlockRight form{
+	overflow:hidden;
+	width:100%;
+}
+
+.searchBoxlinks{
+	clear:both;
+	overflow:hidden;
+	width:100%;
+	margin-bottom:20px;
+	height:25px;
+	margin-top:20px;
+}
+.searchBoxlinks li{
+	display:block;
+	float:left;
+	height:25px;
+}
+.searchBoxlinks a{
+	padding:0px 0px 10px 40px;
+	margin:0px;
+	display:inline;
+	line-height:25px;
+
+}
+
+
+.searchBoxlinks1{
+	clear:both;
+	overflow:hidden;
+	width:100%;
+	border-top:1px solid #B2B4B3;
+	border-bottom:1px solid #B2B4B3;
+	height:25px;
+	text-align:center;
+	font-size:12px;
+}
+.searchBoxlinks1 li{
+	display:inline;
+	line-height:2;
+	padding-left:8px;
+}
+.searchBoxlinks1 li a{
+    padding:3px 5px 3px 0px;
+}
+
+
+.searchBoxlinks2{
+	clear:both;
+	overflow:hidden;
+	width:100%;
+	border-bottom:1px solid #B2B4B3;
+	font-size:12px;
+}
+.searchBoxlinks2 li{
+	display:block;
+	float:left;
+	height:25px;
+	padding-left:5px;
+	cursor:pointer;
+}
+.searchBoxlinks2 li img{
+	padding:0px 5px 0px 13px;
+	display:block;
+	float:left;
+}
+
+.searchBoxlinks2 a{
+	display:block;
+	padding:6px 10px 0px 5px;
+	float:left;
+	height:16px;
+	overflow:hidden;
+}
+
+.searchBoxlinks2 a span{
+	display:block;
+	padding:0;
+	float:left;
+	padding-top:2px;
+	cursor:pointer;
+}
+
+.searchBoxlinks0 a:hover, .searchBoxlinks1 a:hover,.searchBoxlinks2 a:hover{
+	text-decoration:none;
+}
+
+
+/*Table styles*/
+
+.recentActivityHeadID, .recentActivityHeadTitle, .recentActivityHeadType, .recentActivityHeadActivity, .recentActivityHeadDate {
+	background-color:#F0F0F0;
+	font-weight:bold;
+	padding:5px 10px;
+}
+
+.recentActivityexpiring {
+	background-image:url(/NOW/images/expiring.gif);
+	background-position:58px 6px;
+	background-repeat:no-repeat;
+	border-bottom:1px solid #B2B4B3;
+	color:#9E3039;
+	padding:7px 12px;
+	vertical-align:top;
+}
+
+.recentActivityContent {
+	border-bottom:1px solid #B2B4B3;
+	padding:7px 10px;
+	vertical-align:top;
+}
+.recentActivityContent span{
+	padding:0px 5px 0px 5px;
+}
+/*-------------for new grid -----------*/
+.recentActivityHeadIDNew{
+	background-color:#F0F0F0;
+	font-weight:bold;
+	padding:2px 2px;
+	font-size:11px;		
+}
+.recentActivityContentNew {
+	border-bottom:1px solid #B2B4B3;
+	padding:2px 2px;
+	vertical-align:top;
+	font-size:11px;
+}
+
+/*-------------for white boxes in leftcol for my support---------*/
+.modWhiteBox275Lft{
+	height:1%;
+	overflow:hidden;
+	padding:15px;
+	margin-bottom:15px;
+	margin-right:15px;
+	border:1px solid #B2B4B3;
+	position:relative;
+	width:273px;
+	float:left;
+}
+.modWhiteBox275Rt{
+	height:1%;
+	overflow:hidden;
+	padding:15px;
+	margin-bottom:15px;
+	border:1px solid #B2B4B3;
+	position:relative;
+	width:273px;
+	float:left;
+}
+/*-------------for white boxes in leftcol---------*/
+
+pre{
+	font-family:"Courier New", Courier, mono;
+	font-size:12px;
+	font-weight:normal;
+	color:#454545;
+	line-height:15px;
+}
+
+/*--------------for bold links in ie6 --------*/
+
+.bodyContentMainContainer b a, .bodyContentMainContainer b a:hover  {
+	font-weight:bold;
+}
+
+.bodyContentMainContainer strong a, .bodyContentMainContainer strong a:hover  {
+	font-weight:bold;
+}
+
+/*added by saroon for 3212 start*/
+
+ td.doubleBorder {
+	border-top-style:solid;
+	border-bottom-style:solid;
+	border-left-style:solid;
+	border-right-style:solid;
+	border-top-width :0px;
+	border-bottom-width :0px;
+	border-left-width :0px;
+	border-right-width :0px;
+ }
+ td.normalBorder{
+	border-style : solid;
+	border-top-width :0px;
+	border-left-width :0px;
+	border-right-width :0px;
+	border-bottom-width :0px;
+	padding : 40px 40px 40px 10px;
+	font-size:15px;
+
+	font-family:Arial, Helvetica, sans-serif;
+
+ }
+ span.innerText{
+	padding-left:10px;
+	font-weight:bold;
+	font-size:15px;
+	font-family:Arial, Helvetica, sans-serif;
+ }
+ a.community{
+	color:#009fda;
+ }
+ div.data{
+	margin-top:25px;
+	margin-bottom:15px;
+ }
+/*added by saroon for 3212 end*/
+
+
+.syslogExt{
+	font-size:12px;
+	font-family:Arial, Helvetica, sans-serif;
+	background-color:#999999;
+	color:#fff;
+}
+
+.syslogExt a{
+	color:#fff;
+}
+
+
+.myLinksMore {
+	display:block;
+	font-size:12px;
+	padding-bottom:10px;
+}
+.myLinksMore a {
+	display:inline;
+}
+.myLinksMore span{
+	color:#454545;
+	padding:0px 5px 0px 5px;
+}
+.bodyContentMainContainer .radioBlock {
+	list-style-image:none;
+    list-style-position:outside;
+    list-style-type:none !important;
+	list-style:none;
+	display:block;
+	margin:0px;
+	font-size:12px;
+}
+
+/*-----------------------Documentation & Support Home -------------------------------*/
+.greenArrowLink{
+	background-image:url(/NOW/images/arrow-wrap.gif);
+	background-position:0 1px;
+	background-repeat:no-repeat;
+	padding:0px 0px 0px 11px;
+	text-align:left;
+}
+.bold a:hover, .bold a:visited{
+	font-weight: bold;
+}
+.searchDocInputText{
+	font-size: 12px;
+	width: 100px;
+}
+.searchDocInputTextNowidth{
+	font-size: 12px;
+}
+.searchDocInputSelect{
+	font-size: 12px;
+	width: 150px;
+	height: 20px;
+}
+.reasonsToReg{
+	width:140px;
+	float:left;
+	padding-right:15px;
+}
+.sideLinks{
+	float:left;
+	width:50%;
+}
+.productSelect{
+	font-size: 12px;
+	width: 200px;
+	height: 20px;
+}
+input.searchIconButton{
+	background-image:url(/NOW/images/iconsearchgreen16x16.gif);
+	background-position:1px 1px;
+	background-repeat:no-repeat;
+	padding: 0px 0px 0px 15px;
+	text-align:left;
+	display: inline;
+	border:1px solid #B2B4B3;
+	color:#454545;
+	font-size:10px;
+	vertical-align:top;
+	width: 20px;
+	height: 20px;
+}
+.infoIcon{
+	background-image:url(/NOW/images/info.gif);
+	background-position:0 1px;
+	background-repeat:no-repeat;
+	padding: 0px 0px 0px 15px;
+	text-align:left;
+	display: inline;
+}
+
+.docMainBoxLft{
+	float:left;
+	width:410px;
+}
+
+.docMainBoxRt{
+	float:left;
+	width:180px;
+	text-align:right;
+	padding: 32px 10px 0px 10px;
+}
+
+ul.body50Items li{
+	float:left;
+	width:45%;
+}
+
+ul li.itemDisabled{
+	background: transparent url(/NOW/images/arrow-wrap_gray.gif) no-repeat scroll 0 2px !important;
+}
+.itemDisabled a, .itemDisabled a:hover{
+	color: #999;
+	cursor: default;
+	text-decoration:none;
+	
+}
+
+.leftPaddedContainer{
+	padding-left: 20px;
+}
+
+.leftPadding{
+	padding-left: 20px;
+}
+
+a.book{
+	background: transparent url(/NOW/images/book.gif) no-repeat scroll right center;
+	padding-right: 20px;
+}
+
+ul li.itemDisabled a.book{
+	background: transparent url(/NOW/images/bookDisabled.gif) no-repeat scroll right center;
+	padding-right: 20px;
+}
+
+.bookIcon{
+	background: transparent url(/NOW/images/book.gif) no-repeat scroll left center;
+	padding-left: 20px;
+}
+
+.loginButtonContainer{
+	padding:80px 0px 0px 10px;
+	float:left; 
+	width:50px;
+}
+/*---------------------Tab Menu --------------------*/
+
+/*--------------------Registration------------------------*/
+
+.regContainer{
+	margin: 0px auto;
+	color:#454545;
+	padding: 0px 0px 20px 0px;
+	background-color: #D4C6D1;
+}
+
+.regInsideContainer{
+	padding: 0px 50px 0px 50px;
+}
+
+div.dark
+{
+    color:#ffffff;
+    background-color: #666666;
+	padding: 0px 2px 0px 2px;
+}
+
+div.gray{
+	color:#ffffff;
+    background-color:#898581;
+	padding: 0px 2px 0px 2px;
+}
+
+.regLeft{
+	float: left;
+	width: 200px;
+}
+
+.regRight{
+	float: right;
+	width: 650px;
+}
+
+div.reg
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 12px;
+    color:#454545;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: white;
+	line-height:1.5;
+}
+
+.regLeftPadding{
+	width: 90%;
+	padding-left: 50px;
+}
+
+.regContent{
+	clear:both;
+	width: 100%;
+}
+
+.regColumn{
+	width: 100%;
+	float:left;
+	padding: 5px 0px 5px 0px;
+}
+
+.regTextLabel{
+	float: left;
+	width: 150px;
+	font-size: 12px;
+	font-family: Arial,sans-serif;
+	padding:0px	;
+	text-align: right;
+}
+
+.regTextLabelLeft{
+	float: left;
+	width: 150px;
+	font-size: 12px;
+	font-family: Arial,sans-serif;
+	padding:0px	;
+	text-align: left;
+}
+
+.regTextField{
+	float: left;
+	width: 160px;
+	font-size: 12px;
+	font-family: Arial,sans-serif;
+}
+
+.regTextInfo{
+	float: left;
+	width: 450px;
+	font-size: 12px;
+	font-family: Arial,sans-serif;
+}
+.formLabel{
+	font-size: 12px;
+	font-family: Arial,sans-serif;
+	padding:0px	;
+	text-align: right;
+}
+
+/*--------------------Registration------------------------*/
+
+.left25Padding{
+	padding-left: 25px;
+}
+
+.right25Padding{
+	padding-right: 25px;
+}
+
+/*To wrap grid cell Data*/
+.x-grid3-cell-inner, .x-grid3-hd-inner {
+	white-space: normal !important; /* changed from nowrap */
+}
+
+/* to prevent hiding grid headers in IE6*/
+.x-grid3-header-offset {
+	width: auto;
+}
+
+.x-grid-panel table, .x-grid-panel td{
+	padding: 0px;
+}
+
+tr.lightyellow{
+  background-color: #FFFFF0;
+  line-height:1.5;
+  color:#454545;
+}
+
+.floatLeft{
+	float: left;
+	padding-right:5px;
+}
+
+.whiteBox{
+	background-color:#ffffff;
+	float:left;
+	width:100%;
+	padding:20px;
+	overflow:hidden;
+}
+
+.noticeContainer{
+	width:530px;
+	text-align:right;
+}
+
+.yellowBordered{
+	height:1%;
+	overflow:hidden;
+	padding:5px;
+	border:1px solid #B2B4B3;
+	position:relative;
+	background-color: #FFFFF0;
+}
+
+.regLeftPadding table, .regLeftPadding td{
+	padding: 0px;
+}
+
+.jumpMenu{
+	background-color: #B2B4B3;
+	color: #fff;
+	font-size: 12px;
+	font-family: Arial,sans-serif;
+	text-align: center;
+	padding: 5px;
+}
+
+.jumpMenu a, .jumpMenu a:visited, .jumpMenu a:hover{
+	color: #fff;
+	text-decoration: underline;
+	font-weight: bold;
+	margin-right: 10px;
+}
+
+.jumpMenu a:hover{
+	text-decoration: none;
+}
+
+.searchPop{
+	position:absolute;
+	width: 85px;
+	z-index:200;
+	border: 1px solid #B2B4B3;
+	background-color:#fff;
+	visibility:hidden;
+	padding: 3px;
+	text-align:left;
+}
+.searchPop a{
+	display:block;
+	margin:0px;
+	margin-bottom: 1px;
+	padding:0px;
+	line-height: normal;
+}
+
+.searchPopArrow{
+	background: url(/NOW/images/popup_arrow.gif) no-repeat scroll 50% 0;
+	height:5px;
+	width:10px;
+	position:absolute;
+	z-index:201;
+	visibility:hidden
+}
+
+#highPriority{
+	font-size:12px;
+	margin-left:20px
+}
+
+.goButtonContainer{
+	width: 90%;
+	padding-right: 50px;
+	text-align:right;
+}
+
+.pagingContainer{
+	float: left;
+	width: 80%;
+	padding: 20px 100px 20px 100px;
+}
+
+.pagingContainer div{
+	float: left;
+	width: 33%;
+}
+
+.pagingContainer a{
+	margin-right: 10px;	
+	text-decoration:underline;
+}
+
+.pagingContainer a.selected{
+	text-decoration:none;
+}
+
+.Cont100divFloatLeft{
+	float:left; width:70%
+}
+.Cont100divFloatRight{
+	float:right; width:28%; font-size:11px; margin-top:10px; text-align:right
+}
+
+.Cont100divFloatLeft50{
+	float:left; width:50%
+}
+.Cont100divFloatRight48{
+	float:right; width:48%; font-size:11px; margin-top:10px; text-align:right
+}
+
+.caseBox{
+	overflow:hidden;
+	position:relative;
+	background-color:#B2B4B3;
+	padding: 3px;
+	width: 450px;
+	font-size:14px;
+}
+
+tr.tableRowBottomBorder td{
+  border-bottom: 1px solid #B2B4B3;
+}
+
+.content50PercentLft{
+	float:left;
+	width:48%;
+}
+
+.content50PercentRt{
+	float:right;
+	width:48%;
+
+}
+
+.content50PercentLft table, .content50PercentRt table{
+	padding: 0px;
+}
+
+div.border{
+	border:1px solid #B2B4B3;
+}
+
+.autoSupportCont{
+	width:auto;
+	
+}
+
+.autoSupportCont th{
+	color:#ccc;
+	font-weight:normal;
+	background:#FFF
+}
+
+.autoSupportCont td{
+	font-size:12px;
+	font-weight:normal;
+}
+
+.normalBackground{
+	background:#FFF;
+}
+
+.divBackforTablelines{
+	background:#B2B4B3;
+}
+
+.divBackforTablelines table td{
+	background-color:#FFF;
+}
+
+.clearBothSpacer{
+	font-size:12px;
+	clear:both;
+}
+
+.clearBothSpacer a{
+	line-height:1.5;
+}
+/*--------------------Table with borders --------------*/
+
+.tableborders{
+	border-collapse:collapse;
+	border-spacing:0;
+}
+.tableborders th{
+	font-weight:bold;
+}
+.tableborders th, .tableborders td{
+	border:#b2b4b3 1px solid;
+	padding:2px;
+}
+
+.tableborders td table td{
+	border:#b2b4b3 0px solid; 
+}
+/*-------Firefox Border issue------*/
+.tablebordersNew{
+	border-collapse:separate;
+	border-spacing:1px;
+	background:#b2b4b3;
+}
+.tablebordersNew th{
+	font-weight:bold;
+}
+.tablebordersNew th, .tablebordersNew td{
+	border:0px;
+	padding:2px;
+}
+.tablebordersNew td{
+	background:#FFF;
+}
+.tablebordersNew td table td{
+	border:0px; 
+}
+
+
+
+/*-------------- Container with Padding ----------------------*/
+
+.dicContainers10{
+	padding:10px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+}
+
+/*-----------------Updated for TPM ------------------*/
+
+.linkImage {
+    background: url(/NOW/images/Edit.gif);
+    background-repeat: no-repeat;
+    width: 30px;
+    text-decoration: none;
+    height: 15px;
+}
+
+/* troubleshooting Homepage-----*/
+
+.troubleShootingNav {
+	width:154px;
+	float:left;
+	
+}
+.rightBorderNav{
+/*	background:url(/NOW/images/troubleshootingBorder.gif) no-repeat 151px 100px;*/
+	background:url(/NOW/images/troubleshootingBorder.gif) no-repeat 99px 100px;
+	overflow:hidden;
+}
+.troubleShootingNav ul {
+	margin:0px;
+	list-style-type:none;
+	font-size:12px;
+	padding:0px;
+	background:#fff;
+	border-bottom:solid 1px #b2b4b3;
+	border-top:solid 1px #b2b4b3;
+	border-left:solid 1px #b2b4b3;
+	
+
+}
+.troubleShootingNav ul li{
+	padding:0px;
+	margin:0px;
+	background:#fff;
+}
+
+.troubleShootingNav ul li a{
+	line-height:1.5;
+	display:block;
+	text-decoration:none;
+	font-weight:bold;
+	padding:3px 0px 3px 5px;
+	border-bottom:solid 1px #b2b4b3;
+	border-right:solid 1px #b2b4b3;
+	
+}
+.troubleShootingNav ul li a.last{
+	border-bottom:solid 0px #fff;
+}
+
+.troubleShootingNav ul li a:hover, .troubleShootingNav ul li a.current{
+	background:#f0f0f0;
+	color:#454545;
+	text-decoration:none;
+	font-weight:bold;
+	border-right:solid 0px #b2b4b3;
+}
+
+
+.troubleShootingContent{
+	float:left;
+	width:430px;
+	border:solid 1px #b2b4b3;
+	border-left:solid 0px #b2b4b3;
+	min-height:200px;
+}
+
+.bodyContentMainContainer .bodyContentMainContainer{
+	clear:both;
+	width:625px;
+}
+
+.legendText{
+	font-size: 12px;
+	font-family: Arial,sans-serif;
+	color: #454545;
+	font-weight: bold;
+}
+
+.profileSet{
+	padding: 0px 5px 5px 5px;
+}
+
+.mysupportLabel label, .evalswlabelstyle label{
+	font-size: 12px;
+	font-family: Arial,sans-serif;
+	color: #454545;
+}
+
+.infoGreen{
+	color:#090;
+}
+
+span.high_priority {
+    /*    background-image:url('/location/to/high_priority/image.png');*/
+        background-image:url('/NOW/images/Exclamation.gif');
+        background-repeat:no-repeat;
+         padding: 0 0 1px 20px;
+		
+}
+
+span.highPriority{
+	font-size:12px;
+    background-image:url('/NOW/images/Exclamation.gif');
+    background-repeat:no-repeat;
+  	padding: 0 0 1px 20px;
+	 
+}
+span.noPriority{
+	font-size:12px;
+    background-image:none;
+    padding: 0 0 0 20px;
+}
+
+input[type="button"]{
+	padding:0px 3px 0px 3px ;
+}
+input[type="submit"]{
+	padding:0px 3px 0px 3px ;
+}
+input[type="reset"]{
+	padding:0px 3px 0px 3px ;
+}
+
+#headerBlock input.esSubmit{
+   background: url("/search/resources/images/search_gs_iconSearchBtnWhite.png") no-repeat scroll 0 0 transparent !important;
+    border: medium none !important;
+    cursor: pointer !important;
+    display: inline !important;
+    height: 19px !important;
+    margin-top: 1px !important;
+    padding: 0 0 0 15px !important;
+    width: 21px !important;
+}
+#headerContent{
+height:117px;
+}

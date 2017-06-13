@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Service Manager" samplingIntervalInSeconds="60" stringRepresentation="Action" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>3c5deece-ea4f-4d1a-a0c3-7c0088348b27</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use Getopt::Long;
+use warnings;
+use Win32;
+use Win32::Daemon;
+use WFAUtil;
+
+
+my $wfa_util = WFAUtil-&gt;new();
+$wfa_util-&gt;sendLog('INFO', 'Service Manager');
+
+use constant SERVICE_NAME =&gt; 'QoSPolicy';
+use constant SERVICE_DESC =&gt; 'My service';
+
+my $Action;
+
+GetOptions(
+	&quot;Action=s&quot; =&gt; \$Action,
+) or die 'Illegal command parameters'; 
+
+## Based on $Action value, install the service, start, stop or remove the service 'MYSRV'  
+if ($Action eq &quot;Add Service&quot;)   { 
+     $wfa_util-&gt;sendLog('INFO', 'Add Service');
+     install_service(SERVICE_NAME, SERVICE_DESC);
+     $wfa_util-&gt;sendLog('INFO', 'Service is added successfully');
+} 
+elsif ($Action eq &quot;Remove Service&quot;)  {
+     $wfa_util-&gt;sendLog('INFO', 'Remove Service');
+      remove_service(SERVICE_NAME);
+      $wfa_util-&gt;sendLog('INFO', 'Service is removed successfully');
+}
+elsif ($Action eq &quot;Start Service&quot;) {
+      # Redirect STDOUT and STDERR to a log file
+      # Derive the name of the file from the name of the program
+      # The log file will be in the scripts directory, with extension .log
+    
+      my ($cwd,$bn,$ext) = ( Win32::GetFullPathName(&quot;$0&quot;) =~ /^(.*\\)(.*)\.(.*)$/ ) [0..2] ;
+       my $log = $cwd.&quot;$bn&quot; . &quot;.log&quot;; 
+        
+
+      # Redirect STDOUT and STDERR to log file
+      open(STDOUT, &quot;&gt;&gt; $log&quot;) or die &quot;Couldn't open $log for appending: $!\n&quot;;
+      open(STDERR, &quot;&gt;&amp;STDOUT&quot;);
+      # Autoflush, no buffering
+      $|=1;
+
+       my %Context = (
+         last_state =&gt; SERVICE_STOPPED,
+          start_time =&gt; time(),
+       );
+      
+      # Register the events which the service responds to
+      Win32::Daemon::RegisterCallbacks( {
+            start       =&gt;  \&amp;Callback_Start,
+            running   =&gt; \&amp;Callback_Running,
+            stop        =&gt;  \&amp;Callback_Stop,
+            pause      =&gt;  \&amp;Callback_Pause,
+            continue  =&gt;  \&amp;Callback_Continue,
+         } );
+
+
+
+      # Start the service passing in a context and indicating to callback 
+      # using the &quot;Running&quot; event every 2000 milliseconds (2 seconds).
+      # NOTE: the StartService method with in 'callback mode' will block, in other
+      # words it won't return until the service has stopped, but the callbacks below
+      # will respond to the various events - START, STOP, PAUSE etc...
+	$wfa_util-&gt;sendLog('INFO', 'Start Service');
+
+	eval {
+	     	system(`net start QoSPolicy`); 
+     	 };
+	 if($@)  {
+		$wfa_util-&gt;sendLog('ERROR', 'Fail to start the service');
+	}	   
+	#Win32::Daemon::StartService( \%Context, 2000 );
+	# Here the service has stopped
+	close STDERR; close STDOUT;
+   }
+elsif ($Action eq &quot;Stop Service&quot;)  {
+	eval   {
+		my $serStatus = `wmic service |find /I /N /C &quot;QoSPolicy&quot;`;
+		chomp ($serStatus);
+		my $serRunningStatus = `SC QUERY | FIND /N /C /I &quot;QoSPolicy&quot;`;
+		chomp ($serRunningStatus);
+		
+		if (($serStatus != 0)  &amp;&amp;  ($serRunningStatus !=0)){
+			my $stop_msg;
+			($stop_msg )= `net stop QoSPolicy`; 
+		}
+	}; 
+	if($@)  {
+	           $wfa_util-&gt;sendLog('ERROR', 'Fail to stop the service');
+	}	   
+} 
+else    {
+  	print &quot;No valid options passed - nothing done\n&quot;
+}
+
+
+sub Callback_Running
+{
+   my( $Event, $Context ) = @_;
+
+$wfa_util-&gt;sendLog('INFO', 'Callback Running');
+   # Note that here you want to check that the state
+   # is indeed SERVICE_RUNNING. Even though the Running
+   # callback is called it could have done so before 
+   # calling the &quot;Start&quot; callback.
+ 
+   if( SERVICE_RUNNING == Win32::Daemon::State() )
+   {
+      # ... process your main stuff here...
+      # ... note that here there is no need to
+      #     change the state
+ 
+       $wfa_util-&gt;sendLog('INFO', 'Callback Running');
+      # For now just print hello to the STDOUT, which goes to the log file
+      $Context-&gt;{last_state} = SERVICE_RUNNING;
+      Win32::Daemon::State( SERVICE_RUNNING );
+   }
+}    
+
+sub Callback_Start
+{
+   my( $Event, $Context ) = @_;
+   # Initialization code
+   # ...do whatever you need to do to start...
+
+   $wfa_util-&gt;sendLog('INFO', 'Callback Start');
+   $Context-&gt;{last_state} = SERVICE_RUNNING;
+   Win32::Daemon::State( SERVICE_RUNNING );
+   $wfa_util-&gt;sendLog('INFO', 'Callback Started');
+}
+
+sub Callback_Pause
+{
+   my( $Event, $Context ) = @_;
+  $wfa_util-&gt;sendLog('INFO', 'Callback Pause');
+   $Context-&gt;{last_state} = SERVICE_PAUSED;
+   Win32::Daemon::State( SERVICE_PAUSED );
+}
+
+sub Callback_Continue
+{
+   my( $Event, $Context ) = @_;
+  $wfa_util-&gt;sendLog('INFO', 'Callback Continue');
+   $Context-&gt;{last_state} = SERVICE_RUNNING;
+   Win32::Daemon::State( SERVICE_RUNNING );
+}
+
+sub Callback_Stop
+{
+   my( $Event, $Context ) = @_;
+   $wfa_util-&gt;sendLog('INFO', 'Callback Stop');
+
+   if( SERVICE_RUNNING == Win32::Daemon::State() )
+   {
+   $Context-&gt;{last_state} = SERVICE_STOPPED;
+   Win32::Daemon::State( SERVICE_STOPPED );
+
+   # We need to notify the Daemon that we want to stop callbacks and the service.
+   Win32::Daemon::StopService();
+   }
+}
+
+
+sub install_service
+{
+   
+   my ($srv_name, $srv_desc) = @_;
+   my ($path, $parameters);
+   
+   # Get the program's full filename, break it down into constituent parts
+   my $fn = Win32::GetFullPathName(&quot;service_manager.pl&quot;);
+   my ($cwd,$bn,$ext) = ( $fn =~ /^(.*\\)(.*)\.(.*)$/ ) [0..2] ;
+
+   $cwd = $cwd. &quot;..\\..\\..\\..\\bin&quot;;
+   $fn = $cwd.&quot;\\&quot; . &quot;$bn\.$ext&quot;;
+   
+
+   $wfa_util-&gt;sendLog('INFO', 'RUN PATH'.$fn);
+
+   if ($ext eq &quot;pl&quot;)
+   {
+      # Source perl script - invoke perl interpreter
+      $path = &quot;\&quot;$^X\&quot;&quot;;
+      # Parameters include extra @INC directories and perl script
+      # @INC directories must not end in \ otherwise perl hangs
+      my $inc = ($cwd =~ /^(.*?)[\\]?$/) [0]; 
+     
+      
+      # The command includes the --run switch needed in main()
+	$parameters = &quot;-I &quot; . &quot;\&quot;$inc\&quot;&quot; . &quot; \&quot;$fn\&quot; --run&quot;;
+   }
+   elsif ($ext eq &quot;exe&quot;)
+   {
+      # Compiled perl script - invoke the compiled script
+      $path = &quot;\&quot;$fn\&quot;&quot;;
+      $parameters = &quot;&quot;;
+   }
+   else 
+   {
+      # Invalid file type?
+      die &quot;Can not install service for $fn,
+      file extension $ext not supported\n&quot;;
+   }
+
+   # Populate the service configuration hash 
+   # The hash is required by Win32::Daemon::CreateService
+   my %srv_config = (
+      name         =&gt; $srv_name,
+      display      =&gt; $srv_name,
+      path         =&gt; $path,
+      description  =&gt; $srv_desc,
+      parameters   =&gt; $parameters,
+      service_type =&gt; SERVICE_WIN32_OWN_PROCESS,
+      start_type   =&gt; SERVICE_AUTO_START,
+   );
+
+
+$wfa_util-&gt;sendLog('INFO', 'PATH'.$path);
+$wfa_util-&gt;sendLog('INFO', 'SRV NAME'.$srv_name);
+$wfa_util-&gt;sendLog('INFO', 'PARAMETERS'.$parameters);
+$wfa_util-&gt;sendLog('INFO', 'description'. $srv_desc);
+
+
+   # Install the service
+   if( Win32::Daemon::CreateService( \%srv_config ) )
+   {
+      print &quot;Service installed successfully\n&quot;;
+   }
+   else 
+   {
+      print &quot;Failed to install service\n&quot;;
+   }
+}
+
+sub remove_service
+{
+   my ($srv_name, $hostname) = @_;
+   $hostname ||= Win32::NodeName(); 
+   if ( Win32::Daemon::DeleteService ( $srv_name ) ) 
+   {
+      print &quot;Service uninstalled successfully\n&quot;
+	  #$wfa_util-&gt;sendLog('INFO',&quot;Service uninstalled successfully\n&quot;);
+   }
+   else 
+   {
+      print &quot;Failed to uninstall service\n&quot;
+	  #$wfa_util-&gt;sendLog('INFO',&quot;Failed to uninstall service\n&quot;);
+   }
+}
+
+</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This Command can Add/start/stop/remove QoS policy manager service</description>
+    <parameter-definitions>
+        <parameter-definition description="Add - For adding a service&#xA;Remove - For removing a service&#xA;Start - Fot starting a service&#xA;Stop - For stoping  a service&#xA;&#xA;Note: For restarting the service 'stop' the service first and 'start' it again." enumValues="Add Service,Start Service,Stop Service,Remove Service" isMandatory="true" name="Action" type="Enum">
+            <uuid>b866dab2-3729-4a46-a440-3f6bbdfcbb68</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

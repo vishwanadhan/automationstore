@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Create QoS Default Values Table" samplingIntervalInSeconds="60" stringRepresentation="Action + &quot; table qos_default_values&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>d805137b-1adb-4d5c-89d0-b5366ead0850</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+ 
+my $Action;
+
+GetOptions(
+    &quot;Action=s&quot;  =&gt; \$Action
+) or die 'Illegal command parameters\n';
+
+my $wfa_util = WFAUtil-&gt;new();
+
+############################################# Query #############################################
+
+my $queryCreateTableQoSDefaultValues =
+    &quot;CREATE TABLE IF NOT EXISTS playground.qos_default_values
+    (
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        debug ENUM('0', '1', '2', '3'),
+        enforcement ENUM('thick', 'thin', 'effective'),
+        facility VARCHAR(255),
+        headroom DOUBLE(5,2),
+        min_iops DOUBLE(10,2),
+        service_level VARCHAR(255),
+        thin_min DOUBLE(5,2),
+        log_to_console ENUM('0', '1'),
+        max_cpu_duration DOUBLE(10,2),
+        max_cpu_percent DOUBLE(10,2),
+        prefer ENUM('faster', 'slower'),
+        UNIQUE(debug)
+    );&quot;;
+
+my $queryDropTableQoSDefaultValues =
+    &quot;DROP TABLE IF EXISTS playground.qos_default_values;&quot;;
+
+########################################### End Query ###########################################
+
+########################################### Run_Query ###########################################
+
+my $schema = &quot;playground&quot;;
+my @queryData = ();
+
+eval {
+    if ($Action eq 'create') {
+        $wfa_util-&gt;sendLog('INFO', &quot;Creating table qos_default_values under 'playground' ...&quot;);
+        @queryData = $wfa_util-&gt;invokeMySqlQuery($queryCreateTableQoSDefaultValues, $schema);
+    }
+    if ($Action eq 'drop') {
+        $wfa_util-&gt;sendLog('INFO', &quot;Dropping table qos_default_values under 'playground' ...&quot;);
+        @queryData = $wfa_util-&gt;invokeMySqlQuery($queryDropTableQoSDefaultValues, $schema);
+    }
+};
+if ($@) {
+    $wfa_util-&gt;sendLog('ERROR', &quot;Unable to do '$Action' table qos_default_values: &quot; . $@);
+}
+else {
+    $wfa_util-&gt;sendLog('INFO', &quot;$Action table done successfully for QoS default values: &quot; . @queryData);
+}
+
+######################################### End Run_Query #########################################</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+    </parameter-mappings>
+    <description>This command will 'create' or 'drop' table 'qos_default_values' under playground.</description>
+    <parameter-definitions>
+        <parameter-definition description="Provides an option to create or drop table." enumValues="create,drop" isMandatory="true" name="Action" type="Enum">
+            <uuid>380ecde4-b1bf-4d4a-a9ec-c56f54b8b7b9</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <schemeNames></schemeNames>
+</commandDefinition>

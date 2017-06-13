@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Create Aggregate to Service Map table" samplingIntervalInSeconds="60" stringRepresentation="&quot;Storage Service Level table &quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>4a87fb98-48fa-4e49-b5df-607ed7244e83</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+ 
+my $Action;
+
+
+GetOptions(
+    &quot;Action=s&quot;   =&gt; \$Action,
+) or die 'Illegal command parameters\n';
+
+my $result; 
+
+my $Query;
+
+
+my $wfa_util = WFAUtil-&gt;new();
+
+if ($Action eq 'Create')  {
+
+$wfa_util-&gt;sendLog('INFO', 'Creating table');
+
+$Query = &quot;CREATE TABLE IF NOT EXISTS playground.aggregate_service_map ( 
+	             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+	             storage_service_name VARCHAR(255), 
+                             Pool VARCHAR(255),
+	             cluster_ip VARCHAR(255),
+	             node_name VARCHAR(255),
+	             aggregate_name VARCHAR(255),
+	             comment VARCHAR(255))&quot;; 
+}
+else {
+
+$wfa_util-&gt;sendLog('INFO', 'Dropping a table');
+
+$Query = &quot;DROP TABLE IF EXISTS playground.aggregate_service_map&quot;;
+
+}
+
+
+
+# Creating table lun_import if not exists 
+
+my $database=&quot;playground&quot;;
+
+eval { 
+	$result = $wfa_util-&gt;invokeMySqlQuery($Query,$database); 
+}; 
+
+if($@) 
+{ 
+	$wfa_util-&gt;sendLog('ERROR', 'Failed to create aggregate to service mapping table: ' .$@); 
+} 
+else 
+{ 
+	$wfa_util-&gt;sendLog('INFO', 'Successfully created table for service mapping table: ' . $result); 
+} 
+
+
+
+
+
+
+
+</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will check if table to keep &quot;Aggregate to Service Map&quot; details exits. If not it will create.</description>
+    <parameter-definitions>
+        <parameter-definition description="Provides a option to create or drop table" enumValues="Create,Drop" isMandatory="true" name="Action" type="Enum">
+            <uuid>e8cf7f19-d6da-461f-a6d6-b6024edd8e2b</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

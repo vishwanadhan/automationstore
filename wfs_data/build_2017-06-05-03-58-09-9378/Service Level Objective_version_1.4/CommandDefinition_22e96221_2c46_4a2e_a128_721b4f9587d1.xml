@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Enter Default Protection Services" samplingIntervalInSeconds="60" stringRepresentation="'Adding default protection services'" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>22e96221-2c46-4a2e-a128-721b4f9587d1</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+
+
+# name, 				target_type, 	snapshot_policy,			 rpo, 	geo,	targetSSL, 		topology_name, 		source, 		retention_count		comment
+my @protectionservices = (
+   ['snapshots_only', 		'', 		'w:1:2/d:1:6/h:1,5,9,11:6', 		'', 	'local', 	'',			'', 			'',		'',			' ',],
+   ['backup_only',		 	'',	 	'w:1:2/d:1:6/h:1,5,9,11:6', 		'',	'local',	'',			'',			'',		'',			' ',],
+   ['backup_only', 			'Backup',	 	'',	 			'4',	'remote',	'Capacity',		'remote_backup',		'Primary',		'w:2/d:6/h:6',		' ',],
+   ['disaster_only', 			'',		'w:1:2/d:1:6/h:1,5,9,11:6', 		'',	'local',	'',			'',			'',		'',			' ',],
+   ['disaster_only', 			'Disaster',		'',		 		'1',	'remote',	'same-as-source',		'remote_disaster',		'Primary',		'',			' ',],
+   ['disaster_and_backup_of_disaster', 	'', 		'w:1:2/d:1:6/h:1,5,9,11:6', 		'',	'local',	'',			'',			'',		'',			' ',],
+   ['disaster_and_backup_of_disaster', 	'Disaster', 	'',		 		'1',	'remote',	'same-as-source',		'remote_disaster',		'Primary',		'',			' ',],
+   ['disaster_and_backup_of_disaster', 	'Backup', 		'', 				'1',	'remote',	'Capacity',		'remote_backup',		'remote_disaster',	'w:2/d:6/h:6',		' ',],
+   ['disaster_and_backup',		'',	 	'w:1:2/d:1:6/h:1,5,9,11:6', 		'',	'local',	'',			'',			'',		'',			' ',],
+   ['disaster_and_backup',	 	'Disaster', 	'', 				'1',	'remote',	'same-as-source',		'remote_disaster',		'Primary',		'',			' ',],
+   ['disaster_and_backup',	 	'Backup', 		'', 				'1',	'remote',	'Capacity',		'remote_backup',		'Primary',		'w:2/d:6/h:6',		' ',],
+);
+
+my $count = 0;
+
+my $wfa_util = WFAUtil-&gt;new();
+
+for my $row_element (@protectionservices) {	
+     
+                my @row = @{ $row_element };
+	
+	my $Query;
+
+	my $result;
+
+	my $Query;
+
+	$wfa_util-&gt;sendLog('INFO', 'Adding service ');
+
+	$Query = &quot;INSERT INTO  playground.protection_service_level (
+		protection_service_name,
+                                target_type,
+		snapshot_policy,
+		rpo,
+                                geo,
+		target_storage_service_level,
+	             	topology_name,
+		source,
+                                retention_count,
+                                comment) 
+			VALUES (
+		'$row[0]',
+		'$row[1]',
+		'$row[2]',
+		'$row[3]',
+		'$row[4]',
+		'$row[5]',
+		'$row[6]',
+		'$row[7]',
+		'$row[8]',
+		'$row[9]'
+		)&quot;;  
+
+	my $database=&quot;playground&quot;;
+
+	eval { 
+		$result = $wfa_util-&gt;invokeMySqlQuery($Query,$database); 
+	}; 
+
+	if($@) 
+	{ 
+		$wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@); 
+	} 
+	else 
+	{ 
+		$wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result); 
+	}
+} 
+
+
+
+
+
+
+
+</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings/>
+    <congruenceTest></congruenceTest>
+    <description>This command will enter pre-canned services into cache</description>
+    <parameter-definitions/>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

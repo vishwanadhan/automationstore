@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pack>
+    <author>Dave Korns and Mirko Van Colen</author>
+    <certification>COMMUNITY</certification>
+    <description>The EDM-Pack includes a general-purpose Data Source that can read from a Microsoft Excel spreadsheet directly into a WFA custom scheme and dictionaries. Those dictionary tables are then available to workflows for search and selection in user interface Queries, Filters, Finders, and Commands. This allows workflows to align with customer business rules, organization and environmental information. In addition, a workflow is included which will export an existing WFA scheme to an Excel spreadsheet allowing viewing and reporting of data within the WFA Cache Database. </description>
+    <downloadUrl></downloadUrl>
+    <entities>
+        <entity>
+            <certification>NONE</certification>
+            <description>Storage systems and which site they are located in </description>
+            <name>storage</name>
+            <type>Dictionary Entry</type>
+            <uuid>cf7e0a93-bf65-4778-b9fa-4934144f75f2</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>This workflow should be run immediately after importing the EDM dar file. The workflow installs the prerequisite modules (i.e.; PSExcel.zip) and places the EDM sample edm.xlsx into C:\Temp.</description>
+            <name>EDM000 Pack Initialization</name>
+            <type>Workflow</type>
+            <uuid>d034e499-f142-41a8-89c7-118bd7907e24</uuid>
+            <version>1.2.4</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description></description>
+            <name>edm</name>
+            <type>Scheme</type>
+            <uuid>d027e56f-f2c5-40a4-8b43-7fe565f51b29</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description></description>
+            <name>EDM Data Source_3.0.2</name>
+            <type>Script Data Source Type</type>
+            <uuid>a52dfd3c-b7ee-46b3-952f-d7db30266cf7</uuid>
+            <version>3.0.2</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>Workflows associated with the EDM Package</description>
+            <name>Excel Data Management</name>
+            <type>Category</type>
+            <uuid>73eda9ce-6acb-40cd-b1e3-0f0a57c3305a</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>Install or Remove the PSExcel Module Library into WFA's PoSH module path</description>
+            <name>EDM Manage PSExcel</name>
+            <type>Command</type>
+            <uuid>4e4fe648-c71b-4290-9eb8-ef09a4e202d3</uuid>
+            <version>1.4.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>Places a file into a target directory. If the target directory does not exist it creates it.</description>
+            <name>EDM Place File into Directory</name>
+            <type>Command</type>
+            <uuid>00772dc7-0fd8-4c9f-90ee-8ee317d94d2e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description></description>
+            <name>EDM Export MySql Database to Excel</name>
+            <type>Command</type>
+            <uuid>65eeb69d-f8e1-4442-a29a-f468554daf7e</uuid>
+            <version>1.1.1</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>This workflow exports a WFA Cache Database Scheme to an Excel file for external viewing or reporting.</description>
+            <name>EDM100 Export Scheme to Excel</name>
+            <type>Workflow</type>
+            <uuid>f8b671b3-b5aa-4b28-9434-c232bca44b8b</uuid>
+            <version>1.1.2</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>Sites where Data Centers are located</description>
+            <name>site</name>
+            <type>Dictionary Entry</type>
+            <uuid>093fede0-8f15-496a-8750-3e43d74bff42</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.1.0.0.1P1</minWfaVersion>
+    <name>EDM-Pack</name>
+    <uuid>d12d7cad-a123-4ebb-9a2e-6ae392055fde</uuid>
+    <version>1.0.1</version>
+</pack>

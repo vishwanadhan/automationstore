@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<finder name="ac7172fb-d193-48b1-a1ac-53b311db9134" privateFinder="true">
+    <certification>NETAPP</certification>
+    <uuid>f8dfa7e2-94d3-43ea-b9d9-48a9a8046d03</uuid>
+    <version>1.0.0</version>
+    <attributes>
+        <attributes alias="schedule.cluster.primary_address" columnName="schedule.cluster.primary_address" sortingOrder="ASCENDING">
+            <filter>8979d980-2915-4106-bae7-afa6f1f42596</filter>
+        </attributes>
+        <attributes alias="schedule.name" columnName="schedule.name" sortingOrder="ASCENDING">
+            <filter>8979d980-2915-4106-bae7-afa6f1f42596</filter>
+        </attributes>
+        <attributes alias="snapshot_policy.name" columnName="snapshot_policy.name" sortingOrder="ASCENDING">
+            <filter>8979d980-2915-4106-bae7-afa6f1f42596</filter>
+        </attributes>
+        <attributes alias="snapshot_policy.vserver.cluster.primary_address" columnName="snapshot_policy.vserver.cluster.primary_address" sortingOrder="ASCENDING">
+            <filter>8979d980-2915-4106-bae7-afa6f1f42596</filter>
+        </attributes>
+        <attributes alias="snapshot_policy.vserver.name" columnName="snapshot_policy.vserver.name" sortingOrder="ASCENDING">
+            <filter>8979d980-2915-4106-bae7-afa6f1f42596</filter>
+        </attributes>
+    </attributes>
+    <dictionary-entry>9213161b-0302-428f-ae85-655834b4833f</dictionary-entry>
+    <filters>
+        <filter>8979d980-2915-4106-bae7-afa6f1f42596</filter>
+    </filters>
+</finder>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<finder name="3ed232f7-4f89-4d45-944e-095812782b22" privateFinder="true">
+    <certification>NETAPP</certification>
+    <uuid>c45deae2-180a-452c-9a2a-00a9a716e5be</uuid>
+    <version>1.0.0</version>
+    <attributes>
+        <attributes alias="name" columnName="name" sortingOrder="ASCENDING">
+            <filter>1624ba7d-c2e3-40a7-b76b-db586afd88da</filter>
+        </attributes>
+        <attributes alias="vserver.cluster.primary_address" columnName="vserver.cluster.primary_address" sortingOrder="ASCENDING">
+            <filter>1624ba7d-c2e3-40a7-b76b-db586afd88da</filter>
+        </attributes>
+        <attributes alias="vserver.name" columnName="vserver.name" sortingOrder="ASCENDING">
+            <filter>1624ba7d-c2e3-40a7-b76b-db586afd88da</filter>
+        </attributes>
+    </attributes>
+    <dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+    <filters>
+        <filter>1624ba7d-c2e3-40a7-b76b-db586afd88da</filter>
+    </filters>
+</finder>

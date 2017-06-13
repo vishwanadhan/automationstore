@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dictionaryEntry natural-key-case-sensitive="false" type="storage">
+    <certification>NONE</certification>
+    <uuid>cf7e0a93-bf65-4778-b9fa-4934144f75f2</uuid>
+    <version>1.0.0</version>
+    <description>Storage systems and which site they are located in </description>
+    <dictionary-entry-properties>
+        <dictionary-entry-property xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="objectAttribute" attribute-type="String" string-length="255" is-cacheable="true" name="name" naturalKey="true" is-nullable="false">
+            <description></description>
+            <uuid>f954030d-7b4c-4fe6-97d7-c8654a787395</uuid>
+        </dictionary-entry-property>
+        <dictionary-entry-property xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="objectReference" is-cacheable="true" name="site" naturalKey="false" is-nullable="true">
+            <description></description>
+            <uuid>da846202-7678-492e-bb93-88ad1be88130</uuid>
+            <reference-type>093fede0-8f15-496a-8750-3e43d74bff42</reference-type>
+        </dictionary-entry-property>
+    </dictionary-entry-properties>
+    <scheme>d027e56f-f2c5-40a4-8b43-7fe565f51b29</scheme>
+</dictionaryEntry>

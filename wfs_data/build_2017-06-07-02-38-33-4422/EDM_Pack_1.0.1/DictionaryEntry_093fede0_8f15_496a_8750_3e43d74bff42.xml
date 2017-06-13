@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dictionaryEntry natural-key-case-sensitive="false" type="site">
+    <certification>NONE</certification>
+    <uuid>093fede0-8f15-496a-8750-3e43d74bff42</uuid>
+    <version>1.0.0</version>
+    <description>Sites where Data Centers are located</description>
+    <dictionary-entry-properties>
+        <dictionary-entry-property xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="objectAttribute" attribute-type="String" string-length="255" is-cacheable="true" name="name" naturalKey="true" is-nullable="false">
+            <description></description>
+            <uuid>679e3de8-b58a-4db1-a6e3-66e543bc0168</uuid>
+        </dictionary-entry-property>
+        <dictionary-entry-property xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="objectAttribute" attribute-type="String" string-length="255" is-cacheable="true" name="description" naturalKey="false" is-nullable="true">
+            <description></description>
+            <uuid>bd5607b8-93f0-45fa-94ce-fc88aefeeff1</uuid>
+        </dictionary-entry-property>
+    </dictionary-entry-properties>
+    <scheme>d027e56f-f2c5-40a4-8b43-7fe565f51b29</scheme>
+</dictionaryEntry>

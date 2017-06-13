@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<finder name="95402362-236a-427b-a00d-b9fb81891826" privateFinder="true">
+    <certification>NETAPP</certification>
+    <uuid>9b011bc9-594d-47bd-ae1a-3a83123448f9</uuid>
+    <version>1.0.0</version>
+    <attributes>
+        <attributes alias="name" columnName="name" sortingOrder="ASCENDING">
+            <filter>8e859ebc-2d3f-4eb7-b9db-c8e142d6e630</filter>
+        </attributes>
+        <attributes alias="node.cluster.primary_address" columnName="node.cluster.primary_address" sortingOrder="ASCENDING">
+            <filter>8e859ebc-2d3f-4eb7-b9db-c8e142d6e630</filter>
+        </attributes>
+        <attributes alias="node.name" columnName="node.name" sortingOrder="ASCENDING">
+            <filter>8e859ebc-2d3f-4eb7-b9db-c8e142d6e630</filter>
+        </attributes>
+        <attributes alias="available_size_mb" columnName="available_size_mb" sortingOrder="ASCENDING">
+            <filter>8e859ebc-2d3f-4eb7-b9db-c8e142d6e630</filter>
+        </attributes>
+        <attributes alias="SSL_Name" columnName="SSL_Name" sortingOrder="ASCENDING">
+            <filter>52cb4786-4085-464e-a478-2468d66a5866</filter>
+        </attributes>
+    </attributes>
+    <dictionary-entry>e603ad9b-e582-4037-83d6-dd747a49f57f</dictionary-entry>
+    <filters>
+        <filter>41eecafa-b766-4a97-b3fd-ad293a09a285</filter>
+        <filter>52cb4786-4085-464e-a478-2468d66a5866</filter>
+        <filter>8e859ebc-2d3f-4eb7-b9db-c8e142d6e630</filter>
+        <filter>ae26012a-8f3e-4595-bc87-1a971d35476e</filter>
+    </filters>
+</finder>

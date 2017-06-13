@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Create Protection Service Level table" samplingIntervalInSeconds="60" stringRepresentation="&quot;Storage Service Level table &quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>c4a26d41-f845-481d-8a99-f97841287538</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+ 
+my $Action;
+
+
+GetOptions(
+    &quot;Action=s&quot;   =&gt; \$Action,
+) or die 'Illegal command parameters\n';
+
+my $result; 
+
+my $Query;
+
+
+my $wfa_util = WFAUtil-&gt;new();
+
+if ($Action eq 'Create')  {
+
+$wfa_util-&gt;sendLog('INFO', 'Creating table');
+
+$Query = &quot;CREATE TABLE IF NOT EXISTS playground.protection_service_level ( 
+	             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+	             protection_service_name VARCHAR(255), 	          
+	             topology_name VARCHAR(255),
+                             source VARCHAR(255),
+	             target_type VARCHAR(255),                           
+                             snapshot_policy  VARCHAR(255),
+                             rpo  DECIMAL(5,2),                             
+	             target_storage_service_level  VARCHAR(255),
+                             geo VARCHAR(255),
+                             retention_count VARCHAR(255),        
+	             comment VARCHAR(255),
+                             UNIQUE KEY `protection_service_name` (`protection_service_name`,`topology_name`))&quot;; 
+}
+else {
+
+$wfa_util-&gt;sendLog('INFO', 'Dropping a table');
+
+$Query = &quot;DROP TABLE IF EXISTS playground.protection_service_level&quot;;
+
+}
+
+
+
+# Creating table lun_import if not exists 
+
+my $database=&quot;playground&quot;;
+
+eval { 
+	$result = $wfa_util-&gt;invokeMySqlQuery($Query,$database); 
+}; 
+
+if($@) 
+{ 
+	$wfa_util-&gt;sendLog('ERROR', 'Failed to create Protection Service Level table: ' .$@); 
+} 
+else 
+{ 
+	$wfa_util-&gt;sendLog('INFO', 'Successfully created table for Protection Service Level: ' . $result); 
+} 
+
+
+
+
+
+
+
+</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will check if table to keep &quot;Protection Service Level(PSL)&quot; details. If not it will create the table.</description>
+    <parameter-definitions>
+        <parameter-definition description="Provides a option to create or drop table" enumValues="Create,Drop" isMandatory="true" name="Action" type="Enum">
+            <uuid>054cdd63-3d5c-4dd8-b608-9896c41bc725</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

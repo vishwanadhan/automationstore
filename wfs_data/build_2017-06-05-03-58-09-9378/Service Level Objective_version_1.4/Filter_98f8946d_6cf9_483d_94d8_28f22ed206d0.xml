@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<filter name="Select one aggregate per edge">
+    <certification>NETAPP</certification>
+    <uuid>98f8946d-6cf9-483d-94d8-28f22ed206d0</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry>e603ad9b-e582-4037-83d6-dd747a49f57f</dictionary-entry>
+    <parameters>
+        <parameter label="PSLName" name="PSLName" type="STRING">
+            <uuid>629252a1-b709-4661-98d7-0ad404a2fa64</uuid>
+        </parameter>
+        <parameter label="PrimaryCluster" name="PrimaryCluster" type="STRING">
+            <uuid>c942f2fc-524d-4214-88bd-1e98269c2cab</uuid>
+        </parameter>
+        <parameter label="SLCName" name="SLCName" type="STRING">
+            <uuid>b219f2a6-8b2a-4630-9959-63d0122f3bf8</uuid>
+        </parameter>
+        <parameter label="SSLName" name="SSLName" type="STRING">
+            <uuid>974430e2-69cb-4df6-b3a5-cc23ae6a51fc</uuid>
+        </parameter>
+        <parameter label="UsingSLC" name="UsingSLC" type="STRING">
+            <uuid>301ae9f0-6400-4a0e-88cf-f81f21a1a3c5</uuid>
+        </parameter>
+    </parameters>
+    <query>SELECT
+    DISTINCT cm_storage.aggregate.name AS 'name',
+    cm_storage.cluster.primary_address AS 'node.cluster.primary_address',
+    cm_storage.node.name AS 'node.name',
+    playground.protection_service_level.protection_service_name AS &quot;protection_service_name&quot;,
+    if(playground.protection_service_level.target_storage_service_level = &quot;same-as-source&quot;,
+    playground.aggregate_service_map.storage_service_name,
+    playground.protection_service_level.target_storage_service_level) AS &quot;target_service_name&quot;,
+    topology_name AS &quot;topology_name&quot;,
+    playground.protection_service_level.source AS &quot;source&quot;,
+    playground.protection_service_level.target_type AS &quot;target_type&quot;,
+    playground.protection_service_level.rpo AS 'target_rpo',
+    playground.protection_service_level.retention_count AS 'target_retention_policy'
+FROM
+    cm_storage.aggregate,
+    cm_storage.cluster,
+    cm_storage.node,
+    playground.aggregate_service_map,
+    playground.service_level_class,
+    playground.protection_service_level
+WHERE
+    cm_storage.aggregate.node_id = cm_storage.node.id
+    AND cm_storage.cluster.id = cm_storage.node.cluster_id
+    AND cm_storage.aggregate.name = playground.aggregate_service_map.aggregate_name
+    AND cm_storage.node.name = playground.aggregate_service_map.node_name
+    AND cm_storage.cluster.primary_address = playground.aggregate_service_map.cluster_ip
+    AND cm_storage.cluster.primary_address != '${PrimaryCluster}'
+    AND (
+        CASE
+            WHEN '${UsingSLC}' = 'true' THEN playground.protection_service_level.protection_service_name = playground.service_level_class.protection_service_name
+            AND if(playground.protection_service_level.target_storage_service_level = &quot;same-as-source&quot;, playground.aggregate_service_map.storage_service_name = playground.service_level_class.storage_service_name, playground.aggregate_service_map.storage_service_name = playground.protection_service_level.target_storage_service_level)
+            AND playground.service_level_class.service_level_name = '${SLCName}'
+            AND playground.protection_service_level.geo = &quot;remote&quot;
+            AND playground.protection_service_level.rpo &gt; &quot;0&quot;
+            ELSE playground.protection_service_level.protection_service_name = '${PSLName}'
+            AND if(playground.protection_service_level.target_storage_service_level = &quot;same-as-source&quot;, playground.aggregate_service_map.storage_service_name ='${SSLName}', playground.aggregate_service_map.storage_service_name = playground.protection_service_level.target_storage_service_level)
+            AND playground.protection_service_level.geo = &quot;remote&quot;
+            AND playground.protection_service_level.rpo &gt; &quot;0&quot;
+        END
+    )
+GROUP BY
+    cm_storage.cluster.primary_address </query>
+    <returned-attributes>
+        <returned-attribute>name</returned-attribute>
+        <returned-attribute>node.cluster.primary_address</returned-attribute>
+        <returned-attribute>node.name</returned-attribute>
+        <returned-attribute>protection_service_name</returned-attribute>
+        <returned-attribute>source</returned-attribute>
+        <returned-attribute>target_retention_policy</returned-attribute>
+        <returned-attribute>target_rpo</returned-attribute>
+        <returned-attribute>target_service_name</returned-attribute>
+        <returned-attribute>target_type</returned-attribute>
+        <returned-attribute>topology_name</returned-attribute>
+    </returned-attributes>
+</filter>

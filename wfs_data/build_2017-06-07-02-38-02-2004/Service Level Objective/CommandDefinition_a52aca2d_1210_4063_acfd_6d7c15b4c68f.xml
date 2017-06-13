@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Map Aggregate to Storage service level" samplingIntervalInSeconds="60" stringRepresentation="Action " timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>a52aca2d-1210-4063-acfd-6d7c15b4c68f</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+
+
+my $Action;
+my $StorageServiceLevel;
+my $Pool;
+my $ClusterIP;
+my $NodeName;
+my $AggregateName;
+my $Comment;
+
+GetOptions(
+    &quot;Action=s&quot;   =&gt; \$Action,
+    &quot;StorageServiceLevel=s&quot;   =&gt; \$StorageServiceLevel,
+    &quot;Pool=s&quot;   =&gt; \$Pool,
+    &quot;ClusterIP=s&quot;   =&gt; \$ClusterIP,
+    &quot;NodeName=s&quot;   =&gt; \$NodeName,
+    &quot;AggregateName=s&quot;   =&gt; \$AggregateName,
+    &quot;Comment=s&quot;    =&gt; \$Comment,
+) or die 'Illegal command parameters\n';
+ 
+my $result; 
+
+my $wfa_util = WFAUtil-&gt;new();
+
+my $Query;
+
+if ($Action eq &quot;Add Aggregate to SSL&quot; or $Action eq &quot;Add SSL&quot;) {
+
+$wfa_util-&gt;sendLog('INFO', 'Adding aggregate to storage service ');
+$Query = &quot;INSERT INTO  playground.aggregate_service_map (
+	               	storage_service_name, 
+                             	Pool,
+	             	cluster_ip,
+	             	node_name,
+	             	aggregate_name,
+                                comment) 
+			VALUES (
+		'$StorageServiceLevel',
+		'$Pool',
+		'$ClusterIP',
+		'$NodeName',
+		'$AggregateName',				
+		'$Comment'
+	)&quot;;  
+
+}
+
+if ($Action eq &quot;Remove Aggregate from SSL&quot;) {
+
+$wfa_util-&gt;sendLog('INFO', 'Removing agrgegates from storage service ');
+$Query = &quot;DELETE FROM playground.aggregate_service_map 
+	  WHERE 
+		playground.aggregate_service_map.storage_service_name='$StorageServiceLevel'
+                                AND playground.aggregate_service_map.cluster_ip='$ClusterIP'
+                                AND playground.aggregate_service_map.node_name='$NodeName'
+                                AND playground.aggregate_service_map.aggregate_name='$AggregateName'&quot;;  
+
+}
+
+if ($Action eq &quot;Remove SSL&quot;) {
+
+$wfa_util-&gt;sendLog('INFO', 'Removing agrgegates from storage service ');
+$Query = &quot;DELETE FROM playground.aggregate_service_map 
+	  WHERE 
+		playground.aggregate_service_map.storage_service_name='$StorageServiceLevel'&quot;;
+}
+
+# Creating table lun_import if not exists 
+
+my $database=&quot;playground&quot;;
+
+eval { 
+	$result = $wfa_util-&gt;invokeMySqlQuery($Query,$database); 
+}; 
+
+if($@) 
+{ 
+	$wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@); 
+} 
+else 
+{ 
+	$wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result); 
+} 
+
+
+
+
+
+
+
+</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+        <parameter-mapping objectName="AggregateName" parameterName="AggregateName"/>
+        <parameter-mapping objectName="ClusterIP" parameterName="ClusterIP"/>
+        <parameter-mapping objectName="Comment" parameterName="Comment"/>
+        <parameter-mapping objectName="NodeName" parameterName="NodeName"/>
+        <parameter-mapping objectName="Pool" parameterName="Pool"/>
+        <parameter-mapping objectName="StorageServiceLevel" parameterName="StorageServiceLevel"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will map unmapped aggregate to storage service level. Allows you to select pool</description>
+    <parameter-definitions>
+        <parameter-definition description="What is planned action on service level class. Possible values are,&#xA;1) Add&#xA;2) Remove&#xA;3) Update" enumValues="Add SSL,Remove SSL,Add Aggregate to SSL,Remove Aggregate from SSL" isMandatory="true" name="Action" type="Enum">
+            <uuid>6c43b595-6149-4d0b-b3f5-8a03a778f830</uuid>
+        </parameter-definition>
+        <parameter-definition description="AggregateName" isMandatory="false" name="AggregateName" type="String">
+            <uuid>4de8ee47-b733-4bfe-b089-b1810c609909</uuid>
+        </parameter-definition>
+        <parameter-definition description="ClusterIP" isMandatory="false" name="ClusterIP" type="String">
+            <uuid>645df95a-c5fc-4193-8626-2b100a2fc884</uuid>
+        </parameter-definition>
+        <parameter-definition description="Comment specific to particular service" isMandatory="false" name="Comment" type="String">
+            <uuid>bb70d0f2-7b7e-483c-b3ef-2ad3b9fce790</uuid>
+        </parameter-definition>
+        <parameter-definition description="NodeName" isMandatory="false" name="NodeName" type="String">
+            <uuid>6a9dd201-401a-4fd4-8416-2fa863b8edd6</uuid>
+        </parameter-definition>
+        <parameter-definition description="Pool" isMandatory="false" name="Pool" type="String">
+            <uuid>e7fbad6c-1dda-4367-953c-47dc3ceb12cd</uuid>
+        </parameter-definition>
+        <parameter-definition description="Storage service class name" isMandatory="true" name="StorageServiceLevel" type="String">
+            <uuid>428b9575-0a86-43cb-87b5-d7da8aaaf8af</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

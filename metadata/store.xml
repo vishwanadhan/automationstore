@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<store>
+    <supported-versions>
+        <version>
+            <major>1</major>  
+            <minor>0</minor>
+            <revision>0</revision>
+        </version>
+    </supported-versions>
+</store>

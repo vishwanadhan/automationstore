@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Manage Qos Nodes" samplingIntervalInSeconds="60" stringRepresentation="Action + ' Node'" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <lockedBy>admin</lockedBy>
+    <uuid>d20b982e-9eaa-4e4d-b29c-2e5ec8a4496d</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+
+
+my $Action;
+my $node_ip = &quot;&quot;;
+
+
+GetOptions(
+    &quot;Action=s&quot;                      =&gt; \$Action,
+    &quot;node_ip=s&quot;         =&gt; \$node_ip,  
+) or die 'Illegal command parameters\n';
+     
+my $result; 
+
+my $wfa_util = WFAUtil-&gt;new();
+my $Query;
+
+if ($Action eq &quot;add&quot;) {
+    $wfa_util-&gt;sendLog('INFO', 'Adding service ');
+    $Query = &quot;INSERT INTO  playground.qos_nodes (node_ip)
+            VALUES (
+                '$node_ip'
+            )&quot;;
+}
+
+if ($Action eq &quot;delete&quot;) {
+    $wfa_util-&gt;sendLog('INFO', 'Deleting service ');
+    $Query = &quot;DELETE FROM playground.qos_nodes WHERE playground.qos_nodes.node_ip='$node_ip'&quot;;  
+
+}
+
+# Creating table lun_import if not exists
+my $database=&quot;playground&quot;;
+
+eval { 
+        $result = $wfa_util-&gt;invokeMySqlQuery($Query,$database); 
+}; 
+if($@) {
+    $wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@);
+} 
+else { 
+    $wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result);
+}</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+        <parameter-mapping objectName="node_ip" parameterName="node_ip"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will handle Add/delete actions of QoS Nodes</description>
+    <parameter-definitions>
+        <parameter-definition description="What is planned action on nodes. Possible values are,&#xA;1) add&#xA;2) delete" enumValues="add,delete" isMandatory="true" name="Action" type="Enum">
+            <uuid>14bc85b9-49c9-4c10-a04a-746977ca3feb</uuid>
+        </parameter-definition>
+        <parameter-definition description="Node IP to be either added to deleted from configuration" isMandatory="false" name="node_ip" type="String">
+            <uuid>8c02f7c0-bf11-4acf-8827-d57785253d9b</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

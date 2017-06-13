@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="EDM Place File into Directory" samplingIntervalInSeconds="60" stringRepresentation="targetDirectory" timeoutInSeconds="600" type="STANDARD">
+    <certification>NONE</certification>
+    <uuid>00772dc7-0fd8-4c9f-90ee-8ee317d94d2e</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>param (
+  [parameter(Mandatory=$true, HelpMessage=&quot;Source File Name&quot;)]
+  [string] $sourceFileName,
+
+  [parameter(Mandatory=$true, HelpMessage=&quot;Target File Name&quot;)]
+  [string] $targetFileName,
+
+  [parameter(Mandatory=$true, HelpMessage=&quot;Target Directory&quot;)]
+  [string] $targetDirectory
+
+)
+
+#  Description: Place a file ($sourceFileName) into a target directory ($targetDirectory) as $targetFileName
+#
+#  Change-History:
+#    1.0.0 - initial clone from another similar custom command
+#    1.1.0 - tbd
+#
+
+$debug = $false
+
+$wfaCurrentPath = Get-Location
+$wfaHelpFilesPath = &quot;..\..\workflow-help&quot;
+$wfaWorkflowUUID = &quot;d034e499-f142-41a8-89c7-118bd7907e24&quot;
+$wfaSourceFilePath = &quot;..\..\..\..\jboss\standalone\help.war\workflow\TabularWorkflow_$wfaWorkflowUUID\files\$sourceFileName&quot;
+
+if ( $debug )
+    {
+	Get-WFALogger -info -message &quot; &quot;
+	Get-WFALogger -info -message &quot;=== Current command environment as running:&quot;
+	Get-WFALogger -info -message &quot;====== Current Working Directory Path: $wfaCurrentPath&quot;
+	Get-WFALogger -info -message &quot;====== Workflow Help Files Relative Path: $wfaHelpFilesPath&quot;
+	Get-WFALogger -info -message &quot;====== Source File Relative Path: $wfaSourceFilePath&quot;
+	Get-WFALogger -info -message &quot;====== Target File Absolute Path: $targetDirectory\$targetFilename&quot;
+    }
+
+Get-WFALogger -info -message &quot; &quot;
+Get-WFALogger -info -message &quot;=== Copying $targetFileName to $targetDirectory&quot;
+
+Get-WFALogger -info -message &quot;========= Create $targetDirectory if it does not exist&quot;
+
+If ( -NOT (Test-Path $targetDirectory) )
+    {
+	Get-WFALogger -info -message &quot;============ $targetDirectory directory not found, creating&quot;
+	New-Item -Path $targetDirectory -ItemType Directory -Confirm:$false
+    }
+
+Get-WFALogger -info -message &quot;========= Removing $targetFileName if it already exists&quot;
+
+If ( Test-Path $targetDirectory\$targetFileName )
+    {
+	Get-WFALogger -info -message &quot;============ $targetDirectory\$targetFilename found, removing&quot;
+	Remove-Item -Path $targetDirectory\$targetFileName -Confirm:$false
+    }
+
+Get-WFALogger -info -message &quot;========= Copying $targetFileName into $targetDirectory directory&quot;
+Copy-Item -Path $WfaSourceFilePath -Destination &quot;$targetDirectory\$targetFileName&quot;
+
+Get-WFALogger -info -message &quot; &quot;
+</command>
+            <commandLanguage>POWER_SHELL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="PipelineVariable" parameterName="PipelineVariable"/>
+        <parameter-mapping objectName="SourceFileName" parameterName="SourceFileName"/>
+        <parameter-mapping objectName="targetDirectory" parameterName="targetDirectory"/>
+        <parameter-mapping objectName="targetFileName" parameterName="targetFileName"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>Places a file into a target directory. If the target directory does not exist it creates it.</description>
+    <parameter-definitions>
+        <parameter-definition description="" isMandatory="false" name="PipelineVariable" type="String">
+            <uuid>175aa7ea-6cfb-4135-8505-6dda7d0a5e66</uuid>
+        </parameter-definition>
+        <parameter-definition description="Source File Name" isMandatory="true" name="SourceFileName" type="String">
+            <uuid>f5236391-bab1-4bea-b043-fc6f05922f86</uuid>
+        </parameter-definition>
+        <parameter-definition description="Target Directory" isMandatory="true" name="targetDirectory" type="String">
+            <uuid>e2ed6ef6-2e8d-4d5b-9c02-3fb42d0504f0</uuid>
+        </parameter-definition>
+        <parameter-definition description="Target File Name" isMandatory="true" name="targetFileName" type="String">
+            <uuid>1d1ff932-9fd1-4b0e-ace5-734e3217786f</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

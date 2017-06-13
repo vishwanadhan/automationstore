@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<filter description="This will look for aggregate by Service Level Catalog" name="Filter aggregate by Service Level Catalog">
+    <certification>NETAPP</certification>
+    <uuid>52cb4786-4085-464e-a478-2468d66a5866</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry>e603ad9b-e582-4037-83d6-dd747a49f57f</dictionary-entry>
+    <parameters>
+        <parameter label="SLCName" name="SLCName" type="STRING">
+            <uuid>744bc248-a449-4a56-9578-59707bbb96e4</uuid>
+        </parameter>
+        <parameter label="SSLName" name="SSLName" type="STRING">
+            <uuid>3efb6d68-1de4-480a-a761-ffb00d0aa2d8</uuid>
+        </parameter>
+        <parameter label="UsingSLC" name="UsingSLC" type="STRING">
+            <uuid>ca635977-eb1e-44f8-b40f-9b7be02d3ca5</uuid>
+        </parameter>
+    </parameters>
+    <query>SELECT
+    DISTINCT cm_storage.aggregate.name AS 'name',
+    cm_storage.cluster.primary_address AS 'node.cluster.primary_address',
+    cm_storage.node.name AS 'node.name',
+    playground.storage_service_level.storage_service_name AS 'SSL_Name'
+FROM
+    cm_storage.aggregate,
+    cm_storage.cluster,
+    cm_storage.node,
+    playground.aggregate_service_map,
+    playground.service_level_class,
+    playground.storage_service_level
+WHERE
+    cm_storage.aggregate.node_id = cm_storage.node.id
+    AND cm_storage.cluster.id = cm_storage.node.cluster_id
+    AND (
+        CASE
+            WHEN playground.storage_service_level.aggr_regex_enabled = 'false' THEN playground.aggregate_service_map.storage_service_name = playground.storage_service_level.storage_service_name
+            AND cm_storage.aggregate.name = playground.aggregate_service_map.aggregate_name
+            AND cm_storage.cluster.primary_address = playground.aggregate_service_map.cluster_ip
+            AND cm_storage.node.name = playground.aggregate_service_map.node_name
+            ELSE cm_storage.aggregate.name REGEXP playground.storage_service_level.aggr_include_regex
+        END
+    )
+    AND (
+        CASE
+            WHEN '${UsingSLC}' = 'true' THEN playground.service_level_class.service_level_name = '${SLCName}'
+            AND playground.storage_service_level.storage_service_name = playground.service_level_class.storage_service_name
+            ELSE playground.storage_service_level.storage_service_name = '${SSLName}'
+        END
+    ) </query>
+    <returned-attributes>
+        <returned-attribute>SSL_Name</returned-attribute>
+        <returned-attribute>name</returned-attribute>
+        <returned-attribute>node.cluster.primary_address</returned-attribute>
+        <returned-attribute>node.name</returned-attribute>
+    </returned-attributes>
+</filter>

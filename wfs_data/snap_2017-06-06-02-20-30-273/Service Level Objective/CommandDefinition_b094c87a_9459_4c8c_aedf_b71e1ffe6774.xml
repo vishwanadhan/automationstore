@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Create Service Level Class Table" samplingIntervalInSeconds="60" stringRepresentation="&quot;service level class&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>b094c87a-9459-4c8c-aedf-b71e1ffe6774</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+ 
+my $Action;
+
+
+GetOptions(
+    &quot;Action=s&quot;   =&gt; \$Action,
+) or die 'Illegal command parameters\n';
+
+my $result; 
+
+my $Query;
+
+
+my $wfa_util = WFAUtil-&gt;new();
+
+if ($Action eq 'Create')  {
+
+$wfa_util-&gt;sendLog('INFO', 'Creating table');
+
+$Query = &quot;CREATE TABLE IF NOT EXISTS playground.service_level_class ( 
+	             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+  	             service_level_name VARCHAR(255) UNIQUE, 
+	             storage_service_name VARCHAR(255), 
+                             protection_service_name VARCHAR(255), 
+                             comment VARCHAR(255))&quot;; 
+
+}
+else {
+
+$wfa_util-&gt;sendLog('INFO', 'Dropping a table');
+
+$Query = &quot;DROP TABLE playground.service_level_class&quot;;
+
+}
+
+
+
+# Creating table lun_import if not exists 
+
+my $database=&quot;playground&quot;;
+
+eval { 
+	$result = $wfa_util-&gt;invokeMySqlQuery($Query,$database); 
+}; 
+
+if($@) 
+{ 
+	$wfa_util-&gt;sendLog('ERROR', 'Unable to create Lun_import table: ' .$@); 
+} 
+else 
+{ 
+	$wfa_util-&gt;sendLog('INFO', 'Creating Lun_import table: ' . $result); 
+} 
+
+
+
+
+
+
+
+</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will check if table to Service Level Class details exists, if not it will create a table.</description>
+    <parameter-definitions>
+        <parameter-definition description="Provides a option to create or drop table" enumValues="Create,Drop" isMandatory="true" name="Action" type="Enum">
+            <uuid>9513627d-01c3-4264-81e9-d142ff5c1dda</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

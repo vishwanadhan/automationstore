@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Manage Service Class" samplingIntervalInSeconds="60" stringRepresentation="&quot;service class&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>547bb731-f29d-4fce-b94e-93ddc5fad767</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+
+
+my $Action;
+my $SLCName;
+my $StorageServiceLevel;
+my $ProtectionServiceLevel;
+my $Comment;
+
+GetOptions(
+    &quot;Action=s&quot;   =&gt; \$Action,
+    &quot;SLCName=s&quot; =&gt; \$SLCName,
+    &quot;StorageServiceLevel=s&quot;   =&gt; \$StorageServiceLevel,
+    &quot;ProtectionServiceLevel=s&quot;    =&gt; \$ProtectionServiceLevel,
+    &quot;Comment=s&quot;    =&gt; \$Comment,
+) or die 'Illegal command parameters\n';
+ 
+my $result; 
+
+my $wfa_util = WFAUtil-&gt;new();
+
+my $createTableQuery;
+
+if ($Action eq &quot;Add SLC&quot;) {
+
+$wfa_util-&gt;sendLog('INFO', 'Adding service ');
+$createTableQuery = &quot;INSERT INTO  playground.service_level_class (service_level_name, storage_service_name, protection_service_name, comment) VALUES ('$SLCName','$StorageServiceLevel','$ProtectionServiceLevel','$Comment')&quot;;  
+
+}
+
+if ($Action eq &quot;Remove SLC&quot;) {
+
+$wfa_util-&gt;sendLog('INFO', 'Deleting service ');
+$createTableQuery = &quot;DELETE FROM playground.service_level_class WHERE playground.service_level_class.service_level_name='$SLCName'&quot;;  
+
+}
+
+if ($Action eq &quot;Update SLC&quot;) {
+
+$wfa_util-&gt;sendLog('INFO', 'Updating service ');
+$createTableQuery = &quot;UPDATE playground.service_level_class SET storage_service_name='$StorageServiceLevel', protection_service_name='$ProtectionServiceLevel', comment='$Comment' WHERE  playground.service_level_class.service_level_name='$SLCName'&quot;;  
+
+}
+
+# Creating table lun_import if not exists 
+
+my $database=&quot;playground&quot;;
+
+eval { 
+	$result = $wfa_util-&gt;invokeMySqlQuery($createTableQuery,$database); 
+}; 
+
+if($@) 
+{ 
+	$wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@); 
+} 
+else 
+{ 
+	$wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result); 
+} 
+
+
+
+
+
+
+
+</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+        <parameter-mapping objectName="Comment" parameterName="Comment"/>
+        <parameter-mapping objectName="ProtectionServiceLevel" parameterName="ProtectionServiceLevel"/>
+        <parameter-mapping objectName="SLCName" parameterName="SLCName"/>
+        <parameter-mapping objectName="StorageServiceLevel" parameterName="StorageServiceLevel"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will handle Add/Remove/Update actions on service level class entries.</description>
+    <parameter-definitions>
+        <parameter-definition description="What is planned action on service level class. Possible values are,&#xA;1) Add SLC&#xA;2) Remove SLC&#xA;3) Update SLC" enumValues="Add SLC,Update SLC,Remove SLC" isMandatory="true" name="Action" type="Enum">
+            <uuid>3fcba38f-dda4-45fe-92e9-54bf10cb3cf7</uuid>
+        </parameter-definition>
+        <parameter-definition description="Comment specific to particular service" isMandatory="false" name="Comment" type="String">
+            <uuid>8168a1fa-31fb-47a1-9492-6afb8d41f292</uuid>
+        </parameter-definition>
+        <parameter-definition description="Protection service level" isMandatory="true" name="ProtectionServiceLevel" type="String">
+            <uuid>f3293e3d-7c72-46e9-9fd7-c81a0feeda2f</uuid>
+        </parameter-definition>
+        <parameter-definition description="Unique name of a service." isMandatory="true" name="SLCName" type="String">
+            <uuid>1ce2a20d-a5a5-42f9-8c30-c42082fb78c4</uuid>
+        </parameter-definition>
+        <parameter-definition description="Storage service class name" isMandatory="true" name="StorageServiceLevel" type="String">
+            <uuid>133f78e1-05e4-4206-a8b2-93681a5d013b</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

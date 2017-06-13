@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<category name="Excel Data Management">
+    <certification>NONE</certification>
+    <uuid>73eda9ce-6acb-40cd-b1e3-0f0a57c3305a</uuid>
+    <version>1.0.0</version>
+    <description>Workflows associated with the EDM Package</description>
+    <workflows>
+        <workflow>d034e499-f142-41a8-89c7-118bd7907e24</workflow>
+        <workflow>f8b671b3-b5aa-4b28-9434-c232bca44b8b</workflow>
+    </workflows>
+</category>

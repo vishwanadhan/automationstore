@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<filter description="Return schedules by attributes specified. For all the possible values of an attribute 'any' is used as filter." name="Filter cron schedule by attribute">
+    <certification>NETAPP</certification>
+    <uuid>8574ff39-2a92-46c7-afcf-3c5499518328</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry>a576587e-c4c3-479c-8aee-ee3e03d2ad09</dictionary-entry>
+    <parameters>
+        <parameter label="CronType" name="CronType" type="STRING">
+            <uuid>ba1bcac6-fa56-459a-a7c2-6c9636cfcd5a</uuid>
+        </parameter>
+        <parameter label="Cluster Name or IP Address" name="cluster_name" type="STRING">
+            <description>Cluster Name or IP Address</description>
+            <uuid>6f0bc0c8-c429-48ef-b9ef-a87b95694df8</uuid>
+        </parameter>
+        <parameter label="cron" name="cron" type="STRING">
+            <uuid>d2ea7383-d9d7-460c-afb8-83619d056a56</uuid>
+        </parameter>
+        <parameter label="schedule_name" name="schedule_name" type="STRING">
+            <uuid>3e0a0d42-3e55-4393-b795-20b9eda9f844</uuid>
+        </parameter>
+    </parameters>
+    <query>SELECT
+    schedule.*,
+    cluster.primary_address AS 'cluster.primary_address'
+FROM
+    cm_storage.schedule,
+    cm_storage.cluster
+WHERE
+    cluster.id = schedule.cluster_id
+    AND (
+        cluster.name = '${cluster_name}'
+        OR cluster.primary_address = '${cluster_name}'
+    )
+    AND schedule.name LIKE '%${schedule_name}%'
+    AND CASE
+        WHEN '${CronType}' = 'days_of_week' THEN if('${cron}'='any' ,schedule.cron_days_of_week IS NULL ,schedule.cron_days_of_week = '${cron}')
+        WHEN '${CronType}' = 'hours' THEN if('${cron}'='any' ,schedule.cron_hours IS NULL,schedule.cron_hours = '${cron}')
+        WHEN '${CronType}' = 'days_of_month' THEN if('${cron}'='any' ,schedule.cron_days_of_month IS NULL ,schedule.cron_days_of_month = '${cron}')
+        WHEN '${CronType}' = 'minutes' THEN if('${cron}'='any' ,schedule.cron_minutes IS NULL,schedule.cron_minutes = '${cron}')
+        WHEN '${CronType}' = 'months' THEN if('${cron}'='any' ,schedule.cron_months IS NULL ,schedule.cron_months = '${cron}')
+    END</query>
+    <returned-attributes>
+        <returned-attribute>cluster.primary_address</returned-attribute>
+        <returned-attribute>cluster_id</returned-attribute>
+        <returned-attribute>cron_days_of_month</returned-attribute>
+        <returned-attribute>cron_days_of_week</returned-attribute>
+        <returned-attribute>cron_hours</returned-attribute>
+        <returned-attribute>cron_minutes</returned-attribute>
+        <returned-attribute>cron_months</returned-attribute>
+        <returned-attribute>description</returned-attribute>
+        <returned-attribute>id</returned-attribute>
+        <returned-attribute>interval_days</returned-attribute>
+        <returned-attribute>interval_hours</returned-attribute>
+        <returned-attribute>interval_minutes</returned-attribute>
+        <returned-attribute>interval_seconds</returned-attribute>
+        <returned-attribute>name</returned-attribute>
+        <returned-attribute>type</returned-attribute>
+    </returned-attributes>
+</filter>

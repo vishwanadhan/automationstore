@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tabularWorkflow considerReservedElements="true" description="This workflow enables you to modify existing storage service level class definition and to modify the default values for the QoS policy management." enableElementExistenceValidation="true" name="Manage Adaptive QoS Policy Configuration" readyForProduction="true">
+    <certification>NETAPP</certification>
+    <uuid>1c0e5e1a-80eb-4243-a359-7daf6811a966</uuid>
+    <version>1.1.0</version>
+    <workflow-commands>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Modify Default Values in Configuration File" uuid="97909959-10d8-46e6-82f4-5e792edc081e">
+            <command-definition>c05fad07-4b5c-48e0-b0d4-c5a4dd1383eb</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Modify Default Values in Database" uuid="541fb57d-945f-4110-8054-215f18d1b174">
+            <command-definition>b179fefc-5d17-40b0-b13b-005f8acc738e</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Modify Storage Service Level Values in Configuration File" uuid="e623d41d-efc0-40ad-b7c8-e2cf8423bcda">
+            <command-definition>70d2e293-1145-49f9-b852-b4379ef6138e</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Modify Storage Service Level Values in Database" uuid="2ca1b013-6f63-4f2d-953d-06c83528043f">
+            <command-definition>bb9bbfd3-6c7b-4864-b90a-7d3c0e238405</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Add/Delete Nodes (Config)" uuid="941ede4d-57ec-41dd-862d-c62d5acb9dd1">
+            <command-definition>c05fad07-4b5c-48e0-b0d4-c5a4dd1383eb</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Add/Delete Qos Nodes (database)" uuid="ca6e478f-b01e-4b62-82a2-0b62eb2425bd">
+            <command-definition>d20b982e-9eaa-4e4d-b29c-2e5ec8a4496d</command-definition>
+        </workflow-command>
+    </workflow-commands>
+    <find-charts/>
+    <minONTAPVersion>8.3.0</minONTAPVersion>
+    <return-parameters/>
+    <rows>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$ModifyDefaultServiceLevel"/>
+                    <other-parameters>
+                        <command-parameter-value value="$Debug">
+                            <parameter-definition>a95be31d-8cc2-4f8b-9185-a997e5aad917</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DefaultEnforcement">
+                            <parameter-definition>06afbd3a-5bfd-42b4-b203-ea2f8aa6ba98</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>47e290ff-590b-4de7-9b19-4eef2182f354</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DefaultMinIOps">
+                            <parameter-definition>d6e6b622-b178-4de8-84fd-eb75809fa719</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DefaultServiceLevel">
+                            <parameter-definition>1c2dc290-88ef-4873-95fb-07435ed22ac3</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DefaultThinMin">
+                            <parameter-definition>b925fd3c-c96c-4c86-8172-1f6cc19f11cb</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>6815d551-879a-4cd7-a790-63c27b6e1075</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>1f736fd3-4947-4f5c-afb6-776d1ccfe5f1</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$MaxCPUDuration">
+                            <parameter-definition>737c9d71-a04c-4fd1-99bc-5d92ee1f4428</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$MaxCPUPercent">
+                            <parameter-definition>6d30bf58-6dab-4ced-b4aa-0331fa0cc66d</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Prefer">
+                            <parameter-definition>593ae526-25ef-4862-949b-467938c2bed9</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>a84a8fdf-fd9f-4681-a728-7d742ce24ca9</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>47461bbc-1da4-4fa4-94a8-3918430b9c0e</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>97909959-10d8-46e6-82f4-5e792edc081e</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$ModifyDefaultServiceLevel"/>
+                    <other-parameters>
+                        <command-parameter-value value="$Debug">
+                            <parameter-definition>5e720fa3-74d6-456e-83d7-487933500c83</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DefaultEnforcement">
+                            <parameter-definition>019b7b6d-193d-4eb8-b7c6-df14471e2bf5</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>d883992c-8eb1-4d3c-b5e3-878a3f5573a9</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>b6f83afa-d17d-40b6-81a3-f26e3d32282e</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>38dab083-f923-47e9-9c99-4aa35f312f6d</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$MaxCPUDuration">
+                            <parameter-definition>79142200-1b1f-4375-88e3-bcf42281c3ad</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$MaxCPUPercent">
+                            <parameter-definition>76306272-d1d1-4f91-94ca-ee2bf4bf6ecc</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DefaultMinIOps">
+                            <parameter-definition>afc1ee32-2a4e-4c8c-a320-ab85d5bf00ed</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Prefer">
+                            <parameter-definition>fba9636c-d63c-4dac-9745-c51851d70cb6</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DefaultServiceLevel">
+                            <parameter-definition>973e765b-50c7-4601-bcc8-1af681fee8a6</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DefaultThinMin">
+                            <parameter-definition>1cf1d9ba-cdc7-456a-a2b6-e6a0a29dee3d</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="update">
+                            <parameter-definition>a5467506-d699-45ae-8206-84436c5726ea</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>541fb57d-945f-4110-8054-215f18d1b174</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$ModifyServiceLevel"/>
+                    <other-parameters>
+                        <command-parameter-value value="update">
+                            <parameter-definition>529dc22e-3445-443c-8666-4e26c254ab63</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>fc38170d-a7b3-4c39-8864-dd7044c41e52</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>a7cecbc5-dce2-4199-ab84-640ad537e67c</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>77b993bf-6478-436a-93c2-cdd602dca114</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DiskTypes">
+                            <parameter-definition>ff407d09-5cb3-4ad2-a4ec-0185db7fe184</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Enforce">
+                            <parameter-definition>a4d5a8c3-a8d1-4475-be27-053d9d0cdd6a</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>53332105-4ef8-47cb-a1e8-c84dbd8b8ec7</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Hybrid">
+                            <parameter-definition>a02c5854-df1d-4f20-9a54-4abe5c77b52b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>288c154e-721f-4b53-8af4-d988040e7042</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$minIOPS">
+                            <parameter-definition>d0a822b9-da45-4d8b-86fb-2ac289303a54</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>0a50a1df-fb15-4bc2-a98a-d9040d45ee75</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$VolExclude">
+                            <parameter-definition>e17f9ac9-75fd-4924-a08f-46308e590e9b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$volInclude">
+                            <parameter-definition>d8bc7394-a1b8-41a5-97a3-3fee095ba2c8</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$ServiceLevel">
+                            <parameter-definition>c3d514c2-c955-466a-a268-5da4f10e06c2</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>c54517f1-364f-475e-be19-9966a0b8f586</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="true">
+                            <parameter-definition>0ab7e371-e009-4a8f-935d-c676d155de94</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="true">
+                            <parameter-definition>824ce783-27d6-4033-80ec-9bc6aaa57c18</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>e623d41d-efc0-40ad-b7c8-e2cf8423bcda</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$ModifyServiceLevel"/>
+                    <other-parameters>
+                        <command-parameter-value value="Update SSL">
+                            <parameter-definition>7dbb238b-4ba1-4046-b8d7-ec319a6bb8d5</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>bd55c0fe-6fb3-4b7e-aaec-7dd4028e17e0</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>f9b2c962-eb7c-4778-9fe1-550b64426d0f</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>6b95655e-6c6f-4fea-8504-e1181501c91e</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>9096a3cc-1850-445e-b020-1ec508c4c8a9</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>e34fa983-43ba-4390-aa59-b10a48e200ee</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DiskTypes">
+                            <parameter-definition>524a67c5-e804-464e-ab2a-b63bcfa53fb1</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>e35c98e0-fc95-4caa-b6d7-935acf5f7d2e</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$minIOPS">
+                            <parameter-definition>a23327ec-c423-4b8d-a282-f103752091f4</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>213b9c79-0ff4-4775-a452-884762a1685d</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$ServiceLevel">
+                            <parameter-definition>83f65758-1d5e-4620-ac42-cbeb7702eff3</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>c25816b8-f0be-46a0-8319-6e991c2c907b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$VolExclude">
+                            <parameter-definition>a8bcb1d8-3eef-4f1e-8772-eec6efb92e76</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$volInclude">
+                            <parameter-definition>48b17f08-2a5a-4587-b024-d092b6e098c4</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Hybrid">
+                            <parameter-definition>0c7e2853-5fbe-4f09-aca3-3fa867d9230f</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Enforce">
+                            <parameter-definition>13ece12e-36a0-40d6-958d-f0de48ecb4fd</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>5dc6a60a-98c8-4237-885b-ceffe5ef6a9d</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>21fd4f01-4c7c-40b7-adb5-54fcd1917247</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>d30ce513-b9ca-4409-b5e2-8ac30fef2fdb</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>a1ac639b-8fd6-4444-8854-07d578aee859</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>9f43ea0b-0a08-460a-aa4f-9abe88122ed0</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="true">
+                            <parameter-definition>2e59f575-8479-4ad5-8bf0-8139c0aa6baf</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>2ca1b013-6f63-4f2d-953d-06c83528043f</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+        </row>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$nodeupdate"/>
+                    <other-parameters>
+                        <command-parameter-value>
+                            <parameter-definition>a95be31d-8cc2-4f8b-9185-a997e5aad917</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>06afbd3a-5bfd-42b4-b203-ea2f8aa6ba98</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>47e290ff-590b-4de7-9b19-4eef2182f354</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>d6e6b622-b178-4de8-84fd-eb75809fa719</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>1c2dc290-88ef-4873-95fb-07435ed22ac3</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>b925fd3c-c96c-4c86-8172-1f6cc19f11cb</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>6815d551-879a-4cd7-a790-63c27b6e1075</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>1f736fd3-4947-4f5c-afb6-776d1ccfe5f1</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>737c9d71-a04c-4fd1-99bc-5d92ee1f4428</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>6d30bf58-6dab-4ced-b4aa-0331fa0cc66d</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$nodeaction">
+                            <parameter-definition>a84a8fdf-fd9f-4681-a728-7d742ce24ca9</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($nodelist,NodeIndex, 1)">
+                            <parameter-definition>47461bbc-1da4-4fa4-94a8-3918430b9c0e</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>593ae526-25ef-4862-949b-467938c2bed9</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>941ede4d-57ec-41dd-862d-c62d5acb9dd1</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$nodeupdate"/>
+                    <other-parameters>
+                        <command-parameter-value value="$nodeaction">
+                            <parameter-definition>14bc85b9-49c9-4c10-a04a-746977ca3feb</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($nodelist,NodeIndex, 1)">
+                            <parameter-definition>8c02f7c0-bf11-4acf-8827-d57785253d9b</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>ca6e478f-b01e-4b62-82a2-0b62eb2425bd</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+            <row-loop-info iteratorName="NodeIndex" numberOfIterationsExpression="getSize($nodelist)">
+                <loop-variables/>
+            </row-loop-info>
+        </row>
+    </rows>
+    <user-input-groups>
+        <user-input-group expandByDefault="false" name="">
+            <user-inputs>
+                <user-input defaultValue="true" description="Select this option if you want to Add or Delete the node from Adaptive QoS Configuration" displayName="Add/Delete Clusters from QoS Configuration" locked="false" mandatory="false" name="$nodeupdate" uuid="669fb459-b895-4b99-b3e1-1b5853c42fcf">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="booleanUserInputType"/>
+                </user-input>
+                <user-input defaultValue="false" description="Enables you to modify storage service level class." displayName="Manage Storage Service Levels" locked="false" mandatory="false" name="$ModifyServiceLevel" uuid="1a80f35a-b193-4803-92d3-86e5209143e6">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="booleanUserInputType"/>
+                </user-input>
+                <user-input defaultValue="false" description="Enables you to modify the default values based on configuration." displayName="Manage Default Values" locked="false" mandatory="false" name="$ModifyDefaultServiceLevel" uuid="fab20bb0-023e-43b0-b62e-986699239aef">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="booleanUserInputType"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+        <user-input-group expandByDefault="true" name="Add/Delete Clusters from QoS Configuration">
+            <user-inputs>
+                <user-input conditionalUserInputValues="true" defaultValue="add" description="Select this field only when you want to Add or Delete a node from Adaptive Qos Configuration." displayName="Action?" locked="true" mandatory="false" name="$nodeaction" uuid="f1253211-f0c8-42f9-a84d-78ed6d73a675">
+                    <conditional-user-input>669fb459-b895-4b99-b3e1-1b5853c42fcf</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumUserInputType" enumValues="add,delete" viewAsRadio="false"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="List of nodes.&#xA;If node action is add, it will show nodes which are not part of the QoS configuration.&#xA;If node action is delete, it will show list of nodes which are part of QoS Configuration." displayName="Cluster Details" locked="true" mandatory="true" name="$nodelist" uuid="bcc5e20c-eb03-46a8-8c0d-cc55e4b91147">
+                    <conditional-user-input>669fb459-b895-4b99-b3e1-1b5853c42fcf</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryMultiSelectUserInputType" query="SELECT&#xA;    *&#xA;FROM&#xA;    (&#xA;    SELECT&#xA;        c.primary_address,&#xA;        c.name&#xA;    FROM&#xA;        cm_storage.cluster c&#xA;    LEFT JOIN&#xA;        playground.qos_nodes q&#xA;            on c.primary_address = q.node_ip&#xA;    WHERE&#xA;        q.node_ip IS NULL) AS cluster&#xA;WHERE&#xA;    '${nodeaction}' = 'add'&#xA;UNION&#xA;SELECT&#xA;    *&#xA;FROM&#xA;    (&#xA;    SELECT&#xA;        c.primary_address,&#xA;        c.name&#xA;    FROM&#xA;        cm_storage.cluster c&#xA;    RIGHT JOIN&#xA;        playground.qos_nodes q&#xA;            on c.primary_address = q.node_ip) AS cluster&#xA;WHERE&#xA;    '${nodeaction}' = 'delete' " rowSelectionType="Multiple"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+        <user-input-group expandByDefault="true" name="Manage Storage Service Levels">
+            <user-inputs>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="The storage service level class (keyword: servicelevel) starts a new storage service level class definition. Any storage service level class name can be chosen that’s a valid policy name for clustered Data ONTAP.&#xA;&#xA;The format is:&#xA;servicelevel storage-service-level-class-name&#xA;&#xA;If a volume doesn’t match any of the storage service level class definitions, it is set to default service level." displayName="Storage Service Level Class" locked="false" mandatory="true" name="$ServiceLevel" uuid="23432f8b-c7b4-46b6-9eae-5865378cc65a">
+                    <conditional-user-input>1a80f35a-b193-4803-92d3-86e5209143e6</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.storage_service_name&#xA;FROM&#xA;    playground.storage_service_level "/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="Default lowest number of absolute IOPS for the max-throughput value of a volume QoS policy.&#xA;For example:&#xA;140&#xA;&#xA;A value of “140” will cause the Adaptive QoS Policy service to set max-throughput on a volume to at least 140 IOPS." displayName="Minimun IOPS" locked="false" mandatory="true" name="$minIOPS" uuid="7d5bca1f-c59d-41c7-b180-4aa0b78bef46">
+                    <conditional-user-input>1a80f35a-b193-4803-92d3-86e5209143e6</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    CAST(playground.storage_service_level.min_iops AS UNSIGNED) AS &quot;Minimun IOPS&quot;&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    '${ModifyServiceLevel}'= 'true'&#xA;    AND playground.storage_service_level.storage_service_name ='${ServiceLevel}'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="Enforce is used to determine the max-throughput value for the volume QoS policy.&#xA;&#xA;There are three enforce modes:&#xA;&#xA;• thick (committed)&#xA;• thin (used)&#xA;• effective (used + space saved by efficiency)&#xA;&#xA;If ignored for a service level, the default enforcement is used." displayName="QoS Policy Enforcement" locked="false" mandatory="false" name="$Enforce" uuid="36bf9df9-eed7-4726-ba62-6a202c2b32b3">
+                    <conditional-user-input>1a80f35a-b193-4803-92d3-86e5209143e6</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.enforce&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    playground.storage_service_level.storage_service_name = '${ServiceLevel}'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="Regular expression pattern to use for matching against the volume name.&#xA;&#xA;Example : &quot;exchange|database&quot; &#xA;&#xA;In these examples, only a volume with the patterns of “exchange” or “database” could match this service level.&#xA;&#xA;" displayName="Volume Include (REGEX)" locked="false" mandatory="false" name="$volInclude" uuid="79ec6442-9f48-44d2-8fdb-850c305ef39a">
+                    <conditional-user-input>1a80f35a-b193-4803-92d3-86e5209143e6</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.vol_include_regex&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    playground.storage_service_level.storage_service_name = '${ServiceLevel}'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="keywords specify a regular expression pattern to use for matching against the volume name&#xA;&#xA;For example:&#xA;archive|backup&#xA;&#xA;Only a volume without the patterns “archive” or “backup” could match this service level.&#xA;" displayName="Volume Exclude (REGEX)" locked="false" mandatory="false" name="$VolExclude" uuid="6a4a565f-8f5a-4d26-8d8f-3867664aa716">
+                    <conditional-user-input>1a80f35a-b193-4803-92d3-86e5209143e6</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.vol_exclude_regex&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    playground.storage_service_level.storage_service_name = '${ServiceLevel}'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="Specifies a regular expression pattern to match the type of disk.&#xA;&#xA;example:&#xA;ATA|BSAS&#xA;&#xA;In this example, a disk type of SATA or BSAS would allow a match to this service level.&#xA;&#xA;The possible disk types used by clustered Data ONTAP are: ATA EATA FCAL LUN MSATA SAS BSAS SATA SCSI SSD XATA XSAS FSAS unknown&#xA;&#xA;" displayName="Disk Types (REGEX)" locked="false" mandatory="false" name="$DiskTypes" uuid="256f70bf-16d5-4b64-b7a0-bc9745f15192">
+                    <conditional-user-input>1a80f35a-b193-4803-92d3-86e5209143e6</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.disk_types_list&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    playground.storage_service_level.storage_service_name = '${ServiceLevel}'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="Specifies whether or not this service level uses a hybrid aggregate.&#xA;&#xA;Example :&#xA;true &#xA;&#xA;In this example, only a hybrid aggregate will allow the volume to match this service level.&#xA;&#xA;" displayName="Hybrid?" locked="false" mandatory="false" name="$Hybrid" uuid="9f382274-799a-454a-91ab-4a44b284c4e9">
+                    <conditional-user-input>1a80f35a-b193-4803-92d3-86e5209143e6</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.hybrid_aggregate&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    playground.storage_service_level.storage_service_name = '${ServiceLevel}'"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+        <user-input-group expandByDefault="false" name="Manage Default Values">
+            <user-inputs>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="Sets the default lowest number of absolute IOPS for the max-throughput value of a volume QoS policy." displayName="Minimum IOPS" locked="false" mandatory="false" name="$DefaultMinIOps" uuid="e2fb55f9-b2c1-4df4-86c6-615c2e574832">
+                    <conditional-user-input>fab20bb0-023e-43b0-b62e-986699239aef</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    CAST(playground.qos_default_values.min_iops AS UNSIGNED) AS &quot;Default Minimun IOPS&quot;&#xA;FROM&#xA;    playground.qos_default_values"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="The default thinmin (keyword: defaultthinmin) sets the default minimum percentage of capacity used to calculate the max-throughput value for the volume QoS policy.&#xA;&#xA;The format is:&#xA;defaultthinmin decimal-number" displayName="Thinmin" locked="false" mandatory="false" name="$DefaultThinMin" uuid="59bbed18-270d-493f-baf1-eb0d58944473">
+                    <conditional-user-input>fab20bb0-023e-43b0-b62e-986699239aef</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    CAST(playground.qos_default_values.thin_min AS UNSIGNED) AS &quot;ThinMin&quot;&#xA;FROM&#xA;    playground.qos_default_values"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="The default enforcement selects the default mode for a service level class.&#xA;&#xA;There are three modes:&#xA;• thick&#xA;• thin&#xA;• effective" displayName="QoS Policy Enforcement" locked="false" mandatory="false" name="$DefaultEnforcement" uuid="02ecf3fa-16f4-46d4-a089-0389bd0bc1ed">
+                    <conditional-user-input>fab20bb0-023e-43b0-b62e-986699239aef</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.qos_default_values.enforcement&#xA;FROM&#xA;    playground.qos_default_values"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="The Default Service Level (keyword: defaultservicelevel) is the service level definition used if a volume cannot be matched to any of the service level class definitions provided in the configuration file.&#xA;&#xA;The format is:&#xA;defaultservicelevel default-service-level-name" displayName="Default Storage Service Class" locked="false" mandatory="false" name="$DefaultServiceLevel" uuid="a979beeb-f02d-467e-8a19-0d863202298c">
+                    <conditional-user-input>fab20bb0-023e-43b0-b62e-986699239aef</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.qos_default_values.service_level&#xA;FROM&#xA;    playground.qos_default_values&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    playground.storage_service_level.storage_service_name AS 'playground.qos_default_values.service_level'&#xA;FROM&#xA;    playground.storage_service_level&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    &quot;none&quot; AS 'playground.qos_default_values.service_level'"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+        <user-input-group expandByDefault="false" name="Advanced QoS Service Settings">
+            <user-inputs>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="Max CPU duration (keyword: maxcpuduration) is the amount of time that the Kitchen Police measures CPU usage of the controller hosting the cluster management IP. This value controls how often the Kitchen Police checks the volumes for changes.&#xA;&#xA;The format is:&#xA;maxcpuduration decimal-number" displayName="Max CPU Duration" locked="false" mandatory="false" name="$MaxCPUDuration" uuid="05fa75b0-0466-4f3c-9cea-31824f2daeeb">
+                    <conditional-user-input>fab20bb0-023e-43b0-b62e-986699239aef</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    CAST(playground.qos_default_values.max_cpu_duration AS UNSIGNED) AS &quot;Max CPU duration&quot;&#xA;FROM&#xA;    playground.qos_default_values"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="Max CPU percent (keyword: maxcpupercent) sets the maximum CPU value in percentage for the controller hosting the cluster management IP. &#xA;&#xA;The format is:&#xA;maxcpupercent decimal-number" displayName="Max CPU Percent" locked="false" mandatory="false" name="$MaxCPUPercent" uuid="1197e116-7a25-4b12-885e-3d7133b16a8f">
+                    <conditional-user-input>fab20bb0-023e-43b0-b62e-986699239aef</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    CAST(playground.qos_default_values.max_cpu_percent AS UNSIGNED) AS &quot;CPU Utilization Percentage&quot;&#xA;FROM&#xA;    playground.qos_default_values"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="In the case when a volume matches multiple service level class definitions in the configuration file, the “prefer” keyword is used to select the faster or the slower service level class definitions matching the volume.&#xA;&#xA;Example:&#xA;faster" displayName="Prefer" locked="false" mandatory="false" name="$Prefer" uuid="d6a5620c-125f-4696-839e-722a12d8a2eb">
+                    <conditional-user-input>fab20bb0-023e-43b0-b62e-986699239aef</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.qos_default_values.prefer&#xA;FROM&#xA;    playground.qos_default_values"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="“debug” is used to understand the Kitchen Police log messages. The default is 0, which turns off all debug messages to syslog.&#xA;&#xA;The format is:&#xA;debug decimal-number&#xA;&#xA;• Debug 1 turns on basic debugging information and frequently pauses the program for 1 second.&#xA;• Debug 2 turns on verbose debugging information and frequently pauses the program for 2 seconds.&#xA;• Debug 3 or higher turns on extremely detailed debugging information and frequently pauses the program for 3 seconds." displayName="Debug" locked="false" mandatory="false" name="$Debug" uuid="8c6217bb-abfe-4ab4-97ca-4a0f578cc425">
+                    <conditional-user-input>fab20bb0-023e-43b0-b62e-986699239aef</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.qos_default_values.debug&#xA;FROM&#xA;    playground.qos_default_values"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+    </user-input-groups>
+    <workflow-constants>
+        <workflow-constant name="PRIMARY_POOL" value="'primary'">
+            <description>This is name of the primary pool</description>
+        </workflow-constant>
+    </workflow-constants>
+</tabularWorkflow>

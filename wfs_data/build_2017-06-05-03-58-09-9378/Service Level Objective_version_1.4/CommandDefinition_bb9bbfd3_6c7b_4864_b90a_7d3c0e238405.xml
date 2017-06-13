@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Manage Storage Service" samplingIntervalInSeconds="60" stringRepresentation="Action + ' storage service'" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>bb9bbfd3-6c7b-4864-b90a-7d3c0e238405</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+
+
+my $Action;
+my $StorageServiceLevel = &quot;&quot;;
+my $IOPSThrottle = &quot;&quot;;
+my $MinIOPS = &quot;&quot;;
+my $SpaceGuarantee = &quot;&quot;;
+my $DedupeEnabled = &quot;&quot;;
+my $CompressionEnabled = &quot;&quot;;
+my $ThinProvisioningPercentGain = &quot;&quot;;
+my $DedupeClonePercentGain = &quot;&quot;;
+my $AggrRegexEnabled = &quot;&quot;;
+my $AggrIncludeRegex = &quot;&quot;;
+my $AggrExcludeRegex = &quot;&quot;;
+my $VolIncludeRegex = &quot;&quot;;
+my $VolExcludeRegex = &quot;&quot;;
+my $DiskTypesList = &quot;&quot;;
+my $DiskRpm = &quot;&quot;;
+my $Enforce = &quot;&quot;;
+my $Headroom = &quot;&quot;;
+my $HybridAggregate = &quot;&quot;;
+my $ThinMin = &quot;&quot;;
+my $Comment = &quot;&quot;;
+my $FromQoS = &quot;&quot;;
+
+GetOptions(
+    &quot;Action=s&quot;                      =&gt; \$Action,
+    &quot;StorageServiceLevel=s&quot;         =&gt; \$StorageServiceLevel,
+    &quot;IOPSThrottle=s&quot;                =&gt; \$IOPSThrottle,
+    &quot;MinIOPS=s&quot;                     =&gt; \$MinIOPS,
+    &quot;SpaceGuarantee=s&quot;              =&gt; \$SpaceGuarantee,
+    &quot;DedupeEnabled=s&quot;               =&gt; \$DedupeEnabled,
+    &quot;CompressionEnabled=s&quot;          =&gt; \$CompressionEnabled,
+    &quot;ThinProvisioningPercentGain=s&quot; =&gt; \$ThinProvisioningPercentGain,
+    &quot;DedupeClonePercentGain=s&quot;      =&gt; \$DedupeClonePercentGain,
+    &quot;AggrRegexEnabled=s&quot;            =&gt; \$AggrRegexEnabled,
+    &quot;AggrIncludeRegex=s&quot;            =&gt; \$AggrIncludeRegex,
+    &quot;AggrExcludeRegex=s&quot;            =&gt; \$AggrExcludeRegex,
+    &quot;VolIncludeRegex=s&quot;             =&gt; \$VolIncludeRegex,
+    &quot;VolExcludeRegex=s&quot;             =&gt; \$VolExcludeRegex,
+    &quot;DiskTypesList=s&quot;               =&gt; \$DiskTypesList,
+    &quot;DiskRpm=s&quot;                     =&gt; \$DiskRpm,
+    &quot;FromQoS=s&quot;		=&gt; \$FromQoS,
+    &quot;Enforce=s&quot;                     =&gt; \$Enforce,
+    &quot;Headroom=s&quot;                    =&gt; \$Headroom,
+    &quot;HybridAggregate=s&quot;             =&gt; \$HybridAggregate,
+    &quot;ThinMin=s&quot;                     =&gt; \$ThinMin,
+    &quot;Comment=s&quot;                     =&gt; \$Comment,
+) or die 'Illegal command parameters\n';
+     
+my $result; 
+
+my $wfa_util = WFAUtil-&gt;new();
+my $Query;
+
+if ($Action eq &quot;Add SSL&quot;) {
+    $wfa_util-&gt;sendLog('INFO', 'Adding service ');
+    $Query = &quot;INSERT INTO  playground.storage_service_level (
+                storage_service_name, 
+                iops_throttle,
+                min_iops,
+                space_guarantee,
+                deduplication_enabled,
+                compression_enabled,
+                thin_provisioning_percent_gain,
+                dedupe_clone_percent_gain,
+                aggr_regex_enabled,
+                aggr_include_regex,
+                aggr_exclude_regex,
+                vol_include_regex,
+                vol_exclude_regex,
+                disk_types_list,
+                disk_rpm,
+                enforce,
+                headroom,
+                hybrid_aggregate,
+                thin_min,
+                comment)
+            VALUES (
+                '$StorageServiceLevel',
+                IF('$IOPSThrottle', '$IOPSThrottle', NULL),
+                IF('$MinIOPS', '$MinIOPS', NULL),
+                '$SpaceGuarantee',
+                '$DedupeEnabled',
+                '$CompressionEnabled',
+                IF('$ThinProvisioningPercentGain', '$ThinProvisioningPercentGain', NULL),
+                IF('$DedupeClonePercentGain', '$DedupeClonePercentGain', NULL),
+                '$AggrRegexEnabled',
+                '$AggrIncludeRegex',
+                '$AggrExcludeRegex',
+                '$VolIncludeRegex',
+                '$VolExcludeRegex',
+                '$DiskTypesList',
+                IF('$DiskRpm', '$DiskRpm', NULL),
+                '$Enforce',
+                IF('$Headroom', '$Headroom', NULL),
+                '$HybridAggregate',
+                IF('$ThinMin', '$ThinMin', NULL),
+                '$Comment'
+            )&quot;;
+}
+
+if ($Action eq &quot;Remove SSL&quot;) {
+    $wfa_util-&gt;sendLog('INFO', 'Deleting service ');
+    $Query = &quot;DELETE FROM playground.storage_service_level WHERE playground.storage_service_level.storage_service_name='$StorageServiceLevel'&quot;;  
+
+}
+
+if ($Action eq &quot;Update SSL&quot; or $Action eq &quot;Update SSL IOPS&quot;) {
+    if ($FromQoS eq 'false') {
+    $Query = &quot;UPDATE playground.storage_service_level
+                SET
+                    iops_throttle = IF('$IOPSThrottle', '$IOPSThrottle', iops_throttle),
+                    min_iops = IF('$MinIOPS', '$MinIOPS', min_iops),
+                    space_guarantee= IF('$SpaceGuarantee' &lt;&gt; '', '$SpaceGuarantee', space_guarantee),
+                    deduplication_enabled = IF('$DedupeEnabled' &lt;&gt; '', '$DedupeEnabled', deduplication_enabled),
+                    compression_enabled = IF('$CompressionEnabled' &lt;&gt; '', '$CompressionEnabled', compression_enabled),
+                    thin_provisioning_percent_gain = IF('$ThinProvisioningPercentGain', '$ThinProvisioningPercentGain', thin_provisioning_percent_gain),
+                    dedupe_clone_percent_gain = IF('$DedupeClonePercentGain', '$DedupeClonePercentGain', dedupe_clone_percent_gain),
+                    aggr_regex_enabled = IF('$AggrRegexEnabled' &lt;&gt; '', '$AggrRegexEnabled', aggr_regex_enabled),
+                    aggr_include_regex = IF('$AggrIncludeRegex' &lt;&gt; '', '$AggrIncludeRegex', NULL),
+                    aggr_exclude_regex = IF('$AggrExcludeRegex' &lt;&gt; '', '$AggrExcludeRegex', NULL),
+                    vol_include_regex = IF('$VolIncludeRegex' &lt;&gt; '', '$VolIncludeRegex', vol_include_regex),
+                    vol_exclude_regex = IF('$VolExcludeRegex' &lt;&gt; '', '$VolExcludeRegex', vol_exclude_regex),
+                    disk_types_list = IF('$DiskTypesList' &lt;&gt; '', '$DiskTypesList', disk_types_list),
+                    disk_rpm = IF('$DiskRpm', '$DiskRpm', disk_rpm),
+                    enforce = IF('$Enforce' &lt;&gt; '', '$Enforce', enforce),
+                    headroom = IF('$Headroom', '$Headroom', headroom),
+                    hybrid_aggregate = IF('$HybridAggregate' &lt;&gt; '', '$HybridAggregate', hybrid_aggregate),
+                    thin_min = IF('$ThinMin', '$ThinMin', NULL),
+                    comment = IF('$Comment' &lt;&gt; '', '$Comment', comment)
+                WHERE
+                    playground.storage_service_level.storage_service_name = '$StorageServiceLevel'&quot;;
+    } else {
+     $Query = &quot;UPDATE playground.storage_service_level
+                SET
+                    iops_throttle = IF('$IOPSThrottle', '$IOPSThrottle', iops_throttle),
+                    min_iops = IF('$MinIOPS', '$MinIOPS', min_iops),
+                    space_guarantee= IF('$SpaceGuarantee' &lt;&gt; '', '$SpaceGuarantee', space_guarantee),
+                    deduplication_enabled = IF('$DedupeEnabled' &lt;&gt; '', '$DedupeEnabled', deduplication_enabled),
+                    compression_enabled = IF('$CompressionEnabled' &lt;&gt; '', '$CompressionEnabled', compression_enabled),
+                    thin_provisioning_percent_gain = IF('$ThinProvisioningPercentGain', '$ThinProvisioningPercentGain', thin_provisioning_percent_gain),
+                    dedupe_clone_percent_gain = IF('$DedupeClonePercentGain', '$DedupeClonePercentGain', dedupe_clone_percent_gain),
+                    aggr_regex_enabled = IF('$AggrRegexEnabled' &lt;&gt; '', '$AggrRegexEnabled', aggr_regex_enabled),
+                    aggr_include_regex = IF('$AggrIncludeRegex' &lt;&gt; '', '$AggrIncludeRegex', aggr_include_regex),
+                    aggr_exclude_regex = IF('$AggrExcludeRegex' &lt;&gt; '', '$AggrExcludeRegex', aggr_exclude_regex),
+                    vol_include_regex = IF('$VolIncludeRegex' &lt;&gt; '', '$VolIncludeRegex', NULL),
+                    vol_exclude_regex = IF('$VolExcludeRegex' &lt;&gt; '', '$VolExcludeRegex', NULL),
+                    disk_types_list = IF('$DiskTypesList' &lt;&gt; '', '$DiskTypesList', NULL),
+                    disk_rpm = IF('$DiskRpm', '$DiskRpm', NULL),
+                    enforce = IF('$Enforce' &lt;&gt; '', '$Enforce', NULL),
+                    headroom = IF('$Headroom', '$Headroom', NULL),
+                    hybrid_aggregate = IF('$HybridAggregate' &lt;&gt; '', '$HybridAggregate', NULL),
+                    thin_min = IF('$ThinMin', '$ThinMin', thin_min),
+                    comment = IF('$Comment' &lt;&gt; '', '$Comment', comment)
+                WHERE
+                    playground.storage_service_level.storage_service_name = '$StorageServiceLevel'&quot;;
+     }
+}
+
+# Creating table lun_import if not exists
+my $database=&quot;playground&quot;;
+
+eval { 
+        $result = $wfa_util-&gt;invokeMySqlQuery($Query,$database); 
+}; 
+if($@) {
+    $wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@);
+} 
+else { 
+    $wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result);
+}</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+        <parameter-mapping objectName="AggrExcludeRegex" parameterName="AggrExcludeRegex"/>
+        <parameter-mapping objectName="AggrIncludeRegex" parameterName="AggrIncludeRegex"/>
+        <parameter-mapping objectName="AggrRegexEnabled" parameterName="AggrRegexEnabled"/>
+        <parameter-mapping objectName="Comment" parameterName="Comment"/>
+        <parameter-mapping objectName="CompressionEnabled" parameterName="CompressionEnabled"/>
+        <parameter-mapping objectName="DedupeClonePercentGain" parameterName="DedupeClonePercentGain"/>
+        <parameter-mapping objectName="DedupeEnabled" parameterName="DedupeEnabled"/>
+        <parameter-mapping objectName="DiskRpm" parameterName="DiskRpm"/>
+        <parameter-mapping objectName="DiskTypesList" parameterName="DiskTypesList"/>
+        <parameter-mapping objectName="Enforce" parameterName="Enforce"/>
+        <parameter-mapping objectName="FromQoS" parameterName="FromQoS"/>
+        <parameter-mapping objectName="Headroom" parameterName="Headroom"/>
+        <parameter-mapping objectName="HybridAggregate" parameterName="HybridAggregate"/>
+        <parameter-mapping objectName="IOPSThrottle" parameterName="IOPSThrottle"/>
+        <parameter-mapping objectName="MinIOPS" parameterName="MinIOPS"/>
+        <parameter-mapping objectName="SpaceGuarantee" parameterName="SpaceGuarantee"/>
+        <parameter-mapping objectName="StorageServiceLevel" parameterName="StorageServiceLevel"/>
+        <parameter-mapping objectName="ThinMin" parameterName="ThinMin"/>
+        <parameter-mapping objectName="ThinProvisioningPercentGain" parameterName="ThinProvisioningPercentGain"/>
+        <parameter-mapping objectName="VolExcludeRegex" parameterName="VolExcludeRegex"/>
+        <parameter-mapping objectName="VolIncludeRegex" parameterName="VolIncludeRegex"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will handle Add/Remove/Update actions on storage service levels</description>
+    <parameter-definitions>
+        <parameter-definition description="What is planned action on service level class. Possible values are,&#xA;1) Add&#xA;2) Remove&#xA;3) Update" enumValues="Add SSL,Update SSL,Remove SSL,Update SSL IOPS" isMandatory="true" name="Action" type="Enum">
+            <uuid>7dbb238b-4ba1-4046-b8d7-ec319a6bb8d5</uuid>
+        </parameter-definition>
+        <parameter-definition description="AggrExcludeRegex" isMandatory="false" name="AggrExcludeRegex" type="String">
+            <uuid>bd55c0fe-6fb3-4b7e-aaec-7dd4028e17e0</uuid>
+        </parameter-definition>
+        <parameter-definition description="Keeps regular expression string for aggregate include" isMandatory="false" name="AggrIncludeRegex" type="String">
+            <uuid>a1ac639b-8fd6-4444-8854-07d578aee859</uuid>
+        </parameter-definition>
+        <parameter-definition description="Keeps details on whether aggregate selection is regex based or not" isMandatory="false" name="AggrRegexEnabled" type="Boolean">
+            <uuid>9f43ea0b-0a08-460a-aa4f-9abe88122ed0</uuid>
+        </parameter-definition>
+        <parameter-definition description="Comment specific to particular service" isMandatory="false" name="Comment" type="String">
+            <uuid>f9b2c962-eb7c-4778-9fe1-550b64426d0f</uuid>
+        </parameter-definition>
+        <parameter-definition description="CompressionEnabled" enumValues="disabled,background,inline" isMandatory="false" name="CompressionEnabled" type="Enum">
+            <uuid>6b95655e-6c6f-4fea-8504-e1181501c91e</uuid>
+        </parameter-definition>
+        <parameter-definition description="DedupeClonePercentGain" isMandatory="false" name="DedupeClonePercentGain" type="Integer">
+            <uuid>9096a3cc-1850-445e-b020-1ec508c4c8a9</uuid>
+        </parameter-definition>
+        <parameter-definition description="DedupeEnabled" isMandatory="false" name="DedupeEnabled" type="Boolean">
+            <uuid>e34fa983-43ba-4390-aa59-b10a48e200ee</uuid>
+        </parameter-definition>
+        <parameter-definition description="DiskRpm" isMandatory="false" name="DiskRpm" type="Double">
+            <uuid>21fd4f01-4c7c-40b7-adb5-54fcd1917247</uuid>
+        </parameter-definition>
+        <parameter-definition description="DiskTypesList" isMandatory="false" name="DiskTypesList" type="String">
+            <uuid>524a67c5-e804-464e-ab2a-b63bcfa53fb1</uuid>
+        </parameter-definition>
+        <parameter-definition description="Enforce" enumValues="thick,thin,effective" isMandatory="false" name="Enforce" type="Enum">
+            <uuid>13ece12e-36a0-40d6-958d-f0de48ecb4fd</uuid>
+        </parameter-definition>
+        <parameter-definition description="True if command executed from QoS management workflow and false if done from Storage service level workflow." isMandatory="true" name="FromQoS" type="Boolean">
+            <uuid>2e59f575-8479-4ad5-8bf0-8139c0aa6baf</uuid>
+        </parameter-definition>
+        <parameter-definition description="Headroom" isMandatory="false" name="Headroom" type="Double">
+            <uuid>d30ce513-b9ca-4409-b5e2-8ac30fef2fdb</uuid>
+        </parameter-definition>
+        <parameter-definition description="HybridAggregate" isMandatory="false" name="HybridAggregate" type="Boolean">
+            <uuid>0c7e2853-5fbe-4f09-aca3-3fa867d9230f</uuid>
+        </parameter-definition>
+        <parameter-definition description="IOPSThrottle" isMandatory="false" name="IOPSThrottle" type="Integer">
+            <uuid>e35c98e0-fc95-4caa-b6d7-935acf5f7d2e</uuid>
+        </parameter-definition>
+        <parameter-definition description="MinIOPS" isMandatory="false" name="MinIOPS" type="Integer">
+            <uuid>a23327ec-c423-4b8d-a282-f103752091f4</uuid>
+        </parameter-definition>
+        <parameter-definition description="SpaceGuarantee" isMandatory="false" name="SpaceGuarantee" type="String">
+            <uuid>213b9c79-0ff4-4775-a452-884762a1685d</uuid>
+        </parameter-definition>
+        <parameter-definition description="Storage service class name" isMandatory="true" name="StorageServiceLevel" type="String">
+            <uuid>83f65758-1d5e-4620-ac42-cbeb7702eff3</uuid>
+        </parameter-definition>
+        <parameter-definition description="ThinMin" isMandatory="false" name="ThinMin" type="Double">
+            <uuid>5dc6a60a-98c8-4237-885b-ceffe5ef6a9d</uuid>
+        </parameter-definition>
+        <parameter-definition description="ThinProvisioningPercentGain" isMandatory="false" name="ThinProvisioningPercentGain" type="Integer">
+            <uuid>c25816b8-f0be-46a0-8319-6e991c2c907b</uuid>
+        </parameter-definition>
+        <parameter-definition description="VolExcludeRegex" isMandatory="false" name="VolExcludeRegex" type="String">
+            <uuid>a8bcb1d8-3eef-4f1e-8772-eec6efb92e76</uuid>
+        </parameter-definition>
+        <parameter-definition description="VolIncludeRegex" isMandatory="false" name="VolIncludeRegex" type="String">
+            <uuid>48b17f08-2a5a-4587-b024-d092b6e098c4</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

@@ -1,0 +1,42 @@
+# BEGIN htaccess
+<IfModule mod_rewrite.c>
+Options +FollowSymLinks
+#DirectoryIndex login.php
+
+RewriteEngine On    	
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-s 
+
+#RewriteCond %{REQUEST_URI} !under-construction\.shtml
+#RewriteRule ^(.*)$ /under-construction.shtml [R=302,L]
+
+RewriteRule ^(wfsmetadata)$ webservices/webservice.php?request=$1 [QSA,NC,L]
+RewriteRule ^(timestamp)$ webservices/webservice.php?request=$1 [QSA,NC,L]
+RewriteRule ^(storeversion)$ webservices/webservice.php?request=$1 [QSA,NC,L]   
+
+#RewriteRule ^login.shtml$ /login.shtml [NC,L]
+#RewriteRule ^logout$ /logout.shtml [NC,L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+#RewriteRule ^(.*)$ $1.php [QSA,NC,L]
+RewriteRule ^(.*)\.shtml$ $1.php [QSA,NC,L]  
+
+#ashish changes 
+	#RewriteCond %{REQUEST_FILENAME}.php -f
+	#RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+#RewriteRule ^oberr.cgi$ http://store.netapp.com/login.php [NC,L]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.*)$ 404.php?file=$1 [NC,L]
+#RewriteRule (.*) 404.php?file=$1 [L]
+</IfModule>
+# END WordPress
+

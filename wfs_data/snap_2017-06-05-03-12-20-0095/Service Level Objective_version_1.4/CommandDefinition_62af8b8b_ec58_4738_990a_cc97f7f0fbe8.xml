@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Enter default service Classes" samplingIntervalInSeconds="60" stringRepresentation="&quot;service class&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>62af8b8b-ec58-4738-990a-cc97f7f0fbe8</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+
+
+# name, 						storage_service_name, 	protection_service_name,	comment
+my @protectionservices = (
+  ['Extreme with local Snapshots',			'Extreme', 		'snapshots_only',		' ',],
+  ['Extreme with Backup',	 			'Extreme', 		'backup_only',		' ',],
+  ['Extreme with Disaster', 				'Extreme',			'disaster_only',	' ',],
+  ['Extreme with Disaster and Backup',	 		'Extreme',			'disaster_and_backup',		' ',],
+  ['Extreme with Disaster and Backup for Disaster',	 	'Extreme',			'disaster_and_backup_of_disaster',		' ',],
+  ['High Read with local Snapshots', 			'High-Read',		'snapshots_only',		' ',],
+  ['High Read with Backup',	 			'High-Read',		'backup_only',		' ',],
+  ['High Read with Disaster', 				'High-Read',		'disaster_only',	' ',],
+  ['High Read with Disaster and Backup', 		'High-Read',		'disaster_and_backup',		' ',],
+  ['Performance with local Snapshots', 			'Performance',		'snapshots_only',	' ',],
+  ['Performance with Backup',	 			'Performance',		'backup_only',		' ',],
+  ['Performance with Disaster', 			'Performance',		'disaster_only',	' ',],
+  ['Performance with Disaster and Backup', 		'Performance',		'disaster_and_backup',		' ',],
+ );
+
+my $count = 0;
+
+my $wfa_util = WFAUtil-&gt;new();
+
+for my $row_element (@protectionservices) {	
+     
+                my @row = @{ $row_element };
+	
+	my $Query;
+
+	my $result;
+
+	my $Query;
+
+	$wfa_util-&gt;sendLog('INFO', 'Adding service ');
+
+	$Query = &quot;INSERT INTO  playground.service_level_class (
+					service_level_name, 
+					storage_service_name, 
+					protection_service_name, 
+					comment)
+			 	VALUES (
+					'$row[0]',
+					'$row[1]',
+					'$row[2]',
+					'$row[3]')&quot;;  
+
+	my $database=&quot;playground&quot;;
+
+	eval { 
+		$result = $wfa_util-&gt;invokeMySqlQuery($Query,$database); 
+	}; 
+
+	if($@) 
+	{ 
+		$wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@); 
+	} 
+	else 
+	{ 
+		$wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result); 
+	} 
+
+}
+
+
+
+
+
+</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings/>
+    <congruenceTest></congruenceTest>
+    <description>This command will add pre-canned classes</description>
+    <parameter-definitions/>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

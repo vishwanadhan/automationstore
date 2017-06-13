@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<filter description="Return a snapshot details needed for creating a volume for storage service" name="Filter snapshot policy by Protection Service">
+    <certification>NETAPP</certification>
+    <uuid>67302f97-2c7c-41fd-8442-5a752cfcc998</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry>17befd19-c47e-43d1-b050-5197e3254e7b</dictionary-entry>
+    <parameters>
+        <parameter label="PSLName" name="PSLName" type="STRING">
+            <uuid>fd785752-3b3d-4f40-a8fc-c1cb0f66970b</uuid>
+        </parameter>
+        <parameter label="SLCName" name="SLCName" type="STRING">
+            <uuid>39da188f-5cbb-4fa0-8134-7622f0862df0</uuid>
+        </parameter>
+        <parameter label="UsingSLC" name="UsingSLC" type="STRING">
+            <uuid>9c211299-6985-4f67-8fb7-0fab08edb24b</uuid>
+        </parameter>
+    </parameters>
+    <query>SELECT
+    DISTINCT playground.protection_service_level.snapshot_policy AS &quot;name&quot;,
+    &quot;dummy&quot; AS &quot;vserver.name&quot;,
+    &quot;dummy&quot; AS &quot;vserver.cluster.primary_address&quot;,
+    playground.protection_service_level.protection_service_name AS &quot;PSL_Name&quot;
+FROM
+    playground.protection_service_level,
+    playground.service_level_class
+WHERE
+    CASE
+        WHEN '${UsingSLC}' = 'true' THEN playground.service_level_class.service_level_name = '${SLCName}'
+        AND playground.protection_service_level.protection_service_name = playground.service_level_class.protection_service_name
+        ELSE playground.protection_service_level.protection_service_name = '${PSLName}'
+    END
+    AND playground.protection_service_level.snapshot_policy != ''
+    AND playground.protection_service_level.geo = 'local'</query>
+    <returned-attributes>
+        <returned-attribute>PSL_Name</returned-attribute>
+        <returned-attribute>name</returned-attribute>
+        <returned-attribute>vserver.cluster.primary_address</returned-attribute>
+        <returned-attribute>vserver.name</returned-attribute>
+    </returned-attributes>
+</filter>

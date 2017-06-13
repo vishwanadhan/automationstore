@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<filter description="Return a volume details needed for creating a volume for storage service" name="Filter volume by Storage Service">
+    <certification>NETAPP</certification>
+    <uuid>3aedc7e8-8257-4e50-816e-84f894b2ce73</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+    <parameters>
+        <parameter label="SLCName" name="SLCName" type="STRING">
+            <uuid>fda59380-8c97-44af-8fdb-317a9fd5e69a</uuid>
+        </parameter>
+        <parameter label="SSLName" name="SSLName" type="STRING">
+            <uuid>35acb834-c706-486c-bad0-8cafa32027fe</uuid>
+        </parameter>
+        <parameter label="UsingSLC" name="UsingSLC" type="STRING">
+            <uuid>e0585592-7336-43ce-ab5c-14fd0d138b36</uuid>
+        </parameter>
+    </parameters>
+    <query>SELECT
+    &quot;dummy&quot; AS &quot;name&quot;,
+    &quot;dummy&quot; AS &quot;vserver.name&quot;,
+    &quot;dummy&quot; AS &quot;vserver.cluster.primary_address&quot;,
+    CASE playground.storage_service_level.compression_enabled
+        WHEN &quot;true&quot; THEN &quot;inline&quot;
+        WHEN &quot;false&quot; THEN &quot;disabled&quot;
+    END AS &quot;compression&quot;,
+    CASE playground.storage_service_level.space_guarantee
+        WHEN &quot;Thick&quot; THEN &quot;volume&quot;
+        WHEN &quot;Thin-Type 1&quot; THEN &quot;file&quot;
+        WHEN &quot;Thin-Type 2&quot; THEN &quot;none&quot;
+    END AS &quot;space_guarantee&quot;,
+    playground.storage_service_level.deduplication_enabled AS &quot;dedupe_enabled&quot;,
+    NULL AS `aggregate_id` ,
+    NULL AS `parent_volume_id`,
+    NULL AS `size_mb`,
+    NULL AS `used_size_mb`,
+    NULL AS `available_size_mb` ,
+    NULL AS `type`,
+    NULL AS `state`,
+    NULL AS `snapshot_used_mb`,
+    NULL AS `snapshot_reserved_percent`,
+    NULL AS `snapshot_enabled`,
+    NULL AS `style`,
+    NULL AS `max_autosize_mb`,
+    NULL AS `block_type`,
+    NULL AS `security_style`,
+    NULL AS `auto_increment_size_mb`,
+    NULL AS `snapshot_policy_id`,
+    NULL AS `export_policy_id`,
+    NULL AS `autosize_enabled`,
+    NULL AS `deduplication_space_saved_mb`,
+    NULL AS `compression_space_saved_mb`,
+    NULL AS `percent_deduplication_space_saved` ,
+    NULL AS `percent_compression_space_saved`,
+    NULL AS `hybrid_cache_eligibility`,
+    NULL AS `inode_files_total`,
+    NULL AS `inode_files_used`,
+    NULL AS `auto_size_mode`,
+    NULL AS `sis_last_op_begin_timestamp` ,
+    NULL AS `sis_last_op_end_timestamp` ,
+    NULL AS `flexcache_origin_volume_id` ,
+    NULL AS `flexcache_min_reserve_mb` ,
+    NULL AS `constituent_role` ,
+    NULL AS `is_managed_by_service` ,
+    NULL AS `storage_class` ,
+    NULL AS `snap_diff_enabled`,
+    NULL AS `max_namespace_constituent_size_mb` ,
+    NULL AS `max_data_constituent_size_mb` ,
+    NULL AS `efficiency_policy_id`,
+    NULL AS `qos_policy_group_id` ,
+    NULL AS `language`,
+    NULL AS `data_daily_growth_rate_mb`,
+    NULL AS `data_days_until_full`,
+    NULL AS `auto_delete_enabled`,
+    NULL AS `auto_delete_commitment`,
+    NULL AS `auto_delete_delete_order`,
+    NULL AS `auto_delete_defer_delete` ,
+    NULL AS `auto_delete_target_free_space` ,
+    NULL AS `auto_delete_trigger` ,
+    NULL AS `auto_delete_prefix` ,
+    NULL AS `auto_delete_destroy_list`
+FROM
+    playground.storage_service_level,
+    playground.service_level_class
+WHERE
+    CASE
+        WHEN '${UsingSLC}' = 'true' THEN playground.service_level_class.service_level_name = '${SLCName}'
+        AND playground.storage_service_level.storage_service_name = playground.service_level_class.storage_service_name
+        ELSE playground.storage_service_level.storage_service_name = '${SSLName}'
+    END </query>
+    <returned-attributes>
+        <returned-attribute>aggregate_id</returned-attribute>
+        <returned-attribute>auto_delete_commitment</returned-attribute>
+        <returned-attribute>auto_delete_defer_delete</returned-attribute>
+        <returned-attribute>auto_delete_delete_order</returned-attribute>
+        <returned-attribute>auto_delete_destroy_list</returned-attribute>
+        <returned-attribute>auto_delete_enabled</returned-attribute>
+        <returned-attribute>auto_delete_prefix</returned-attribute>
+        <returned-attribute>auto_delete_target_free_space</returned-attribute>
+        <returned-attribute>auto_delete_trigger</returned-attribute>
+        <returned-attribute>auto_increment_size_mb</returned-attribute>
+        <returned-attribute>auto_size_mode</returned-attribute>
+        <returned-attribute>autosize_enabled</returned-attribute>
+        <returned-attribute>available_size_mb</returned-attribute>
+        <returned-attribute>block_type</returned-attribute>
+        <returned-attribute>compression</returned-attribute>
+        <returned-attribute>compression_space_saved_mb</returned-attribute>
+        <returned-attribute>constituent_role</returned-attribute>
+        <returned-attribute>data_daily_growth_rate_mb</returned-attribute>
+        <returned-attribute>data_days_until_full</returned-attribute>
+        <returned-attribute>dedupe_enabled</returned-attribute>
+        <returned-attribute>deduplication_space_saved_mb</returned-attribute>
+        <returned-attribute>efficiency_policy_id</returned-attribute>
+        <returned-attribute>export_policy_id</returned-attribute>
+        <returned-attribute>flexcache_min_reserve_mb</returned-attribute>
+        <returned-attribute>flexcache_origin_volume_id</returned-attribute>
+        <returned-attribute>hybrid_cache_eligibility</returned-attribute>
+        <returned-attribute>inode_files_total</returned-attribute>
+        <returned-attribute>inode_files_used</returned-attribute>
+        <returned-attribute>is_managed_by_service</returned-attribute>
+        <returned-attribute>language</returned-attribute>
+        <returned-attribute>max_autosize_mb</returned-attribute>
+        <returned-attribute>max_data_constituent_size_mb</returned-attribute>
+        <returned-attribute>max_namespace_constituent_size_mb</returned-attribute>
+        <returned-attribute>name</returned-attribute>
+        <returned-attribute>parent_volume_id</returned-attribute>
+        <returned-attribute>percent_compression_space_saved</returned-attribute>
+        <returned-attribute>percent_deduplication_space_saved</returned-attribute>
+        <returned-attribute>qos_policy_group_id</returned-attribute>
+        <returned-attribute>security_style</returned-attribute>
+        <returned-attribute>sis_last_op_begin_timestamp</returned-attribute>
+        <returned-attribute>sis_last_op_end_timestamp</returned-attribute>
+        <returned-attribute>size_mb</returned-attribute>
+        <returned-attribute>snap_diff_enabled</returned-attribute>
+        <returned-attribute>snapshot_enabled</returned-attribute>
+        <returned-attribute>snapshot_policy_id</returned-attribute>
+        <returned-attribute>snapshot_reserved_percent</returned-attribute>
+        <returned-attribute>snapshot_used_mb</returned-attribute>
+        <returned-attribute>space_guarantee</returned-attribute>
+        <returned-attribute>state</returned-attribute>
+        <returned-attribute>storage_class</returned-attribute>
+        <returned-attribute>style</returned-attribute>
+        <returned-attribute>type</returned-attribute>
+        <returned-attribute>used_size_mb</returned-attribute>
+        <returned-attribute>vserver.cluster.primary_address</returned-attribute>
+        <returned-attribute>vserver.name</returned-attribute>
+    </returned-attributes>
+</filter>

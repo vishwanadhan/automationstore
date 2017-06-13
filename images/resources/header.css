@@ -1,0 +1,650 @@
+	#headerContent {
+height: 117px;
+}
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+margin: 0;
+padding: 0;
+outline: 0;
+font-size: 100%;
+/* vertical-align: baseline; */
+}
+
+div {
+display: block;
+}
+
+body {
+	font-family: Arial,Helvetica,sans-serif;
+	font-size: 10px;
+	font-weight: normal;
+	color: #454545;
+	background-repeat: repeat-x;
+}
+
+body {
+	line-height: 1;
+}
+
+@charset "utf-8";
+/* CSS Document */
+
+/**Global CSS*******************************************/
+.safloatleft{
+	float:left;
+}
+.safloatright{
+	float:right;
+}
+
+.sabold{
+	font-weight:bold;
+}
+.saitalic{
+	font-style:italic;
+}
+.saclear{
+	clear:both;
+}
+.saoverflow{
+	overflow:hidden;
+}
+/* For margin and padding */
+.samarginTop20{
+	margin-top:20px;
+}
+.samarginTop50{
+	margin-top:50px;
+}
+.samarginTop45{
+	margin-top:45px;
+}
+.samarginLft70{
+	margin-left:70px;
+}
+.samarginBtm15{
+	margin-bottom:15px;
+}
+.saht80{
+	height:80px
+}
+.sawrapper{
+	width:948px;
+	padding:20px;
+	background:#fff;
+	border-left:1px solid #cdcdcd;
+	border-right:1px solid #cdcdcd;
+	margin:0 auto;
+}
+
+/******************************************Header CSS START*******************************************/
+
+.saheader{
+	background:#0067c4;
+	width:100%
+}
+.salogo{
+	width:69px;
+	height:117px;	
+	background:url(/NOW/css/sa/images/NetApp_logo.png) center center no-repeat;
+	margin-right:30px
+}
+.sahrdContent{
+	width:950px;
+	padding:0 20px;
+	margin:0px auto;
+	background:#0067c4;
+}
+.satxtSupport{
+	background:url(/NOW/css/sa/images/supportHeader.png) center center no-repeat;
+	width:122px;
+	height:35px;
+	margin-top:38px;
+	margin-right:70px;
+}
+
+.sasrchBtn{cursor:pointer;
+        height:26px;
+        margin-top: 1px;
+        width:26px;}
+.sasrchBox{
+	width:360px;
+	height:28px;
+	border: 1px solid #6a6a6a;
+	background:url(/NOW/css/sa/images/srchBox.png) left center no-repeat;
+	margin-top:36px;
+        background-size : 100% 100%; 
+	*background:white; background:white;
+}
+.sasrchBox input{
+	height:13px;
+	width:264px;
+	background:transparent;
+	border:none;
+	padding:10px;
+	font-size:13px;
+}
+.sasrchBox input:focus{
+	outline:none;
+}
+.sasrchBtn{
+	height:26px;
+	width:26px;
+        margin-top : 1px;
+	background:url(/NOW/css/sa/images/btnSearch.png) center center no-repeat
+}
+	
+	
+/*********** HEADER NAV + TABS**************START***/
+.sahdrNav{
+	margin-top:4px;
+	height:36px;
+	width:800px;
+	*width:800px; 
+    *margin-top:4px /*IE hack*/
+}
+.sahdrNav ul{
+	list-style-type:none;
+}
+.sahdrNav ul li{
+	display:inline-block;
+        position:relative;
+        z-index: 9 !important;
+}
+.sahdrNav ul.sahdrTabs{
+	height:36px	;
+	padding:0;
+	margin:0;
+	display:table;
+	
+}
+.sahdrNav ul .satab{
+	display:inline-block;	
+	font-size:14px;
+	font-weight:normal;
+	color:#fff;
+	float:left;
+	display:table-cell;
+	position:relative
+}
+.sahdrNav ul .satab a.satabLink{
+  	text-decoration:none;
+	color:#FFFFFF;	
+	height:17px;
+	padding:10px 20px;
+	display:block;
+	background:url(/NOW/css/sa/images/navSep.png) center right no-repeat
+}
+.sahdrNav ul .satab:last-child a.satabLink{
+	background:none
+}
+.sahdrNav ul .db a.satabLink, .sahdrNav ul .db a.satabLink:hover {
+	background:white !important;
+	color:#84bd00;
+        margin-left :-2px;
+}
+.sahdrNav ul .satab .sanavSubMenu{
+	position:absolute;
+       /* 	min-height:120px;*/
+	border-bottom:6px solid #6eade4;
+	border-left:1px solid #025fbc;
+	border-top:6px solid #6eade4;
+	border-right:1px solid #025fbc;
+	padding:20px 0px;
+	background:white;
+	z-index:1;
+	color:#006dc7;
+	display:none;
+	left:0px;
+	box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.1);
+    position:absolute;
+	margin-top:-1px;
+}
+
+.sahdrNav .sanavSubMenu .column{
+	width:156px;
+	padding-left:20px;
+	padding-right:14px;
+	border-right:1px solid #dcdcdc;
+	float:left;
+	/*min-height:130px*/
+}
+.sahdrNav .sanavSubMenu .column.single{
+	width:230px;
+}
+.sahdrNav .sanavSubMenu .column:last-child{
+	border-right:none
+}
+.sahdrNav .sanavSubMenu .salinks{
+	font-size:12px;
+	font-weight:normal;
+	margin:0;
+	padding:0;
+}
+.sahdrNav .sanavSubMenu .salinks span{
+	display:table-cell;
+        *float : left;
+}
+
+hdrNav .sanavSubMenu .salinks a span:hover{
+        text-decoration : underline;
+        *text-decoration : underline;
+}
+
+.sahdrNav .sanavSubMenu .salinks .sasubLink{
+	margin-left:14px;
+	margin-bottom:10px;
+	display:block;
+}
+.sahdrNav .sanavSubMenu .salinks .samainLink{
+	font-size:14px;
+	font-weight:bold;
+	margin:0;
+	margin-bottom:10px;
+	display:block
+}
+
+.sahdrNav .sanavSubMenu .salinks .samainLink a span:hover{
+	text-decoration : underline;
+    font-weight : bold;
+}
+.sahdrNav .sanavSubMenu .salinks .samainLink a, .sahdrNav .sanavSubMenu .salinks .sasubLink a{
+	color:#006dc7;
+	text-decoration:none; 
+}
+
+.salinks .samainLink a  span{*line-height:16px !important}
+
+.salinks .sasubLink a  span{*line-height:16px !important}
+
+.sahdrNav .sanavSubMenu .salinks .sasubLink a span:hover{
+	text-decoration : underline;
+    *text-decoration : underline;
+}
+.sahdrNav .sanavSubMenu .salinks .sablackLink{
+	font-weight:bold;
+	color:#454545;
+	margin-bottom:4px;
+}
+.sahdrNav .saarrow{
+	height:9px;
+	width:5px;
+	background:url(/NOW/css/sa/images/greenArrow.png) 0px 2px no-repeat;
+	padding-right: 7px;
+	display:table-cell;
+        *float:left;
+        *height : 13px !important;
+}
+
+.saarrowIconDrp {
+	*margin-left:7px;
+}
+
+.sadownloadIcon{
+	height:14px;
+	width:16px;
+	background:url(/NOW/css/sa/images/spriteIcons.png) -118px 0;
+	display:inline-block;
+	padding-right:5px
+}
+.satoolsIcon{
+	height:14px;
+	width:13px;
+	background:url(/NOW/css/sa/images/spriteIcons.png) -144px 0;
+	display:inline-block;
+	padding-right:5px
+}
+.saredDot{
+	height:12px;
+	width:13px;
+	background:url(/NOW/css/sa/images/spriteIcons.png) -261px 0;
+	display:inline-block;
+	padding-right:5px
+}
+.sayellowDot{
+	height:12px;
+	width:14px;
+	background:url(/NOW/css/sa/images/spriteIcons.png) -281px 0;
+	display:inline-block;
+	padding-right:5px
+}
+.sagreenDot{
+	height:12px;
+	width:13px;
+	background:url(/NOW/css/sa/images/spriteIcons.png) -225px 0;
+	display:inline-block;
+	padding-right:5px
+}
+.sagreenTickDot{
+	height:12px;
+	width:12px;
+	background:url(/NOW/css/sa/images/spriteIcons.png) -244px 0;
+	display:inline-block;
+	padding-right:5px
+}
+.sapdfIcon{
+	width:16px;
+	height:17px;
+	background:url(/NOW/css/sa/images/spriteIcons.png) -301px 0;
+	display:inline-block;
+	padding-right:5px
+}
+.sadocIcon{
+	width:14px;
+	height:16px;
+	background:url(/NOW/css/sa/images/spriteIcons.png) -328px 0;
+	display:inline-block;
+	padding-right:5px;
+}
+.sabgNone{
+	background:none
+}
+
+/*********** HEADER NAV + TABS**************END***/
+
+
+/***** public page tabs ***/
+
+.sahdrNav ul .satabPublic{
+    display:inline-block;	
+	font-size:14px;
+	font-weight:normal;
+	color:#fff;
+	float:left;
+	display:table-cell;
+	position:relative
+}
+.sahdrNav ul .satabPublic a.satabLinkPublic{
+    text-decoration: none;
+    color: #FFFFFF;
+	*height:17px;
+	height : 16px;
+	padding:10px 20px;
+	display:block;
+	background:url(/NOW/css/sa/images/navSep.png) center right no-repeat
+}
+
+.sahdrNav ul .db a.satabLinkPublic, .sahdrNav ul .db a.satabLinkPublic:hover {
+	background:white !important;
+	color:#84bd00;
+        margin-left :-2px;
+}
+
+/***** public page tabs ***/
+
+
+/*********** USER PROFILE   **************START***/
+.sauserProfile{
+	min-width:150px;
+	color:#fff;
+	height:32px;
+	font-size:11px;
+	margin-bottom:5px;
+	margin-right:-1px
+}
+.sauserProfile .sabgLeft{
+	width:7px;
+	height:32px;
+	background:url(/NOW/css/sa/images/bgLeft.png)
+}
+.sauserProfile .sabgMid{
+	height:32px;
+	background:url(/NOW/css/sa/images/bgProfile.png) repeat-x;
+	padding:0 6px;
+	line-height:29px
+}
+.sauserProfile .sabgMid .saarrowIcon{
+	height:4px;
+	width:7px;
+	background:url(/NOW/css/sa/images/userProfArrow.png) 0 0;
+	vertical-align:middle;
+	margin:0 7px;
+}
+.sauserProfile .sabgMid .sasepIcon{
+	height:15px;
+	width:1px;
+	background:url(/NOW/css/sa/images/username_separator.png) 0 0;
+	vertical-align:middle;
+	margin:0 7px 0 0;
+}
+.sauserProfile .sabgRight{
+	width:7px;
+	height:32px;
+	color:#fff;
+	background:url(/NOW/css/sa/images/bgRight.png)
+}
+/*
+.sauserProfDropDown{
+	height:150px;
+	width:150px;
+	position:relative; 
+	top: -35px;
+	left: -66px; 
+	z-index:11;
+	display:none;
+}*/
+.sauserProfDropDown{
+	position:absolute;
+	top:0;
+	/*width:150px;*/
+	height:150px;
+	*right:65px;
+	right : 68px;
+	z-index:999 !important;
+	display:none;
+}
+.sauserProfile{
+	position:relative;
+	z-index:99 !important;
+}
+.sanameBox{
+	background:white;
+	height:30px;
+	min-width:76px;
+	color:black;
+	border-right:1px solid white;
+	line-height:30px;
+	padding:0 11px; 
+	white-space:nowrap;
+	box-shadow: 3px 2px 0px 0px rgba(0,0,0,0.1);
+}
+.sanameBox .sausername{
+	display:inline-block;
+	white-space:nowrap;
+	margin-right:6px
+}
+.sanameBox img{
+	vertical-align:middle
+}
+.nameToAppend{
+	white-space :nowrap;
+}
+.sadropDwnBox{
+	/*height:219px;*/
+	background:white;
+	border:1px solid #025fbc;
+	border-top:none;
+	width:119px;
+	color:#454545;
+	padding:9px 56px 10px 15px;
+	font-size:12px;
+	margin-right:-1px;
+	box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.1);
+       *width:auto !important;
+        *padding:9px 24px 10px 15px !important ;
+}
+.sadropDwnBox .saddUsername{
+	white-space:nowrap;
+	font-size:11px
+}
+.sadropDwnBox .sadivider{
+	border-bottom:1px solid #c6c6c6;
+	height:10px;
+	margin-bottom:10px;
+	margin-right:-9px;
+    *width:100px;
+}
+.salineHt20{
+	line-height:20px	
+}
+.sadropDwnBox a{
+	color:#0067c5;
+	line-height:20px;
+	cursor:pointer;
+    font-size:11px;          
+}
+
+.saFont11{
+    font-size:11px; 
+}
+
+/*********** USER PROFILE ****************END***/
+
+
+/***************************UTILITY PANEL  CSS******************************/
+.sautilityPanel{
+	position:relative;
+    z-index:10;
+}
+
+
+.sautilBtnHolder{
+	height:30px;
+        min-width: 150px; 
+}
+
+.saNoDisplay {
+    display:none;
+}
+.sautilBtn{
+	cursor:pointer;
+}
+
+.sanotifBtn{
+	height:30px;
+	width:50px;
+	background:url(/NOW/css/sa/images/notifIcon.png) center center no-repeat;
+}
+.sacommunityBtn{
+	height:30px;
+	width:50px;
+	background:url(/NOW/css/sa/images/commIco.png) center center no-repeat;
+}
+.saknowledgeBtn{
+	height:30px;
+	width:50px;
+	background:url(/NOW/css/sa/images/kbIco.png) center center no-repeat;
+}
+.satrainingBtn{
+	height:30px;
+	width:50px;
+	background:url(/NOW/css/sa/images/trainingIco.png) center center no-repeat;
+}
+.sacontactusBtn {
+    height:30px;
+	width:50px;
+	background:url(/NOW/css/sa/images/ContactIco.png) center center no-repeat;
+}
+.sautilityHovertxt{
+	color:#fff;
+	font-size:11px;
+	margin-top:3px;	
+	position:absolute;
+	display:none
+}
+.sautilDropDwn{
+	/* width:198px; */
+	border:1px solid #025fbc;
+	background:white;
+	border-top:none;
+	position:absolute;
+	 top:29px;
+	display:none;
+	padding:12px 15px;
+	color:#0067c5;
+	line-height:16px;
+	z-index:1000;
+	box-shadow: 2px 2px 0px 0px rgba(0,0,0,0.1);
+   
+	white-space: nowrap;
+}
+
+.sautilDropDwn.saUtilDropDwnPublic {
+width: 129px !important;
+padding:10px !important;
+*margin-left : 127px;
+}
+
+
+.sautilDropDwn.saUtilDropDwnPublic>div {
+white-space: nowrap;
+}
+
+}
+.samarginRt5{
+	margin-right:5px
+}
+.samarginLt10{
+	margin-left:10px;
+}
+
+.sautilDropDwnLabel{
+	color:#000000;
+	font-weight:bold;
+    font-size:11px;
+}
+
+
+/*********** FOOTER *****************/
+.safooter{
+	background:#0067c5;
+	height:39px;
+	color:white;
+	font-size:11px;
+	font-family:Arial, Helvetica, sans-serif;
+	padding-top:20px;
+	padding-bottom:50px;
+    width:945px;
+    margin:0 auto;
+}
+.safooterGoFur{
+    clear:both;
+	width:945px;
+	background:white;
+	height:12px;
+	margin:0 auto;
+	padding:20px;
+}
+.safooterNav{
+	width:950px;
+	margin:0 auto;
+	
+}
+.safooterNav img{
+	vertical-align:middle
+}
+.safooterNav a{
+	color:white;
+	padding:0 10px;
+	font-size:11px;
+	font-family:Arial, Helvetica, sans-serif;
+	cursor:pointer;
+}
+.safooterNav a:hover{
+	text-decoration:underline;
+	color:white;
+}
+
+.safooterNav a:visited {
+	color:white;
+}
+
+.safooterNav a:first-child{
+	padding-left:0
+}
+
+.saFooterMain {
+    background:#0067c5;
+}
+
+.saUtilDropDwnPublic>div>a{*margin-left:-6px}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<finder name="94289da6-8108-47da-95f2-b4ee739793e8" privateFinder="true">
+    <certification>NETAPP</certification>
+    <uuid>a70a2de4-b9f3-41a3-b40f-e8f20ceef30f</uuid>
+    <version>1.0.0</version>
+    <attributes>
+        <attributes alias="snapmirror_label" columnName="snapmirror_label" sortingOrder="ASCENDING">
+            <filter>7506c8b1-054b-4ed6-bda8-d38b5a566aaa</filter>
+        </attributes>
+        <attributes alias="snapmirror_policy.name" columnName="snapmirror_policy.name" sortingOrder="ASCENDING">
+            <filter>7506c8b1-054b-4ed6-bda8-d38b5a566aaa</filter>
+        </attributes>
+        <attributes alias="snapmirror_policy.vserver.cluster.primary_address" columnName="snapmirror_policy.vserver.cluster.primary_address" sortingOrder="ASCENDING">
+            <filter>7506c8b1-054b-4ed6-bda8-d38b5a566aaa</filter>
+        </attributes>
+        <attributes alias="snapmirror_policy.vserver.name" columnName="snapmirror_policy.vserver.name" sortingOrder="ASCENDING">
+            <filter>7506c8b1-054b-4ed6-bda8-d38b5a566aaa</filter>
+        </attributes>
+    </attributes>
+    <dictionary-entry>8b10a37e-0a8f-46d6-b3ee-87a31ebbab78</dictionary-entry>
+    <filters>
+        <filter>7506c8b1-054b-4ed6-bda8-d38b5a566aaa</filter>
+    </filters>
+</finder>

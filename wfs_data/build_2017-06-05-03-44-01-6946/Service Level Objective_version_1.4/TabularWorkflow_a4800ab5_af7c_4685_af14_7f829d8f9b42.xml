@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tabularWorkflow considerReservedElements="true" description="This workflow enables you to move a Cluster Data ONTAP volume from one storage service level class (SSLC) to another storage service level class." enableElementExistenceValidation="true" name="Move Volume(s) to different Storage Service Level Class" readyForProduction="true">
+    <certification>NETAPP</certification>
+    <uuid>a4800ab5-af7c-4685-af14-7f829d8f9b42</uuid>
+    <version>1.0.0</version>
+    <workflow-commands>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Search for Destination Aggregate" uuid="d07d8458-6303-4f9a-9b4e-d168337bff7e">
+            <command-definition>4e657680-686e-4fd1-a979-cb5742fcfffd</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" child-workflow="91682640-922a-40c4-af61-bee3bfa87387" commandAlias="Move a Clustered Data ONTAP Volume" uuid="b5c20530-3615-4f1b-8ef7-3038bee409ca">
+            <command-definition>228d8023-547e-4089-bb7b-1f865cc4b8f4</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Modify Volume Service Map in Database" uuid="473b6737-aff4-4d82-8dc4-a8cadefee6de">
+            <command-definition>3b2f23e7-8c94-46b6-b6ec-6d140e8ed13c</command-definition>
+        </workflow-command>
+    </workflow-commands>
+    <find-charts/>
+    <minONTAPVersion>8.3.0</minONTAPVersion>
+    <return-parameters/>
+    <rows>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects>
+                        <command-mapped-object objectName="Aggregate" variableName="destination_aggregate">
+                            <dictionary-entry>e603ad9b-e582-4037-83d6-dd747a49f57f</dictionary-entry>
+                            <resource-selector type="ABORT">
+<dictionary-entry>e603ad9b-e582-4037-83d6-dd747a49f57f</dictionary-entry>
+<execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+<filter-parameter-values>
+    <filter-parameter-value value="">
+        <parameter>3efb6d68-1de4-480a-a761-ffb00d0aa2d8</parameter>
+    </filter-parameter-value>
+    <filter-parameter-value value="">
+        <parameter>ca635977-eb1e-44f8-b40f-9b7be02d3ca5</parameter>
+    </filter-parameter-value>
+    <filter-parameter-value value="">
+        <parameter>744bc248-a449-4a56-9578-59707bbb96e4</parameter>
+    </filter-parameter-value>
+    <filter-parameter-value value="source_volume.vserver.cluster.primary_address">
+        <parameter>21c87584-fe20-46a4-b20e-e3e5abc248cb</parameter>
+    </filter-parameter-value>
+    <filter-parameter-value value="source_volume.available_size_mb">
+        <parameter>45517606-906b-4e95-ae70-1afbff6dcb8f</parameter>
+    </filter-parameter-value>
+</filter-parameter-values>
+<finder>7bf74e31-94bb-4cff-ba18-a7b838f6b2c7</finder>
+<natural-key-values/>
+                            </resource-selector>
+                        </command-mapped-object>
+                        <command-mapped-object objectName="Volume" variableName="source_volume">
+                            <dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+                            <resource-selector type="ABORT">
+<dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+<execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+<filter-parameter-values>
+    <filter-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 1)">
+        <parameter>99b7ef30-5d03-43ba-a471-ae452d989031</parameter>
+    </filter-parameter-value>
+    <filter-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 4)">
+        <parameter>fe18a9fd-aa4e-48fa-9066-ba2d821d886c</parameter>
+    </filter-parameter-value>
+    <filter-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 2)">
+        <parameter>56b9803b-0b9d-40ac-a40d-97adf2850656</parameter>
+    </filter-parameter-value>
+</filter-parameter-values>
+<finder>ba505bd0-d637-440d-a5ed-26d0babb8bcc</finder>
+<natural-key-values/>
+                            </resource-selector>
+                        </command-mapped-object>
+                    </command-mapped-objects>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+                    <other-parameters/>
+                    <workflow-command>d07d8458-6303-4f9a-9b4e-d168337bff7e</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects>
+                        <command-mapped-object objectName="Workflow" variableName="workflowVolMove">
+                            <define-object>
+<define-object-property-values>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue" value="'Move a Clustered Data ONTAP Volume'">
+        <dictionary-entry-property>2a52dd81-6832-4108-b470-1660ea458b0d</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="childWorkflowValue">
+        <dictionary-entry-property>36f9061f-f9c3-4cc1-bd98-92a324fbc143</dictionary-entry-property>
+        <child-workflow-user-inputs>
+            <child-workflow-user-input>
+                <user-input-name>$ClusterName</user-input-name>
+                <user-input-value>getValueAt2D($ListOfVolumes, VolIndex, 3)</user-input-value>
+            </child-workflow-user-input>
+            <child-workflow-user-input>
+                <user-input-name>$CutoverAction</user-input-name>
+                <user-input-value>'defer_on_failure'</user-input-value>
+            </child-workflow-user-input>
+            <child-workflow-user-input>
+                <user-input-name>$DestinationAggregate</user-input-name>
+                <user-input-value>destination_aggregate.name</user-input-value>
+            </child-workflow-user-input>
+            <child-workflow-user-input>
+                <user-input-name>$SourceAggregateDetails</user-input-name>
+                <user-input-value>getValueAt2D($ListOfVolumes, VolIndex, 8)</user-input-value>
+            </child-workflow-user-input>
+            <child-workflow-user-input>
+                <user-input-name>$VolumeName</user-input-name>
+                <user-input-value>getValueAt2D($ListOfVolumes, VolIndex, 1)</user-input-value>
+            </child-workflow-user-input>
+            <child-workflow-user-input>
+                <user-input-name>$VserverName</user-input-name>
+                <user-input-value>getValueAt2D($ListOfVolumes, VolIndex, 4)</user-input-value>
+            </child-workflow-user-input>
+        </child-workflow-user-inputs>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue" value="'91682640-922a-40c4-af61-bee3bfa87387'">
+        <dictionary-entry-property>87b60963-78ed-4956-bc77-7c6cb408fb0c</dictionary-entry-property>
+    </define-object-property-value>
+</define-object-property-values>
+                            </define-object>
+                            <dictionary-entry>aa02cf4a-c17d-40e1-bd22-8bc89a5c2697</dictionary-entry>
+                        </command-mapped-object>
+                    </command-mapped-objects>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+                    <other-parameters/>
+                    <workflow-command>b5c20530-3615-4f1b-8ef7-3038bee409ca</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+                    <other-parameters>
+                        <command-parameter-value value="update">
+                            <parameter-definition>9d103695-cff4-45e9-a66f-5e729f858fe9</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="destination_aggregate.name">
+                            <parameter-definition>33b9c48c-3bf2-4953-9a04-b711453cd7d6</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 3)">
+                            <parameter-definition>73919261-0826-4909-9b5a-4d279266ae04</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 2)">
+                            <parameter-definition>1600fde8-b098-4fe9-be2f-c246e0294ff5</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>fade4db6-87d3-4d46-9931-568b289d6d85</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>e226c386-598c-4793-86b5-6e995636e46c</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>04c75b4c-b1fc-4add-9c9a-d1281c994c0e</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="destination_aggregate.node.name">
+                            <parameter-definition>ace014e8-d51a-476d-b3bb-63c070431d25</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 7)">
+                            <parameter-definition>11d26e71-8606-4ecc-bff9-23a13d509e35</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>7eae7ae1-392d-44b4-8e18-d4948caf1dc6</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DestinationSSL">
+                            <parameter-definition>77c68bac-8858-4b76-97c6-0929c515cb89</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>52cf8c34-06b3-465b-a0c2-cd067be970fd</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 1)">
+                            <parameter-definition>a515b412-62f3-4b99-9948-c8aea1ef38d0</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 4)">
+                            <parameter-definition>cf3af9e5-1d20-4cf0-90d9-1fe5f53c8b8b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 11)">
+                            <parameter-definition>fee162c1-b8e8-4bd7-8c80-23c069479ed8</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 12)">
+                            <parameter-definition>fc8ad8ec-bda8-4ca6-b903-d0618f7f41ba</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($ListOfVolumes, VolIndex, 10)">
+                            <parameter-definition>b4af9d2b-0663-4559-93cc-8df25de242f8</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>473b6737-aff4-4d82-8dc4-a8cadefee6de</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+            <row-loop-info iteratorName="VolIndex" numberOfIterationsExpression="getSize($ListOfVolumes)">
+                <loop-variables/>
+            </row-loop-info>
+        </row>
+    </rows>
+    <user-input-groups>
+        <user-input-group expandByDefault="false" name="">
+            <user-inputs>
+                <user-input defaultValue="" description="Source storage service level class name. A cluster Data ONTAP volume will be moved from this source storage service level class to a destination storage service level class." displayName="Source Storage Service Level Class" locked="true" mandatory="true" name="$SourceSSL" uuid="626dba37-c572-47c5-8655-3d555ad047c0">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    S_S_L.storage_service_name AS &quot;Storage Service Name&quot;&#xA;FROM&#xA;    playground.storage_service_level AS S_S_L"/>
+                </user-input>
+                <user-input defaultValue="" description="Destination storage service level class name. A cluster Data ONTAP volume will be moved from a source storage service level class to this destination storage service level class." displayName="Destination Storage Service Level Class" locked="true" mandatory="true" name="$DestinationSSL" uuid="ce6d2c02-c388-4af3-9d9e-14137baa2532">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.storage_service_name AS &quot;Storage Service Name&quot;,&#xA;    cm_storage.cluster.primary_address AS &quot;Cluster Primary Address&quot;&#xA;FROM&#xA;    playground.storage_service_level,&#xA;    cm_storage.cluster,&#xA;    cm_storage.node,&#xA;    cm_storage.aggregate,&#xA;    playground.aggregate_service_map&#xA;WHERE&#xA;    playground.storage_service_level.storage_service_name != '${SourceSSL}'&#xA;    AND cm_storage.aggregate.node_id = cm_storage.node.id&#xA;    AND cm_storage.cluster.id = cm_storage.node.cluster_id&#xA;    AND (&#xA;        CASE&#xA;            WHEN playground.storage_service_level.aggr_regex_enabled = 'false' THEN playground.aggregate_service_map.storage_service_name = playground.storage_service_level.storage_service_name&#xA;            AND cm_storage.aggregate.name = playground.aggregate_service_map.aggregate_name&#xA;            AND cm_storage.cluster.primary_address = playground.aggregate_service_map.cluster_ip&#xA;            AND cm_storage.node.name = playground.aggregate_service_map.node_name&#xA;            ELSE cm_storage.aggregate.name REGEXP playground.storage_service_level.aggr_include_regex&#xA;        END&#xA;    )&#xA;GROUP BY&#xA;    cm_storage.cluster.primary_address"/>
+                </user-input>
+                <user-input defaultValue="" description="A cluster Data ONTAP volume(s), which will be moved from a source storage service level class to a destination storage service level class." displayName="Volumes" locked="true" mandatory="true" name="$ListOfVolumes" uuid="468a88c8-e03e-46d9-994c-9d394bd600ca">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryMultiSelectUserInputType" query="SELECT&#xA;    VSM.volume_name AS &quot;Volume Name&quot;,&#xA;    VSM.cluster_primary_address AS &quot;Cluster Primary Address&quot;,&#xA;    VSM.cluster_name AS &quot;Cluster Name&quot;,&#xA;    VSM.vserver_name AS &quot;SVM&quot;,&#xA;    VSM.s_l_c AS &quot;SLC&quot;,&#xA;    VSM.s_s_l AS &quot;SSL&quot;,&#xA;    VSM.p_s_l AS &quot;PSL&quot;,&#xA;    VSM.aggregate_name AS &quot;Source Aggregate&quot;,&#xA;    VSM.node_name AS &quot;Node&quot;,&#xA;    VSM.primary_volume_name AS &quot;Primary Volume Name&quot;,&#xA;    VSM.primary_cluster_primary_address AS &quot;Primary Cluster IP Address&quot;,&#xA;    VSM.primary_vserver_name AS &quot;Primary Vserver Name&quot;&#xA;FROM&#xA;    playground.volume_service_map AS VSM,&#xA;    cm_storage.cluster AS cluster,&#xA;    cm_storage.vserver AS vserver,&#xA;    cm_storage.volume AS volume&#xA;WHERE&#xA;    VSM.s_s_l = '${SourceSSL}'&#xA;    AND VSM.cluster_primary_address IN (&#xA;        SELECT&#xA;            ASM.cluster_ip&#xA;        FROM&#xA;            playground.aggregate_service_map AS ASM&#xA;        WHERE&#xA;            ASM.storage_service_name = '${DestinationSSL}'&#xA;    )&#xA;    AND volume.name = VSM.volume_name&#xA;    AND cluster.primary_address = VSM.cluster_primary_address&#xA;    AND vserver.name = VSM.vserver_name&#xA;    AND vserver.cluster_id = cluster.id&#xA;    AND volume.type != 'dp'" rowSelectionType="Multiple"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+    </user-input-groups>
+    <workflow-constants/>
+</tabularWorkflow>

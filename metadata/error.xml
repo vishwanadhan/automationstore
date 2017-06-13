@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowstore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sfa-store-interface.xsd">
+<publish-timestamp>201312192103</publish-timestamp>
+<data-base-url>host.btc.netapp.com</data-base-url>
+<wfa-packs>
+</wfa-packs>
+</workflowstore>

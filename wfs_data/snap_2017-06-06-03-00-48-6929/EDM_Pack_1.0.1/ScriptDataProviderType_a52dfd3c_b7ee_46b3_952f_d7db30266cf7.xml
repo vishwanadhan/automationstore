@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<scriptDataProviderType scriptLanguage="POWER_SHELL" productType="EDM Data Source" productVersion="3.0.2" method="SCRIPT" defaultPort="9999" defaultTimeoutInSeconds="600" defaultIntervalInMinutes="1440">
+    <certification>NONE</certification>
+    <uuid>a52dfd3c-b7ee-46b3-952f-d7db30266cf7</uuid>
+    <version>3.0.2</version>
+    <scheme>d027e56f-f2c5-40a4-8b43-7fe565f51b29</scheme>
+    <script>#!/powershell
+#
+&lt;# WFA Excel Data Manager (EDM) Data Source
+ 
+   DESCRIPTION: Acquires Excel .xlsx tables into matching named WFA Dictionary tables
+   
+   PREREQUISTES and NOTES:
+     - This WFA Data Source Type utilizes the PSExcel PowerShell Module Library obtined from:
+          URL: https://github.com/RamblingCookieMonster/PSExcel
+     - REQUIRED: Run the &quot;EDM000 Pack Initialize&quot; Workflow after importing the EDM dar file and
+          before attempting to use this Data Source or other EDM workflows
+     - To use this Data Source for your customer-specific case the intention is for you to
+          create new dictionaries within a new scheme and then clone this Data Source Type
+          into that new scheme
+     - Short Instructions:
+          - Excel filename must match scheme name;
+          - Excel tab names must match dictionary names;
+          - Excel column headings (row-1) must match dictionary column names
+          - The Excel filename is specified in the Execution Data Source 'Host name:' (i.e.; C:\Temp\edm.xlsx)
+     - Full Instructions: Contained in pdf file  UserGuide_Dv_#_#_#.pdf
+  
+   VERSION HISTORY:
+     1.0.0 - (Dave Korns) initial version tested reading Excel spreadsheets and ACE Provider
+     1.0.1 - (Mirko Van Colen) Added relation capability
+     1.0.2 - (Mirko Van Colen) Added log4net (logs available in WFA log viewer) ; Added auto column ordering
+     1.9.0 - (Dave &amp; Mirko) merged final mainline, trimmed comments, tweaked debug email logfile attachment
+     2.0.0 - (Dave &amp; Mirko) Pre-release testing
+     2.0.1 - (Dave &amp; Mirko) Released to internal dl-wfa-cdot in bundle with UserGuide and example spreadsheet
+     2.1.0 - (Dave &amp; Mirko) Mirko refactored using PSExcel Module which has no intallation prerequisites
+     3.0.0 - (Dave &amp; Mirko) Renamed to EDM Data Source and linked with PSExcel Import-Module path
+     3.0.1 - (Mirko) Add debug possibilities (portnumber=1), fixed some typos and made the logging paths relative.
+     3.0.2 - (Mirko) Bug fix, empty table now creates empty csv
+ 
+#&gt;
+ 
+Set-Variable -Name SCRIPT_PATH -Value (Split-Path (Resolve-Path $myInvocation.MyCommand.Path)) -Scope local
+Import-Module ($SCRIPT_PATH + &quot;\..\..\..\..\PoSH\Modules\PSExcel&quot;)   # if this fails, run the &quot;EDM000 Pack Initialize&quot; Workflow
+ 
+# ================================================================
+# ==   EDM Data-Source - Common variables you may want to edit  ==
+# ================================================================
+#
+$sendmail = $false
+$debug=$false
+# IF sendmail is $true you should set the following mail variables, otherwise can be ignored
+$mailTo   = &quot;nobody@netapp.com&quot;      # who you want to send acquire debug emails to
+$mailFrom = &quot;edm-ds@netapp.com&quot;      # who the email will appear to come from
+$mailSmtp = &quot;smtp.netapp.com&quot;        # a reachable and working smtp mail server
+ 
+# ================================================================
+# ==      EDM Data-Source code below, Don't touch !             ==
+# ================================================================
+# this obtains the input file from the Execution Data-Source 'host name:' field
+$inFile = Get-WfaRestParameter &quot;host&quot; 
+$port = Get-WfaRestParameter &quot;port&quot;
+$SchemeName = [io.path]::GetFileNameWithoutExtension($inFile)
+$dllLocation = $SCRIPT_PATH + &quot;\..\..\..\..\Posh\Modules\DataOntap\log4net.dll&quot;
+$logfile = $SCRIPT_PATH + &quot;\..\..\log.war\jboss\&quot; + $SchemeName + &quot;.log&quot;
+if($port -eq 1){
+       $debug=$true
+}
+#
+###### Create the Logger Configuration WFA3.1   ######
+ 
+# Initialize log4net
+[void][Reflection.Assembly]::LoadFrom($dllLocation)
+$pattern=&quot;%d %w %-5p %c : %m%n&quot;
+[log4net.LogManager]::ResetConfiguration()
+New-Item -Path $logFile -type file -ErrorAction SilentlyContinue
+$Appender = new-object log4net.Appender.FileAppender
+$Appender.File = $logFile
+$Appender.Layout = new-object log4net.Layout.PatternLayout($pattern)
+if($debug){
+       $Appender.Threshold = [log4net.Core.Level]::Debug
+}else{
+       $Appender.Threshold = [log4net.Core.Level]::Info
+}
+$Appender.ActivateOptions()
+[log4net.Config.BasicConfigurator]::Configure($Appender)
+$logg = [log4net.LogManager]::GetLogger(&quot;[EDM]&quot;)
+#
+ 
+# ================================================================
+# ==      Ensure that dates are always returned in English      ==
+[System.Threading.Thread]::CurrentThread.CurrentCulture=&quot;en-US&quot;
+# ================================================================
+ 
+# ================================================================
+# ==           Function: ConvrtTo-WfaCSV                        ==
+# ================================================================
+#
+ 
+function ConvertTo-WfaCsv($psobj,$csvpath){
+    try {
+        New-Item -Path $csvpath -type file -force | Out-Null
+    } catch [System.Exception] {
+        $msg = &quot;Data Source: Could not create output file path: $($_.Exception)&quot;
+        $logg.Fatal($msg)
+        Throw $msg
+    }
+    if($psobj){
+        $csv = $psobj | convertto-csv -NoTypeInformation -Delimiter &quot;`t&quot;
+        $csv = $csv | %{$_ -replace '&quot;'} | select -skip 1
+        $csv = $csv | %{Add-Content $csvpath ([Byte[]][Char[]] &quot;$_`n&quot;) -Encoding byte}
+    }else{
+        $logg.Warn(&quot;No Table data found, created empty csv file '$outFile'&quot;)
+    }
+}
+ 
+function BoolToInt($b){
+       if($b -eq &quot;true&quot;){
+             return 1
+       }else{
+             return 0
+       }
+}
+ 
+# ==============================================================================================
+# ========================================   MAIN   ============================================
+# ==============================================================================================
+ 
+$logg.info(&quot;===============================================================&quot;)
+$logg.info(&quot;BEGINNING Acquisition (set portnumber to '1' for debug logging)&quot;)
+$logg.info(&quot;===============================================================&quot;)
+try {
+      $logg.info(&quot;Reading excel file : '$inFile'&quot;)
+      $excel = New-Excel -Path $inFile
+} catch  [System.Exception] {
+      $msg = &quot;Data Source: Could not read input file from file path: $($_.Exception)&quot;
+      $logg.Fatal($msg)
+      Throw $msg
+}
+ 
+# lets connect to mysql and check the scheme first
+try{
+    $logg.Info(&quot;Looking up the scheme '$SchemeName' in MySql&quot;)
+    $rsTables = Invoke-MySqlQuery &quot;SHOW tables FROM $SchemeName&quot;
+}catch{
+    $logg.Error(&quot;Could not find scheme $SchemeName&quot;)
+    $logg.Error(&quot;Check excel-file, or reset the scheme $SchemeName&quot;)
+    $logg.Fatal(&quot;Failed to verify the scheme&quot;)
+    Throw &quot;Failed to verify the scheme, Does it exist? Does your scheme name match the Excel-file name exactly?&quot;
+}
+[System.Collections.ArrayList]$tableListMySql = @()
+ 
+# are there any tables in the scheme ?
+if($rsTables[0] -gt 0){
+    $rsTables | select -Skip 1 | %{$tableListMySql+=$_[0]}
+    $logg.Debug(&quot;Found $($rsTables[0]) tables in MySql&quot;)
+    $tableListMySql | %{$i=0}{$i++;$logg.Debug(&quot;($i) $_&quot;);}
+}else{
+    $Logg.Fatal(&quot;No tables found in this scheme&quot;)
+    Throw &quot;No tables found in this scheme&quot;
+}
+ 
+$attachList = @()
+$attachList += &quot;.\datasource.log&quot;   # make the first debug-email attachement be the log-file itself
+ 
+$worksheets = $excel | Get-Worksheet
+# grab the list of names from the excel
+$worksheetNames = $worksheets | select name | %{$_.name}
+# compare the 2 lists
+$Logg.Debug(&quot;Comparing table names&quot;)
+$comp = Compare-Object -ReferenceObject $tableListMySql -DifferenceObject $worksheetNames
+if($comp){
+    $logg.Warn(&quot;Found a difference in table names&quot;)
+    $comp | ?{($_.SideIndicator -eq '&lt;=') -and ($_.InputObject -ne 'id')} | %{$i=0}{$i++;$logg.Fatal(&quot;($i) Missing table '$($_.InputObject)'&quot;)}
+    $comp | ?{$_.SideIndicator -eq '=&gt;'} | %{$i=0}{$i++;$logg.Warn(&quot;($i) Extra table '$($_.InputObject)'&quot;)}
+    if($comp | ?{($_.SideIndicator -eq '&lt;=') -and ($_.InputObject.Name -ne 'id')}){
+        Throw &quot;You have missing tables.  Check the log '$logfile' for more info&quot;
+    }
+}else{
+    $Logg.Debug(&quot;All worksheet names match&quot;)
+}
+$fieldList = @()
+ 
+# loop each worksheet (tab in excel)
+foreach ( $ws in $worksheetNames )
+ {
+    $logg.Debug(&quot;Analyzing worksheet : '$ws'&quot;)
+    #does this table exist in the scheme ?
+    if($tableListMySql.Contains($ws)){
+        $logg.Debug(&quot;Table '$ws' is verified as a valid MySql table&quot;)
+        $tableListMySql.Remove($ws) # remove from list to check later on
+    }
+    # get the table fields
+    $logg.Debug(&quot;Looking up the fields for table $SchemeName.$ws&quot;)
+    $rsFields = Invoke-MySqlQuery &quot;SHOW fields FROM $SchemeName.$ws&quot;
+ 
+    # are there any fields in the table ?
+    if($rsFields[0] -gt 0){
+       $fields = $rsFields |select -Skip 1
+       $fieldList = $fields | %{$_.Field}
+        $logg.Debug(&quot;Found $($rsFields[0]) fields&quot;)
+        $fields | %{$i=0}{$i++;$logg.debug(&quot;($i) $($_.Field) ($($_.Type))&quot;);}
+    }else{
+        $Logg.Fatal(&quot;No fields found in table $SchemeName.$ws&quot;)
+        Throw &quot;No fields found in table $SchemeName.$ws&quot;
+    }
+    $selectOrderedId = @()
+    # make a correct ordered select
+    foreach($f in $fields){
+       if($f.Type -eq 'TinyInt(1)'){
+             $exp = [scriptblock]::Create('BoolToInt($_.&quot;' + $f.Field + '&quot;)')
+       }else{
+               $exp = [scriptblock]::Create('$_.&quot;' + $f.Field + '&quot;')
+       }
+        $selectOrderedId += @{name=$f.Field;e=$exp}
+    }
+    $selectOrderedNoId = @()
+    # make a correct ordered select
+    foreach($f in $fields){
+        if($f.Field -eq &quot;id&quot;){
+            $exp = [scriptblock]::Create(&quot;`&quot;\N`&quot;&quot;)
+        }else{
+             if($f.Type -eq 'TinyInt(1)'){
+                    $exp = [scriptblock]::Create('BoolToInt($_.&quot;' + $f.Field + '&quot;)')
+             }else{
+                    $exp = [scriptblock]::Create('$_.&quot;' + $f.Field + '&quot;')
+             }
+        }
+        $selectOrderedNoId += @{name=$f.Field;e=$exp}
+    }
+    $outFile     = &quot;.\$ws.csv&quot;                           # write results to intermediate CSV file
+    $attachList += $outFile                                       # add CSV file to list of debug attachments
+ 
+    # we create a new object from the excel tab
+    $table = Import-XLSX -path $inFile -Sheet $ws
+    $tableHasData = ($table | select -first 1  | ?{ $_.PSObject.Properties.Value -ne $null})
+    $logg.Debug(&quot;Grabbing excel-table : $ws&quot;)
+    $logg.Debug(&quot;Comparing fields with MySql table fields&quot;)
+    $tableFields = ($table | gm -MemberType NoteProperty | select Name | %{$_.Name})
+    if($tableFields -and $fieldList){
+        $comp = Compare-Object -ReferenceObject $fieldList -DifferenceObject $tableFields
+        if($comp){
+            $logg.Warn(&quot;Possible mismatch found between fields (if missing id, we'll add NULL-values)&quot;)
+            $comp | ?{($_.SideIndicator -eq '&lt;=') -and ($_.InputObject -ne 'id')} | %{$i=0}{$i++;$logg.Fatal(&quot;($i) Missing field '$($_.InputObject)' in $ws&quot;)}
+            $comp | ?{($_.SideIndicator -eq '=&gt;')} | %{$i=0}{$i++;$logg.Warn(&quot;($i) Extra field '$($_.InputObject)' in $ws&quot;)}
+            if($comp | ?{($_.SideIndicator -eq '&lt;=') -and ($_.InputObject -ne 'id')}){
+                throw &quot;Mismatch found between fields.  Check the log in the log-viewer for more info.&quot;
+            }
+        }else{
+            $logg.Debug(&quot;All fields match&quot;)
+        }
+    }else{
+        $logg.Error(&quot;There are no fields in this table&quot;)
+        Throw &quot;There are no fields in table $ws&quot;
+    }
+
+    if($tableHasData){
+ 
+        # we check if it has a primary key (&quot;id&quot;)
+        $haspk = $table | gm -Name &quot;id&quot;
+        if($haspk){
+            $table = @($table | select -Property $selectOrderedId)
+            $logg.Debug(&quot;We found an id, starting to hash it&quot;)
+            # if it does, we'll hash it
+            for($i=0;$i -lt $table.Count;$i++){
+                $table[$i].id = $table[$i].id.GetHashCode()
+            }
+        }else{
+            # if not, we add \N
+            $logg.Debug(&quot;No id found, we'll add one with \N&quot;)
+            $table = @($table | select -Property $selectOrderedNoId)
+        }
+ 
+        # we check if it has one or more primary keys
+        $hasfk = $table | gm -Name &quot;*_id&quot;
+        if($hasfk){
+            $logg.Debug(&quot;1 or more foreign keys found, starting to hash&quot;)
+            # if it does, loop them and hash them
+            $fkcount = 0
+            foreach($fk in $hasfk){
+                $fkcount++
+                $Logg.Debug(&quot;($fkcount) fk = $($fk.Name)&quot;)
+                for($i=0;$i -lt $table.Count;$i++){
+                    $table[$i].&quot;$($fk.Name)&quot; = ($table[$i].&quot;$($fk.Name)&quot;).GetHashCode()
+                }
+            }
+        }
+        $table | ft
+        # convert to WFa readable csv
+        $logg.Debug(&quot;Starting converting the table to csv '$outFile'&quot;)
+        ConvertTo-WfaCsv -psobj $table -csvpath $outFile
+    }else{
+        ConvertTo-WfaCsv -psobj $null -csvpath $outFile
+    }
+}
+$logg.Info(&quot;Acquisitions COMPLETE&quot;)
+if ($sendmail)
+{
+    Copy-Item $logFile &quot;.\datasource.log&quot;
+    $bodyText = &quot;See attachments.`n`nNOTE: Scroll to the end of the attached datasource.log file to see the log of this execution of the EDM Data Source.`n`n&quot;
+    Send-MailMessage -to $mailTo -from $mailFrom -subj &quot;WFA EDM Data-Source: Log and CSV Attachments&quot; -body $bodyText -attachments $attachList -smtpServer &quot;$mailSmtp&quot;
+}
+ </script>
+</scriptDataProviderType>

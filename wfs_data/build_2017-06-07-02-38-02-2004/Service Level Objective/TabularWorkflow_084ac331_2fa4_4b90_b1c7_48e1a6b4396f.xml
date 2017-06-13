@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tabularWorkflow considerReservedElements="true" description="This workflow manages Qos Policy Service. It Starts/Stops QoS Policy service" enableElementExistenceValidation="true" name="Adaptive Qos Service Manager" readyForProduction="true">
+    <certification>NETAPP</certification>
+    <uuid>084ac331-2fa4-4b90-b1c7-48e1a6b4396f</uuid>
+    <version>1.0.0</version>
+    <workflow-commands>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Get WFA credential" uuid="7dca1044-3087-4638-a6ae-caa34b6887d2">
+            <command-definition>af56a0db-8310-45f4-9029-0f50e15e3c60</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Service Manager" uuid="bea98f87-c466-44c0-a001-86d453055342">
+            <command-definition>3c5deece-ea4f-4d1a-a0c3-7c0088348b27</command-definition>
+        </workflow-command>
+    </workflow-commands>
+    <find-charts/>
+    <return-parameters/>
+    <rows>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$Action == 'Start Service'"/>
+                    <other-parameters>
+                        <command-parameter-value value="$Password">
+                            <parameter-definition>20fa3fd8-e799-4194-a1a1-e7445619f579</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$UserName">
+                            <parameter-definition>7acbbd8b-2e60-4cce-8fd3-f6cbab43aa51</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>7dca1044-3087-4638-a6ae-caa34b6887d2</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+                    <other-parameters>
+                        <command-parameter-value value="$Action">
+                            <parameter-definition>b866dab2-3729-4a46-a440-3f6bbdfcbb68</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>bea98f87-c466-44c0-a001-86d453055342</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+        </row>
+    </rows>
+    <user-input-groups>
+        <user-input-group expandByDefault="true" name="Service Manager">
+            <user-inputs>
+                <user-input defaultValue="Start Service" description="Start - Fot starting a service&#xA;Stop - For stoping  a service&#xA;&#xA;Note: For restarting the service 'stop' the service first and 'start' it again." displayName="Service Action" locked="true" mandatory="true" name="$Action" uuid="00120b00-481c-474d-933e-91080979978f">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumUserInputType" enumValues="Start Service,Stop Service" viewAsRadio="false"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+        <user-input-group expandByDefault="true" name="WFA Credential">
+            <user-inputs>
+                <user-input conditionalUserInputValues="Start Service" displayName="WFA admin Username" locked="false" mandatory="false" name="$UserName" uuid="ecde4487-5f8c-4de7-a4ca-295d407bd7dd">
+                    <conditional-user-input>00120b00-481c-474d-933e-91080979978f</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stringUserInputType" regularExpression=""/>
+                </user-input>
+                <user-input conditionalUserInputValues="Start Service" defaultValue="" displayName="WFA admin password" locked="false" mandatory="false" name="$Password" uuid="1c42b2ee-53ad-40de-a67f-07f2d790c5c6">
+                    <conditional-user-input>00120b00-481c-474d-933e-91080979978f</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="passwordUserInputType"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+    </user-input-groups>
+    <workflow-constants/>
+</tabularWorkflow>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<filter description="Get all the volumes given PSL" name="Filter target volumes by protection service level">
+    <certification>NETAPP</certification>
+    <uuid>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+    <parameters>
+        <parameter label="PSLName" name="PSLName" type="STRING">
+            <uuid>ff439f5b-a86a-49f3-bf0e-09b7db7fbb75</uuid>
+        </parameter>
+        <parameter label="SLCName" name="SLCName" type="STRING">
+            <uuid>3f02095d-1acc-4c57-a71a-17d36a958470</uuid>
+        </parameter>
+        <parameter label="UsingSLC" name="UsingSLC" type="STRING">
+            <uuid>ae7a4851-697e-4cdc-bd37-2165f042109b</uuid>
+        </parameter>
+    </parameters>
+    <query>SELECT
+    DISTINCT &quot;dummy&quot; AS 'name',
+    &quot;dummy&quot; AS 'vserver.name',
+    &quot;dummy&quot; AS 'vserver.cluster.primary_address',
+    playground.protection_service_level.protection_service_name AS 'p_s_l',
+    playground.protection_service_level.topology_name AS 'edge',
+    playground.protection_service_level.source AS 'source',
+    playground.protection_service_level.target_type AS 'target_type',
+    playground.protection_service_level.target_storage_service_level AS 'target_s_s_l',
+    playground.protection_service_level.rpo AS 'target_rpo',
+    playground.protection_service_level.retention_count AS 'target_retention_policy'
+FROM
+    playground.protection_service_level,
+    playground.service_level_class
+WHERE
+    CASE
+        WHEN '${UsingSLC}' = 'true' THEN playground.service_level_class.service_level_name = '${SLCName}'
+        AND playground.service_level_class.protection_service_name = playground.protection_service_level.protection_service_name
+        ELSE playground.protection_service_level.protection_service_name= '${PSLName}'
+    END
+    AND playground.protection_service_level.geo = &quot;remote&quot;
+    AND playground.protection_service_level.rpo &gt; &quot;0&quot;</query>
+    <returned-attributes>
+        <returned-attribute>edge</returned-attribute>
+        <returned-attribute>name</returned-attribute>
+        <returned-attribute>p_s_l</returned-attribute>
+        <returned-attribute>source</returned-attribute>
+        <returned-attribute>target_retention_policy</returned-attribute>
+        <returned-attribute>target_rpo</returned-attribute>
+        <returned-attribute>target_s_s_l</returned-attribute>
+        <returned-attribute>target_type</returned-attribute>
+        <returned-attribute>vserver.cluster.primary_address</returned-attribute>
+        <returned-attribute>vserver.name</returned-attribute>
+    </returned-attributes>
+</filter>

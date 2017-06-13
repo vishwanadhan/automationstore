@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<filter description="Returns the volume with the given name and if volume belongs to aggregate in mapped aggregates list" name="Filter volume by name">
+    <certification>NETAPP</certification>
+    <uuid>1624ba7d-c2e3-40a7-b76b-db586afd88da</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+    <parameters>
+        <parameter label="volumeName" name="volumeName" type="STRING">
+            <uuid>888fc018-eafd-4356-8aac-0bc049990e60</uuid>
+        </parameter>
+    </parameters>
+    <query>SELECT
+    volume.name,
+    vserver.name AS 'vserver.name',
+    cluster.primary_address AS 'vserver.cluster.primary_address'
+FROM
+    cm_storage.volume,
+    cm_storage.cluster,
+    cm_storage.node,
+    cm_storage.vserver,
+    cm_storage.aggregate,
+    playground.aggregate_service_map
+WHERE
+    volume.name = '${volumeName}'
+    AND volume.vserver_id = vserver.id
+    AND volume.aggregate_id = aggregate.id
+    AND aggregate.node_id = node.id
+    AND node.cluster_id = cluster.id
+    AND cluster.primary_address = playground.aggregate_service_map.cluster_ip
+    AND aggregate.name = playground.aggregate_service_map.aggregate_name</query>
+    <returned-attributes>
+        <returned-attribute>name</returned-attribute>
+        <returned-attribute>vserver.cluster.primary_address</returned-attribute>
+        <returned-attribute>vserver.name</returned-attribute>
+    </returned-attributes>
+</filter>

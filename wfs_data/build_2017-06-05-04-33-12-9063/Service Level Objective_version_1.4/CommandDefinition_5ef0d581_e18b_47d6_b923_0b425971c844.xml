@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Create Volume Service Map Table" samplingIntervalInSeconds="60" stringRepresentation="Action + &quot; table volume_service_map&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>5ef0d581-e18b-47d6-b923-0b425971c844</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+ 
+my $Action;
+
+GetOptions(
+    &quot;Action=s&quot;  =&gt; \$Action
+) or die 'Illegal command parameters\n';
+
+my $wfa_util = WFAUtil-&gt;new();
+
+############################################# Query #############################################
+
+my $queryCreateTableVolumeServiceMap =
+    &quot;CREATE TABLE IF NOT EXISTS playground.volume_service_map
+    (
+        primary_volume_name VARCHAR(255) NOT NULL,
+        primary_cluster_primary_address VARCHAR(64) NOT NULL,
+        primary_vserver_name VARCHAR(255) NOT NULL,
+        volume_name VARCHAR(255) NOT NULL,
+        cluster_primary_address VARCHAR(64) NOT NULL,
+        cluster_name VARCHAR(255) NOT NULL,
+        vserver_name VARCHAR(255) NOT NULL,
+        s_l_c VARCHAR(255),
+        s_s_l VARCHAR(255) NOT NULL,
+        p_s_l VARCHAR(255) NOT NULL,
+        aggregate_name VARCHAR(255) NOT NULL,
+        node_name VARCHAR(255) NOT NULL,
+        edge VARCHAR(255),
+        source VARCHAR(255),
+        target_type VARCHAR(255),
+        target_storage_service_level VARCHAR(255),
+        PRIMARY KEY(volume_name, cluster_primary_address, vserver_name)
+    );&quot;;
+
+my $queryDropTableVolumeServiceMap =
+    &quot;DROP TABLE IF EXISTS playground.volume_service_map;&quot;;
+
+########################################### End Query ###########################################
+
+########################################### Run_Query ###########################################
+
+my $schema = &quot;playground&quot;;
+my @queryData = ();
+
+eval {
+    if ($Action eq 'create') {
+        $wfa_util-&gt;sendLog('INFO', &quot;Creating table volume_service_map under 'playground' ...&quot;);
+        @queryData = $wfa_util-&gt;invokeMySqlQuery($queryCreateTableVolumeServiceMap, $schema);
+    }
+    if ($Action eq 'drop') {
+        $wfa_util-&gt;sendLog('INFO', &quot;Dropping table volume_service_map under 'playground' ...&quot;);
+        @queryData = $wfa_util-&gt;invokeMySqlQuery($queryDropTableVolumeServiceMap, $schema);
+    }
+};
+if ($@) {
+    $wfa_util-&gt;sendLog('ERROR', &quot;Unable to do '$Action' table volume_service_map: &quot; . $@);
+}
+else {
+    $wfa_util-&gt;sendLog('INFO', &quot;$Action table done successfully for volume service map: &quot; . @queryData);
+}
+
+######################################### End Run_Query #########################################</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will 'create' or 'drop' table 'volume_service_map' under playground.</description>
+    <parameter-definitions>
+        <parameter-definition description="Provides an option to create or drop table." enumValues="create,drop" isMandatory="true" name="Action" type="Enum">
+            <uuid>d1f8ca10-9bb6-47e6-b9a1-844d1a1287ae</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

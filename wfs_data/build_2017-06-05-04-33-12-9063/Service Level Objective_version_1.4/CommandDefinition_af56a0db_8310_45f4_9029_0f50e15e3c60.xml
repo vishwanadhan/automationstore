@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Get WFA credential" samplingIntervalInSeconds="60" stringRepresentation="&quot;Get WFA admin credential&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>af56a0db-8310-45f4-9029-0f50e15e3c60</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use WFAUtil;
+use Win32;
+use Data::Dumper;
+$Data::Dumper::Indent=1;
+use XML::Simple;
+use XML::Parser;
+use LWP::UserAgent;
+use MIME::Base64;
+use Win32::Registry;
+use MIME::Base64;
+use NaServer;
+use Getopt::Long;
+
+
+my ($UserName,$Password,$Action,$Software, $AddKey);
+
+GetOptions(
+	&quot;Action=s&quot; =&gt; \$Action,
+	&quot;UserName=s&quot; =&gt; \$UserName,
+	&quot;Password=s&quot; =&gt; \$Password,
+	
+) or die 'Illegal command parameters'; 
+
+my $XML = new XML::Simple;
+my $wfa_util = WFAUtil-&gt;new();
+
+$Password = $wfa_util-&gt;getWfaInputPassword($Password);
+
+if (! validateCredential ()){
+	$wfa_util-&gt;sendLog('ERROR', 'Invalid Credential');
+	die;
+}
+$wfa_util-&gt;sendLog('INFO', 'Credential is valided');
+
+if (! regEditCall()){
+	$wfa_util-&gt;sendLog('ERROR', 'Registry entry is not done successfully');
+	die;	
+}
+
+sub regEditCall {
+
+    #Open existing key to add new key
+    $main::HKEY_CURRENT_USER-&gt;Open(&quot;SOFTWARE&quot;, $Software) ||
+            die &quot;Error in Open: $!&quot;;
+    $wfa_util-&gt;sendLog('INFO', 'Parent key is opened successfully');
+
+    #create new key
+    $Software-&gt;Create(&quot;WUA&quot;, $AddKey) ||
+            die &quot;Error in Create: $!&quot;;
+    $wfa_util-&gt;sendLog('INFO', 'New Key is created');
+
+    #set value to new key
+    $KeyValue = $UserName.&quot;:&quot;.$Password;	
+    $AddKey-&gt;SetValueEx(&quot;UserAccess&quot;, 0, REG_BINARY,$KeyValue) ||
+                 die &quot;Error in SetValue: $!&quot;;
+    $wfa_util-&gt;sendLog('INFO', 'Value is set successfully');
+}
+
+
+sub validateCredential {
+
+my $url = 'http://localhost:80/rest/execution/api/create';
+my $credentials = encode_base64(&quot;$UserName:$Password&quot;);
+
+my $ua = LWP::UserAgent-&gt;new( ssl_opts =&gt;{ verify_hostname =&gt; 0 } );
+
+$response = $ua-&gt;post($url, 'Content-Type' =&gt; 'application/xml');
+ 
+# Check for HTTP errors
+die 'http status: ' . $response-&gt;code . '  ' . $response-&gt;message
+    unless ($response-&gt;is_success);
+	
+$results = $response-&gt;content;
+$xml = $XML-&gt;XMLin($results);
+
+if (! defined $xml){
+	$wfa_util-&gt;sendLog('ERROR', 'Authendication failure. Wrong Password or Username');
+}
+$uuid = $xml-&gt;{uuid};
+
+$getHostURL = 'http://localhost:80/rest/credentials';
+$getHostList = $ua-&gt;get($getHostURL, 
+                         'Content-Type' =&gt; 'application/xml',
+                         'Authorization' =&gt; &quot;Basic $credentials&quot;);
+						 
+if (! $getHostList-&gt;is_success){
+	$wfa_util-&gt;sendLog('ERROR', 'Authendication failure. Invalid Password');
+	return 0;
+}
+return 1;
+
+}</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Password" parameterName="Password"/>
+        <parameter-mapping objectName="UserName" parameterName="UserName"/>
+    </parameter-mappings>
+    <parameter-definitions>
+        <parameter-definition description="WFA admin password" isMandatory="true" name="Password" type="Password">
+            <uuid>20fa3fd8-e799-4194-a1a1-e7445619f579</uuid>
+        </parameter-definition>
+        <parameter-definition description="WFA admin username" isMandatory="true" name="UserName" type="String">
+            <uuid>7acbbd8b-2e60-4cce-8fd3-f6cbab43aa51</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <schemeNames></schemeNames>
+</commandDefinition>

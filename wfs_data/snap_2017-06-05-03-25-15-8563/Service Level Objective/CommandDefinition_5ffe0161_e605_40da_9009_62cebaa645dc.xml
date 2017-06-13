@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="KP Uninstall" samplingIntervalInSeconds="60" stringRepresentation="&quot;KP Script uninstall&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>5ffe0161-e605-40da-9009-62cebaa645dc</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+use Cwd;
+use File::Copy qw(copy move);
+use File::Find;
+use Win32;
+use Win32::Registry;
+
+my ($UserName,$Password,$Action,$Software, $AddKey);
+
+GetOptions(
+	&quot;Action=s&quot; =&gt; \$Action,
+
+
+) or die 'Illegal command parameters'; 
+
+
+my $wfa_util = WFAUtil-&gt;new();
+
+$wfa_util-&gt;sendLog('INFO', 'Service Manager');
+$wfa_util-&gt;sendLog('INFO', 'Copy KP Script and ConfigFile');
+
+my ($Cwd) =   ( Win32::GetFullPathName($0) =~ /^(.*\\)(.*)\.(.*)$/ ) [0];
+my $BinDir = $Cwd.'..\..\..\..\bin';
+my $SrcDir = $Cwd.'..\..\workflow-help';
+my $scriptFile = $BinDir.'\service_manager.pl';
+my $kpvScript = $BinDir.'\kp.pl';
+my $desFile;
+#my @filestoCheck = qw/$desFile, $scriptFile, $kpvScript/;
+
+
+foreach ($desFile, $scriptFile, $kpvScript ){
+	if (-e $_){
+	unlink ($_);
+		$wfa_util-&gt;sendLog('INFO', &quot;$_ is deleted successfully&quot;);		
+	}
+}
+deleteregEdit();
+$wfa_util-&gt;sendLog('INFO', ' Reg Key is deleted successfully');
+	
+sub deleteregEdit{
+	my $getSid = &amp;getSID();
+	my @keys;
+	my @RegPath = (&quot;.DEFAULT\\Software&quot;, &quot;$getSid\\Software&quot;);
+	my $keyCnt =0;
+	my $OpenKey;
+	
+
+	foreach my $Rpath(@RegPath){
+		$wfa_util-&gt;sendLog('INFO', &quot;checking key in &quot;. $Rpath);
+		$main::HKEY_USERS-&gt;Open($Rpath, $OpenKey) || 
+				die &quot;Open: $!&quot;;
+
+		$OpenKey-&gt;GetKeys(\@keys);
+		$keyCnt = grep(/^WUA$/, @keys);
+		if ($keyCnt){
+			 $wfa_util-&gt;sendLog('INFO', &quot;Found the Key&quot;);
+			$OpenKey-&gt;DeleteKey(&quot;WUA&quot;) || 
+				die &quot;Error in Delete $!&quot;;
+			return;			
+		}
+		next;
+	}
+}
+
+sub getSID{
+	my $whoami = `whoami /user`;
+	chomp($whoami);
+	my $val = $whoami;
+	my $sid;
+	
+	if ($val =~/authority/){
+		$sid = $val;
+		#$val =~ s/(.*)\\system\s(.*?)$/$2/;
+		$val =~ /(.*)\\system\s(.*?)$/;
+		$sid = $2;
+		$wfa_util-&gt;sendLog('INFO', &quot;Sid &quot;.$sid);
+		chomp($sid);
+	}
+	else{
+		$sid = (split /\s/ ,(split /\n/ ,$val)[6])[1];
+		$wfa_util-&gt;sendLog('INFO', &quot;Sid &quot;.$sid);
+	}
+	return $sid;
+}</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>KP Script Setup</description>
+    <parameter-definitions>
+        <parameter-definition description="Action to be perpformed" enumValues="Create,Drop" isMandatory="true" name="Action" type="Enum">
+            <uuid>abdded7c-e127-409a-9007-270652d01245</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

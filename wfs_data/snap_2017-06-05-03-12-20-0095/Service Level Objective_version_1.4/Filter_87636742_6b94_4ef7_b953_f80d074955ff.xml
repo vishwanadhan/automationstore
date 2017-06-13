@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<filter description="Returns the Storage Virtual Machine with the specified cluster name or IP" name="Filter Storage Virtual Machines by cluster">
+    <certification>NETAPP</certification>
+    <uuid>87636742-6b94-4ef7-b953-f80d074955ff</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry>27bfb32f-baa1-4571-abb5-c644c132ceea</dictionary-entry>
+    <parameters>
+        <parameter label="Cluster Name or IP Address" name="cluster_name" type="STRING">
+            <description>Cluster Name or IP Address</description>
+            <uuid>08421d9d-fc6b-45e0-a9a4-a93fa2ff1782</uuid>
+        </parameter>
+    </parameters>
+    <query>SELECT
+    vserver.name,
+    vserver.type,
+    vserver.uuid,
+    vserver.name_service_switch,
+    vserver.nis_domain,
+    vserver.language,
+    vserver.comment,
+    vserver.admin_state,
+    vserver.nfs_allowed,
+    vserver.cifs_allowed,
+    vserver.fcp_allowed,
+    vserver.iscsi_allowed,
+    cluster.primary_address AS 'cluster.primary_address'
+FROM
+    cm_storage.vserver,
+    cm_storage.cluster
+WHERE
+    cluster.id = vserver.cluster_id
+    AND (
+        cluster.name = '${cluster_name}'
+        OR cluster.primary_address='${cluster_name}'
+    )</query>
+    <returned-attributes>
+        <returned-attribute>admin_state</returned-attribute>
+        <returned-attribute>cifs_allowed</returned-attribute>
+        <returned-attribute>cluster.primary_address</returned-attribute>
+        <returned-attribute>comment</returned-attribute>
+        <returned-attribute>fcp_allowed</returned-attribute>
+        <returned-attribute>iscsi_allowed</returned-attribute>
+        <returned-attribute>language</returned-attribute>
+        <returned-attribute>name</returned-attribute>
+        <returned-attribute>name_service_switch</returned-attribute>
+        <returned-attribute>nfs_allowed</returned-attribute>
+        <returned-attribute>nis_domain</returned-attribute>
+        <returned-attribute>type</returned-attribute>
+        <returned-attribute>uuid</returned-attribute>
+    </returned-attributes>
+</filter>

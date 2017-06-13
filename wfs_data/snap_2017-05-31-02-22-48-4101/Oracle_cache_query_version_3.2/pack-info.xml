@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pack>
+    <author>Shivani</author>
+    <certification>NETAPP</certification>
+    <description>this is a packe with new cache query and a new scheme&lt;h1&gt;This is just a dummy text &lt;/h1&gt;
+&lt;p&gt;&lt;ul&gt;&lt;li&gt;India &lt;/li&gt;&lt;li&gt;China &lt;/li&gt;&lt;li&gt;US &lt;/li&gt;&lt;li&gt;UK &lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;
+	</description>
+    <downloadUrl></downloadUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>
+				
+			</description>
+            <name>oracle</name>
+            <type>Scheme</type>
+            <uuid>91bf8d58-74cf-4ff6-a8b3-0cead03b3f81</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>student</name>
+            <type>DictionaryEntry</type>
+            <uuid>dda0ae06-6a3a-47ef-8415-eb3f6160fffb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description></description>
+            <name>Oracle JDBC_</name>
+            <type>SqlDataProviderType</type>
+            <uuid>5f51ef3d-67a6-44f6-8d67-79c49f78d348</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description></description>
+            <name>d1c1e765-52bf-4cea-95ee-4d59e8a6812b</name>
+            <type>CacheQuery</type>
+            <uuid>d1c1e765-52bf-4cea-95ee-4d59e8a6812b</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.2</minWfaVersion>
+    <name>Oracle cache query pack with new scheme</name>
+    <uuid>a6c4e30e-ce81-48f7-92cb-fcbcb25a454b</uuid>
+    <version>3.2</version>
+</pack>

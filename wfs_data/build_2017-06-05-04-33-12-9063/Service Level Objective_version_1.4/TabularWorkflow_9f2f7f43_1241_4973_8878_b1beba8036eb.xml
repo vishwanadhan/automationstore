@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tabularWorkflow considerReservedElements="true" description="This workflow will help in creating a Service Level Class with specific Storage Service and Protection Service.&#xA;&#xA;Note : This workflow is not mandatory workflow. &quot;Service Catalog Initialization&quot; adds some SLCs, Use this workflow only when you want new SLC with different conbination of SSLC and PSLC" enableElementExistenceValidation="true" name="Managing Service Level Class" readyForProduction="true">
+    <certification>NETAPP</certification>
+    <uuid>9f2f7f43-1241-4973-8878-b1beba8036eb</uuid>
+    <version>1.0.0</version>
+    <workflow-commands>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Manage Service Level Class" uuid="5571000d-ad9c-456a-800e-72b250807abd">
+            <command-definition>547bb731-f29d-4fce-b94e-93ddc5fad767</command-definition>
+        </workflow-command>
+    </workflow-commands>
+    <find-charts/>
+    <return-parameters/>
+    <rows>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+                    <other-parameters>
+                        <command-parameter-value value="$Action">
+                            <parameter-definition>3fcba38f-dda4-45fe-92e9-54bf10cb3cf7</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$PSL">
+                            <parameter-definition>f3293e3d-7c72-46e9-9fd7-c81a0feeda2f</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$SLCName">
+                            <parameter-definition>1ce2a20d-a5a5-42f9-8c30-c42082fb78c4</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$SSL">
+                            <parameter-definition>133f78e1-05e4-4206-a8b2-93681a5d013b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Comment">
+                            <parameter-definition>8168a1fa-31fb-47a1-9492-6afb8d41f292</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>5571000d-ad9c-456a-800e-72b250807abd</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+        </row>
+    </rows>
+    <user-input-groups>
+        <user-input-group expandByDefault="false" name="">
+            <user-inputs>
+                <user-input defaultValue="Update SLC" description="Action to be performed for service level." displayName="Action?" locked="true" mandatory="true" name="$Action" uuid="0596cc17-d168-411f-a61e-a231287824eb">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumUserInputType" enumValues="Add SLC,Update SLC,Remove SLC" viewAsRadio="false"/>
+                </user-input>
+                <user-input defaultValue="" description="For Adding new service, please specify unique name other than the names appearing in drop down" displayName="Name" locked="false" mandatory="true" name="$SLCName" uuid="0157c9e4-8103-4c22-ab2c-07a32a37b13a">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.service_level_class.service_level_name AS 'Service Level',&#xA;    playground.service_level_class.storage_service_name AS 'Storage Service Level',&#xA;    playground.service_level_class.protection_service_name AS 'Protection Service Level',&#xA;    playground.service_level_class.comment as 'Comment'&#xA;FROM&#xA;    playground.service_level_class&#xA;WHERE&#xA;    '${Action}'!='Add SLC'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add SLC,Update SLC" defaultValue="" description="Storage service level to be attached with service level class" displayName="Storage Service (SSL)" locked="true" mandatory="true" name="$SSL" uuid="24a577d2-b775-4167-a5b6-d0522a83a968">
+                    <conditional-user-input>0596cc17-d168-411f-a61e-a231287824eb</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.storage_service_name AS 'SSL',&#xA;    playground.storage_service_level.iops_throttle AS 'IOPS Throttle',&#xA;    IF (playground.storage_service_level.thin_min is NULL,&#xA;    CAST( playground.qos_default_values.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED),&#xA;    CAST(playground.storage_service_level.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED)) AS 'Minimim SLA(IOPS/TB)',&#xA;    playground.storage_service_level.comment&#xA;FROM&#xA;    playground.storage_service_level,&#xA;    playground.service_level_class,&#xA;    playground.qos_default_values&#xA;WHERE&#xA;    playground.service_level_class.service_level_name='${SLCName}'&#xA;    AND playground.storage_service_level.storage_service_name = playground.service_level_class.storage_service_name&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    playground.storage_service_level.storage_service_name AS 'SSL',&#xA;    playground.storage_service_level.iops_throttle AS 'IOPS Throttle',&#xA;    IF (playground.storage_service_level.thin_min is NULL,&#xA;    CAST( playground.qos_default_values.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED),&#xA;    CAST(playground.storage_service_level.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED)) AS 'Minimim SLA(IOPS/TB)',&#xA;    playground.storage_service_level.comment&#xA;FROM&#xA;    playground.storage_service_level ,&#xA;    playground.qos_default_values"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add SLC,Update SLC" defaultValue="" description="Protection Service Level to be attached with service level class" displayName="Protection Service (PSL)" locked="true" mandatory="true" name="$PSL" uuid="3e075f00-8ea5-467b-9a0f-6c04b03333da">
+                    <conditional-user-input>0596cc17-d168-411f-a61e-a231287824eb</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.protection_service_level.protection_service_name AS 'PSL'&#xA;FROM&#xA;    playground.protection_service_level,&#xA;    playground.service_level_class&#xA;WHERE&#xA;    playground.service_level_class.service_level_name='${SLCName}'&#xA;    AND Playground.service_level_class.protection_service_name = playground.protection_service_level.protection_service_name&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    playground.protection_service_level.protection_service_name AS 'PSL'&#xA;FROM&#xA;    playground.protection_service_level "/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add SLC,Update SLC" locked="false" mandatory="false" name="$Comment" uuid="feab4aed-6aef-4404-a18a-8d6932b4a4aa">
+                    <conditional-user-input>0596cc17-d168-411f-a61e-a231287824eb</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stringUserInputType" regularExpression=""/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+    </user-input-groups>
+    <workflow-constants/>
+</tabularWorkflow>

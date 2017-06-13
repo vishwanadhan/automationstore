@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<finder name="Filter Destination Volumes to create snapmirror relations" privateFinder="false">
+    <certification>NETAPP</certification>
+    <uuid>db3aeb3b-5a6e-4437-83fe-a788a53c9495</uuid>
+    <version>1.0.0</version>
+    <attributes>
+        <attributes alias="name" columnName="name" sortingOrder="ASCENDING">
+            <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+        </attributes>
+        <attributes alias="vserver.cluster.primary_address" columnName="vserver.cluster.primary_address" sortingOrder="ASCENDING">
+            <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+        </attributes>
+        <attributes alias="vserver.name" columnName="vserver.name" sortingOrder="ASCENDING">
+            <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+        </attributes>
+        <attributes alias="target_type" columnName="target_type" sortingOrder="ASCENDING">
+            <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+        </attributes>
+        <attributes alias="target_s_s_l" columnName="target_s_s_l" sortingOrder="ASCENDING">
+            <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+        </attributes>
+        <attributes alias="target_rpo" columnName="target_rpo" sortingOrder="ASCENDING">
+            <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+        </attributes>
+        <attributes alias="target_retention_policy" columnName="target_retention_policy" sortingOrder="ASCENDING">
+            <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+        </attributes>
+        <attributes alias="source" columnName="source" sortingOrder="ASCENDING">
+            <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+        </attributes>
+        <attributes alias="p_s_l" columnName="p_s_l" sortingOrder="ASCENDING">
+            <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+        </attributes>
+        <attributes alias="edge" columnName="edge" sortingOrder="ASCENDING">
+            <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+        </attributes>
+    </attributes>
+    <dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+    <filters>
+        <filter>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</filter>
+    </filters>
+</finder>

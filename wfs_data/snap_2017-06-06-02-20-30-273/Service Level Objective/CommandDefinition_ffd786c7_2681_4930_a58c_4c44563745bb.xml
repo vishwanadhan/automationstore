@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Manage Protection Service" samplingIntervalInSeconds="60" stringRepresentation="Action + ' protection service'" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>ffd786c7-2681-4930-a58c-4c44563745bb</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+
+
+my $Action;
+my $ProtectionServiceLevel = &quot;&quot;;
+my $TargetType = &quot;&quot;;
+my $SnapshotPolicy = &quot;&quot;;
+my $RPO = &quot;&quot;;
+my $Geo = &quot;&quot;;
+my $TargetSSL = &quot;&quot;;
+my $TopologyName = &quot;&quot;;
+my $Comment = &quot;&quot;;
+my $Source = &quot;&quot;;
+my $RetentionCount = &quot;&quot;;
+my $TopologyAction = &quot;&quot;;
+
+
+GetOptions(
+    &quot;Action=s&quot;                  =&gt; \$Action,
+    &quot;ProtectionServiceLevel=s&quot;  =&gt; \$ProtectionServiceLevel,   
+    &quot;TargetType=s&quot;              =&gt; \$TargetType,
+    &quot;SnapshotPolicy=s&quot;          =&gt; \$SnapshotPolicy,
+    &quot;RPO=s&quot;                     =&gt; \$RPO,
+    &quot;Geo=s&quot;                     =&gt; \$Geo,
+    &quot;TargetSSL=s&quot;               =&gt; \$TargetSSL,
+    &quot;TopologyName=s&quot;            =&gt; \$TopologyName,
+    &quot;Source=s&quot;                  =&gt; \$Source,
+    &quot;RetentionCount=s&quot;          =&gt; \$RetentionCount,
+    &quot;TopologyAction=s&quot;          =&gt; \$TopologyAction,
+    &quot;Comment=s&quot;                 =&gt; \$Comment
+) or die 'Illegal command parameters\n';
+ 
+my $result;
+
+my $wfa_util = WFAUtil-&gt;new();
+
+my $Query;
+
+my $database=&quot;playground&quot;;
+
+if ($Action eq &quot;Remove PSL&quot;) {
+    $wfa_util-&gt;sendLog('INFO', 'Deleting Protection service');
+    $Query = &quot;DELETE FROM playground.protection_service_level WHERE protection_service_name = '$ProtectionServiceLevel'&quot;;
+
+    eval { 
+        $result = $wfa_util-&gt;invokeMySqlQuery($Query,$database); 
+    }; 
+
+    if($@) {
+        $wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@);
+    } 
+    else {
+        $wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result);
+    }
+
+    exit;
+}
+
+if ($TopologyAction eq &quot;Remove Edge&quot;) {
+    $wfa_util-&gt;sendLog('INFO', 'Deleting service ');
+    $Query = &quot;DELETE FROM playground.protection_service_level WHERE playground.protection_service_level.protection_service_name='$ProtectionServiceLevel' AND playground.protection_service_level.topology_name = '$TopologyName' AND playground.protection_service_level.geo = 'remote'&quot;;
+
+    eval {
+        $result = $wfa_util-&gt;invokeMySqlQuery($Query,$database);
+    };
+
+    exit;
+}
+
+if ($Action eq &quot;Add PSL&quot;) {
+    $wfa_util-&gt;sendLog('INFO', 'Adding service ');
+    $Query = &quot;INSERT INTO  playground.protection_service_level (
+                protection_service_name,
+                target_type,
+                snapshot_policy,
+                rpo,
+                geo,
+                target_storage_service_level,
+                topology_name,
+                source,
+                retention_count,
+                comment)
+            VALUES (
+                '$ProtectionServiceLevel',
+                '$TargetType',
+                '$SnapshotPolicy',
+                '',
+                'Local',
+                '',
+                '',
+                '',
+                '',
+                ''
+            )&quot;;
+
+    eval {
+        $result = $wfa_util-&gt;invokeMySqlQuery($Query,$database);
+    }; 
+
+    if($@) {
+        $wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@);
+    }
+    else {
+        $wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result);
+    }
+}
+
+if ($TopologyAction eq &quot;Add Edge&quot; ) {
+    $wfa_util-&gt;sendLog('INFO', 'Adding Edge ');
+    $Query = &quot;INSERT INTO  playground.protection_service_level (
+                protection_service_name,
+                target_type,
+                snapshot_policy,
+                rpo,
+                geo,
+                target_storage_service_level,
+                topology_name,
+                source,
+                retention_count,
+                comment) 
+            VALUES (
+                '$ProtectionServiceLevel',
+                '$TargetType',
+                '',
+                IF('$RPO', '$RPO', NULL),
+                'Remote',
+                '$TargetSSL',
+                '$TopologyName',
+                '$Source',
+                '$RetentionCount',
+                '$Comment'
+            )&quot;;
+
+    eval {
+        $result = $wfa_util-&gt;invokeMySqlQuery($Query,$database);
+    }; 
+
+    if($@) {
+        $wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@);
+    } 
+    else {
+        $wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result);
+    }
+}
+
+if ($Action eq &quot;Update PSL&quot;) {
+	$wfa_util-&gt;sendLog('INFO', 'Updating snapshot policy ');
+	$Query = &quot;UPDATE playground.protection_service_level
+                		SET 
+	                    snapshot_policy = IF('$SnapshotPolicy' &lt;&gt; '', '$SnapshotPolicy', snapshot_policy)
+        		        WHERE
+                		    playground.protection_service_level.protection_service_name = '$ProtectionServiceLevel'
+	                    AND playground.protection_service_level.geo = 'local'&quot;;
+
+	    eval {
+        		$result = $wfa_util-&gt;invokeMySqlQuery($Query,$database);
+	    };
+	    if($@) {
+	        $wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@);
+	    }
+	    else {
+       		 $wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result);
+	    }	
+}
+
+
+if ($Action eq &quot;Update PSL&quot;) {
+    $wfa_util-&gt;sendLog('INFO', 'Updating service ');
+    $Query = &quot;UPDATE playground.protection_service_level
+                SET
+                    target_type = IF('$TargetType' &lt;&gt; '', '$TargetType', target_type),
+                    rpo = IF('$RPO', '$RPO', rpo),
+                    geo = IF('$Geo' &lt;&gt; '', '$Geo', geo),
+                    target_storage_service_level = IF('$TargetSSL' &lt;&gt; '', '$TargetSSL', target_storage_service_level),  
+                    source = IF('$Source' &lt;&gt; '', '$Source', source),
+                    retention_count = IF('$RetentionCount' &lt;&gt; '', '$RetentionCount', retention_count),
+                    comment = IF('$Comment' &lt;&gt; '', '$Comment', comment)
+                WHERE
+                    playground.protection_service_level.protection_service_name = '$ProtectionServiceLevel'
+                    AND playground.protection_service_level.topology_name = '$TopologyName'
+                    AND playground.protection_service_level.geo = 'remote'&quot;;
+
+    eval {
+        $result = $wfa_util-&gt;invokeMySqlQuery($Query,$database);
+    };
+
+    if($@) {
+        $wfa_util-&gt;sendLog('ERROR', 'Query Failed: ' .$@);
+    }
+    else {
+        $wfa_util-&gt;sendLog('INFO', 'Successfully completed: ' . $result);
+    }
+}</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+        <parameter-mapping objectName="Comment" parameterName="Comment"/>
+        <parameter-mapping objectName="Geo" parameterName="Geo"/>
+        <parameter-mapping objectName="ProtectionServiceLevel" parameterName="ProtectionServiceLevel"/>
+        <parameter-mapping objectName="RPO" parameterName="RPO"/>
+        <parameter-mapping objectName="RetentionCount" parameterName="RetentionCount"/>
+        <parameter-mapping objectName="SnapshotPolicy" parameterName="SnapshotPolicy"/>
+        <parameter-mapping objectName="Source" parameterName="Source"/>
+        <parameter-mapping objectName="TargetSSL" parameterName="TargetSSL"/>
+        <parameter-mapping objectName="TargetType" parameterName="TargetType"/>
+        <parameter-mapping objectName="TopologyAction" parameterName="TopologyAction"/>
+        <parameter-mapping objectName="TopologyName" parameterName="TopologyName"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will handle Add/Remove/Update actions on Protection Service Levels(PSL)</description>
+    <parameter-definitions>
+        <parameter-definition description="What is planned action on Protection Services. Possible values are,&#xA;1) Add (Adds the new protection service)&#xA;2) Remove (Removes the protection service)&#xA;3) Update (Modifies the existing protection services RPOs only)&#xA;4) Remove Topology " enumValues="Add PSL,Update PSL,Remove PSL" isMandatory="true" name="Action" type="Enum">
+            <uuid>a90e55e7-7101-47d1-ab99-629be9ef40af</uuid>
+        </parameter-definition>
+        <parameter-definition description="Comment specific to particular service" isMandatory="false" name="Comment" type="String">
+            <uuid>a0641c7b-80a4-441c-a5a1-fd64e4d9ba1e</uuid>
+        </parameter-definition>
+        <parameter-definition description="Whether backup is local or remote" enumValues="Local,Remote" isMandatory="false" name="Geo" type="Enum">
+            <uuid>ed004f17-4584-4880-afaf-8a564227023f</uuid>
+        </parameter-definition>
+        <parameter-definition description="Protection Service(PSL) name" isMandatory="true" name="ProtectionServiceLevel" type="String">
+            <uuid>34ab0883-2001-4018-9bf9-f6d16c6e70c9</uuid>
+        </parameter-definition>
+        <parameter-definition description="RPO" isMandatory="false" name="RPO" type="Double">
+            <uuid>fcd654f6-470b-4f11-bd9e-9e0627d1a658</uuid>
+        </parameter-definition>
+        <parameter-definition description="No of backups to keep" isMandatory="false" name="RetentionCount" type="String">
+            <uuid>030fbaf9-1b6b-47ba-84b3-b781526e31bb</uuid>
+        </parameter-definition>
+        <parameter-definition description="SnapshotPolicy" isMandatory="false" name="SnapshotPolicy" type="String">
+            <uuid>1c20ccec-fa55-43aa-aa64-ae96046a1eb5</uuid>
+        </parameter-definition>
+        <parameter-definition description="Source is shelf or existing relation in a PSL" isMandatory="false" name="Source" type="String">
+            <uuid>3cae272f-6da5-49a0-8dee-b514acfab273</uuid>
+        </parameter-definition>
+        <parameter-definition description="Target's Storage Service Level(SSL)" isMandatory="false" name="TargetSSL" type="String">
+            <uuid>bcf4e5ce-8d82-45b7-82eb-ac260d9ac81c</uuid>
+        </parameter-definition>
+        <parameter-definition description="Whether target is for backup or disaster recovery" enumValues="Backup,Disaster" isMandatory="false" name="TargetType" type="Enum">
+            <uuid>42283be6-c5f7-4470-ab8c-03100ccc460e</uuid>
+        </parameter-definition>
+        <parameter-definition description="This will help in add/remove or update of edge in a topology" enumValues="Add Edge,Remove Edge,Update Edge,No Edge" isMandatory="false" name="TopologyAction" type="Enum">
+            <uuid>8449526a-c395-4d5a-9ac4-295d5c83703b</uuid>
+        </parameter-definition>
+        <parameter-definition description="Represents a relation in a protection service" isMandatory="false" name="TopologyName" type="String">
+            <uuid>19f6d373-0438-40df-b18d-dd73f7f58cfd</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

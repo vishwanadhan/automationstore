@@ -1,0 +1,685 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="QoS Config File Manager (Default Service Level)" samplingIntervalInSeconds="60" stringRepresentation="&quot;Default Service Level &quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>c05fad07-4b5c-48e0-b0d4-c5a4dd1383eb</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use warnings;
+use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+use File::Spec;
+use File::Basename;
+use Data::Dumper;
+
+################# Decl #################
+my %confFile = ();
+my %nodes = ();
+my %prefer = ();
+my %defaultServiceLevel = ();
+my %defaultEnforcement = ();
+my %defaultThinMin = ();
+my %defaultHeadRoom = ();
+my %defaultMinIops = ();
+my %maxCpuPercent = ();
+my %maxCpuDuration = ();
+my %logToConsole = ();
+my %facility = ();
+my %debug = ();
+my %serviceLevels = ();
+my $x = 1;
+my $success = 1;
+my $ConfFilePath = &quot;&quot;;
+my $defaultservicelevel = undef;
+my $prefer = undef;
+my $defaultenforcement = undef;
+my $defaultthinmin = undef;
+my $defaultheadroom = undef;
+my $defaultminiops = undef;
+my $maxcpupercent = undef;
+my $maxcpuduration = undef;
+my $facility = undef;
+my $logtoconsole = undef;
+my $debug = undef;
+my @changeReq = ();
+my $failureMessage = &quot;&quot;;
+my $nodename;
+my $nodeaction;
+my %slParamValue = (
+                    'iopsthrottle'  =&gt; qr/^\d*(\.\d+)?$/,
+                    'enforce'       =&gt; qr/^(thick|thin|effective)$/i,
+                    'miniops'       =&gt; qr/^\d*(\.\d+)?$/,
+                    'thinmin'       =&gt; qr/^0*(\d{1,2}(?:\.\d+)?|100)$/,
+                    'headroom'      =&gt; qr/^0*(\d{1,2}(?:\.\d+)?|100)$/,
+                    'disktypes'     =&gt; qr/^(ATA|EATA|FCAL|LUN|MSATA|SAS|BSAS|SATA|SCSI|SSD|XATA|XSAS|FSAS|unknown)(\|(ATA|EATA|FCAL|LUN|MSATA|SAS|BSAS|SATA|SCSI|SSD|XATA|XSAS|FSAS|unknown))*$/,
+                    'diskrpm'       =&gt; qr/^\d*(\.\d+)?$/,
+                    'hybrid'        =&gt; qr/^(true|false)$/i,
+                    'volinclude'    =&gt; qr/^([a-zA-Z_]+([a-zA-Z0-9_]+)?)(\|([a-zA-Z_]+([a-zA-Z0-9_]+)?))*$/,
+                    'volexclude'    =&gt; qr/^([a-zA-Z_]+([a-zA-Z0-9_]+)?)(\|([a-zA-Z_]+([a-zA-Z0-9_]+)?))*$/,
+                    'agginclude'    =&gt; qr/^([a-zA-Z_]+([a-zA-Z0-9_]+)?)(\|([a-zA-Z_]+([a-zA-Z0-9_]+)?))*$/,
+                    'aggexclude'    =&gt; qr/^([a-zA-Z_]+([a-zA-Z0-9_]+)?)(\|([a-zA-Z_]+([a-zA-Z0-9_]+)?))*$/,
+                    'servicelevel'  =&gt; qr/^[a-zA-Z_]+([a-zA-Z0-9_\-]+)?$/
+                   );
+################# Decl #################
+
+################# Main #################
+GetOptions(
+#    &quot;ConfFilePath=s&quot;        =&gt; \$ConfFilePath,
+    &quot;defaultservicelevel=s&quot; =&gt; \$defaultservicelevel,
+    &quot;prefer=s&quot;              =&gt; \$prefer,
+    &quot;defaultenforcement=s&quot;  =&gt; \$defaultenforcement,
+    &quot;defaultthinmin=s&quot;      =&gt; \$defaultthinmin,
+    &quot;defaultheadroom=s&quot;     =&gt; \$defaultheadroom,
+    &quot;defaultminiops=s&quot;      =&gt; \$defaultminiops,
+    &quot;maxcpupercent=s&quot;       =&gt; \$maxcpupercent,
+    &quot;maxcpuduration=s&quot;      =&gt; \$maxcpuduration,
+    &quot;facility=s&quot;            =&gt; \$facility,
+    &quot;logtoconsole=s&quot;        =&gt; \$logtoconsole,
+    &quot;nodename=s&quot;        =&gt; \$nodename,
+    &quot;nodeaction=s&quot;        =&gt; \$nodeaction,
+    &quot;debug=s&quot;               =&gt; \$debug
+) or die 'Illegal command parameters';
+
+my $wfa_util = WFAUtil-&gt;new();
+
+# Getting config file path
+if ($ConfFilePath eq &quot;&quot;) {
+    $ConfFilePath = &amp;getConfFilePath();
+}
+
+eval {
+    &amp;readConfFile($ConfFilePath);
+    if ($success) {
+        $wfa_util-&gt;sendLog('INFO', &quot;Reading of existing config file has completed successfully ...&quot;);
+    }
+    else {
+        $failureMessage = &quot;Flaws exist in the config file. CORRECT THE INPUT CONFIG FILE ...&quot;;
+        $wfa_util-&gt;sendLog('INFO', &quot;$failureMessage&quot;);
+    }
+    if ($success) {
+        &amp;makeChangeReqArray;
+        &amp;modifyConfFile;
+        if ($success) {
+            $wfa_util-&gt;sendLog('INFO', &quot;Modification has done based on user input ...&quot;);
+        }
+        else {
+            $failureMessage = &quot;NO MODIFICATION HAS MADE. CONFIG FILE STAYS AS IS ...&quot;;
+            $wfa_util-&gt;sendLog('INFO', &quot;$failureMessage&quot;);
+        }
+    }
+    if ($success) {
+        &amp;writeConfFile;
+        $wfa_util-&gt;sendLog('INFO', &quot;Writing of modified config file has completed successfully ...&quot;);
+    }
+};
+if (!$success || $@) {
+    if ($@) {
+        $wfa_util-&gt;checkEvalFailure(&quot;Failed to change config file ($ConfFilePath) &quot;, $@);
+    }
+    else {
+        local $@ = $failureMessage;
+        $wfa_util-&gt;checkEvalFailure(&quot;Failed to change config file ($ConfFilePath) &quot;, $@);
+    }
+}
+################# Main #################
+
+
+################# APIs #################
+sub getConfFilePath {
+    my $exeDir = dirname(File::Spec-&gt;rel2abs(__FILE__));
+    my $installDir = (split(/WFA/, $exeDir))[0];
+    my $dirSeparator = substr($installDir, -1);
+    my $filePath = join(&quot;$dirSeparator&quot;, $installDir.&quot;WFA&quot;, &quot;kitchen&quot;, &quot;config.txt&quot;);
+    return $filePath;
+}
+
+sub readConfFile {
+    my $input = shift;
+    open(CONF_FILE, &quot;&lt;&quot;, $input) || die(&quot;Cannot open file '$input' for reading: $!&quot;);
+    my @confFileContent = &lt;CONF_FILE&gt;;
+    close(CONF_FILE);
+    
+    my $y = $x;
+    my $serviceLevelOn = 0;
+    my $serviceLevel = &quot;&quot;;
+    my $alreadyExistingSL = 1;
+    my $node = &quot;&quot;;
+    my $alreadyExistingNode = 1;
+
+    foreach my $line (@confFileContent) {
+        next if ((!$line) || ($line=~/^\;/));
+        if ($line =~ m/^#/) {
+            $y = ++$x if ($x != $y);
+            push(@{$confFile{$x}}, $line);
+            $serviceLevelOn = 0;
+            next;
+        }
+        if ($serviceLevelOn) {
+            &amp;processServiceLevel($line, $serviceLevel);
+            return if (!$success);
+            next;
+        }
+        if ($line =~ m/^(nodename)/) {
+            ($node, $alreadyExistingNode) = &amp;processNodes($line);
+            return if (!$success);
+    #      $confFile{++$x} = $nodes{$node};
+            next;
+        }
+        if ($line =~ m/^(prefer)/) {
+            &amp;processPrefer($line);
+            return if (!$success);
+            $confFile{++$x} = \%prefer;
+            next;
+        }
+        if ($line =~ m/^(defaultservicelevel)/) {
+            &amp;processDefaultServiceLevel($line);
+            return if (!$success);
+            $confFile{++$x} = \%defaultServiceLevel;
+            next;
+        }
+        if ($line =~ m/^(defaultenforcement)/) {
+            &amp;processDefaultEnforcement($line);
+            return if (!$success);
+            $confFile{++$x} = \%defaultEnforcement;
+            next;
+        }
+        if ($line =~ m/^(defaultthinmin)/) {
+            &amp;processDefaultThinMin($line);
+            return if (!$success);
+            $confFile{++$x} = \%defaultThinMin;
+            next;
+        }
+        if ($line =~ m/^(defaultheadroom)/) {
+            &amp;processDefaultHeadRoom($line);
+            return if (!$success);
+            $confFile{++$x} = \%defaultHeadRoom;
+            next;
+        }
+        if ($line =~ m/^(defaultminiops)/) {
+            &amp;processDefaultMinIops($line);
+            return if (!$success);
+            $confFile{++$x} = \%defaultMinIops;
+            next;
+        }
+        if ($line =~ m/^(maxcpupercent)/) {
+            &amp;processMaxCpuPercent($line);
+            return if (!$success);
+            $confFile{++$x} = \%maxCpuPercent;
+            next;
+        }
+        if ($line =~ m/^(maxcpuduration)/) {
+            &amp;processMaxCpuDuration($line);
+            return if (!$success);
+            $confFile{++$x} = \%maxCpuDuration;
+            next;
+        }
+        if ($line =~ m/^(logtoconsole)/) {
+            &amp;processLogToConsole($line);
+            return if (!$success);
+            $confFile{++$x} = \%logToConsole;
+            next;
+        }
+        if ($line =~ m/^(facility)/) {
+            &amp;processFacility($line);
+            return if (!$success);
+            $confFile{++$x} = \%facility;
+            next;
+        }
+        if ($line =~ m/^(debug)/) {
+            &amp;processDebug($line);
+            return if (!$success);
+            $confFile{++$x} = \%debug;
+            next;
+        }
+        if ($line =~ m/^(servicelevel)/) {
+            $serviceLevelOn = 1;
+            ($serviceLevel, $alreadyExistingSL) = &amp;processServiceLevel($line, undef);
+            return if (!$success);
+            $confFile{++$x} = $serviceLevels{$serviceLevel};
+            next;
+        }
+    }
+}
+
+sub makeChangeReqArray {
+    if (defined $defaultservicelevel) {
+        push(@changeReq, &quot;defaultservicelevel $defaultservicelevel \n&quot;);
+    }
+    if (defined $prefer) {
+        push(@changeReq, &quot;prefer $prefer \n&quot;);
+    }
+    if (defined $defaultenforcement) {
+        push(@changeReq, &quot;defaultenforcement $defaultenforcement \n&quot;);
+    }
+    if (defined $defaultthinmin) {
+        push(@changeReq, &quot;defaultthinmin $defaultthinmin \n&quot;);
+    }
+    if (defined $defaultheadroom) {
+        push(@changeReq, &quot;defaultheadroom $defaultheadroom \n&quot;);
+    }
+    if (defined $defaultminiops) {
+        push(@changeReq, &quot;defaultminiops $defaultminiops \n&quot;);
+    }
+    if (defined $maxcpupercent) {
+        push(@changeReq, &quot;maxcpupercent $maxcpupercent \n&quot;);
+    }
+    if (defined $maxcpuduration) {
+        push(@changeReq, &quot;maxcpuduration $maxcpuduration \n&quot;);
+    }
+    if (defined $facility) {
+        push(@changeReq, &quot;facility $facility \n&quot;);
+    }
+    if (defined $logtoconsole) {
+        push(@changeReq, &quot;logtoconsole $logtoconsole \n&quot;);
+    }
+     if (defined $nodename) {
+        push(@changeReq, &quot;nodename $nodename \n&quot;);
+    }
+    if (defined $debug) {
+        push(@changeReq, &quot;debug $debug \n&quot;);
+    }
+}
+
+sub writeConfFile {
+    open(CONF_FILE, &quot;&gt;&quot;, &quot;$ConfFilePath&quot;) || die(&quot;Cannot open file '$ConfFilePath' for writing: $!&quot;);
+    my $sizeOfConfFile = keys %confFile;
+    foreach $nodename (keys %nodes) {
+                if(exists $nodes{$nodename}{'nodename'}) {
+  	print CONF_FILE &quot;nodename $nodes{$nodename}{'nodename'} \n&quot;;
+	}
+    }
+    for (my $index = 1; $index &lt;= $sizeOfConfFile; $index++) {
+        if (not exists $confFile{$index}) {
+            $sizeOfConfFile++;
+            next;
+        }
+        if (ref($confFile{$index}) eq &quot;ARRAY&quot;) {
+            my @content = @{$confFile{$index}};
+            print CONF_FILE @content;
+        }
+        if (ref($confFile{$index}) eq &quot;HASH&quot;) {
+            if (exists $confFile{$index}{'nodename'}) {
+                print CONF_FILE &quot;nodename $confFile{$index}{'nodename'} $confFile{$index}{'username'} $confFile{$index}{'password'}\n&quot;;
+            }
+            else {
+                my @content = ();
+                while (my( $key, $value ) = each %{$confFile{$index}}) {
+                    if ($key eq &quot;servicelevel&quot;) {
+                        unshift(@content, &quot;$key $value\n&quot;);
+                    }
+                    else {
+                        push(@content, &quot;$key $value\n&quot;);
+                    }
+                }
+                print CONF_FILE @content;
+            }
+        }
+    }
+    close(CONF_FILE)
+}
+sub modifyConfFile {
+    my $node = &quot;&quot;;
+    my $alreadyExistingNode = 1;
+
+    foreach my $line (@changeReq) {
+        next if ((!$line) || ($line=~/^\;/) || ($line=~/^\#/));
+        if ($line =~ m/^(nodename)/) {
+            ($node, $alreadyExistingNode) = &amp;processNodes($line);
+            return if (!$success);
+          #  if (!$alreadyExistingNode) {
+           #     $wfa_util-&gt;sendLog('INFO', &quot;Node name '$node' hasn't found for update ...&quot;);
+            #    delete $nodes{$node};
+            #    $success = 0;
+             #   last;
+          #  }
+            $wfa_util-&gt;sendLog('INFO', &quot;Node name '$node' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(prefer)/) {
+            &amp;processPrefer($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'prefer' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(defaultservicelevel)/) {
+            &amp;processDefaultServiceLevel($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'defaultservicelevel' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(defaultenforcement)/) {
+            &amp;processDefaultEnforcement($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'defaultenforcement' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(defaultthinmin)/) {
+            &amp;processDefaultThinMin($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'defaultthinmin' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(defaultheadroom)/) {
+            &amp;processDefaultHeadRoom($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'defaultheadroom' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(defaultminiops)/) {
+            &amp;processDefaultMinIops($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'defaultminiops' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(maxcpupercent)/) {
+            &amp;processMaxCpuPercent($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'maxcpupercent' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(maxcpuduration)/) {
+            &amp;processMaxCpuDuration($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'maxcpuduration' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(logtoconsole)/) {
+            &amp;processLogToConsole($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'logtoconsole' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(facility)/) {
+            &amp;processFacility($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'facility' has been updated successfully ...&quot;);
+            next;
+        }
+        if ($line =~ m/^(debug)/) {
+            &amp;processDebug($line);
+            return if (!$success);
+            $wfa_util-&gt;sendLog('INFO', &quot;Field 'debug' has been updated successfully ...&quot;);
+            next;
+        }
+    }
+}
+
+sub processNodes {
+    my $line = shift;
+    my $alreadyExistingNode = 1;
+    my @node = split(/\s+/, $line);
+    if (((defined $node[1]) &amp;&amp; ($node[1] =~ m/^(([a-zA-Z_]+(\.?[a-zA-Z0-9_]+)*)|(([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])))$/)) ) {
+	 if (!$nodeaction) {
+		$nodes{$node[1]}{'nodename'} = $node[1];
+	} else {
+	    if ($nodeaction eq &quot;add&quot;) {
+		if (not exists $nodes{$node[1]}{'nodename'})  {
+            			$nodes{$node[1]}{'nodename'} = $node[1];
+			if ( $nodes{$node[1]}{'nodename'} eq $nodename) { 
+			 	$wfa_util-&gt;sendLog('INFO', &quot;Adding node ...$nodes{$node[1]}{'nodename'}&quot;);
+			}
+		            	$alreadyExistingNode = 0;
+        		}
+   	    } #add
+      	    if ($nodeaction eq &quot;delete&quot;) {
+       	     	if (exists $nodes{$node[1]}{'nodename'}) {
+                		if ( $nodes{$node[1]}{'nodename'} eq $nodename) { 
+				$wfa_util-&gt;sendLog('INFO', &quot;deleting node ...$nodes{$node[1]}{'nodename'}&quot;);
+            	    			delete $nodes{$node[1]}{'nodename'};
+			}
+		} else {
+			$nodes{$node[1]}{'nodename'} = $node[1];
+		}
+        	    }#delete
+               }#!nodeaction
+        return ($node[1], $alreadyExistingNode);
+    }
+    else {
+        $success = 0;
+        if (not defined $node[1]) {
+            $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '' for the variable 'nodename'...&quot;);
+        }
+        else {
+            $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$node[1]' for the variable 'nodename'...&quot;);
+        }
+    }
+}
+sub processPrefer {
+    my $line = shift;
+    my @pref = split(/\s+/, $line);
+    if ((defined $pref[1]) &amp;&amp; ($pref[1] =~ m/(faster|slower)$/i)) {
+        $prefer{'prefer'} = $pref[1];
+    }
+    else {
+        $success = 0;
+        $pref[1] = &quot;&quot; if (not defined $pref[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$pref[1]' for the variable 'prefer'...&quot;);
+    }
+}
+sub processDefaultServiceLevel {
+    my $line = shift;
+    my @dsl = split(/\s+/, $line);
+    if ((defined $dsl[1]) &amp;&amp; ($dsl[1] =~ m/^[a-zA-Z_]+([a-zA-Z0-9_]+)?$/)) {
+        $defaultServiceLevel{'defaultservicelevel'} = $dsl[1];
+    }
+    else {
+        $success = 0;
+        $dsl[1] = &quot;&quot; if (not defined $dsl[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$dsl[1]' for the variable 'defaultservicelevel'...&quot;);
+    }
+}
+sub processDefaultEnforcement {
+    my $line = shift;
+    my @de = split(/\s+/, $line);
+    if ((defined $de[1]) &amp;&amp; ($de[1] =~ m/(thick|thin|effective)$/i)) {
+        $defaultEnforcement{'defaultenforcement'} = $de[1];
+    }
+    else {
+        $success = 0;
+        $de[1] = &quot;&quot; if (not defined $de[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$de[1]' for the variable 'defaultenforcement'...&quot;);
+    }
+}
+sub processDefaultThinMin {
+    my $line = shift;
+    my @dtm = split(/\s+/, $line);
+    if ((defined $dtm[1]) &amp;&amp; ($dtm[1] =~ m/^0*(\d{1,2}(?:\.\d+)?|100)$/)) {
+        $defaultThinMin{'defaultthinmin'} = $dtm[1];
+    }
+    else {
+        $success = 0;
+        $dtm[1] = &quot;&quot; if (not defined $dtm[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$dtm[1]' for the variable 'defaultthinmin'...&quot;);
+    }
+}
+sub processDefaultHeadRoom {
+    my $line = shift;
+    my @dhr = split(/\s+/, $line);
+    if ((defined $dhr[1]) &amp;&amp; ($dhr[1] =~ m/^0*(\d{1,2}(?:\.\d+)?|100)$/)) {
+        $defaultHeadRoom{'defaultheadroom'} = $dhr[1];
+    }
+    else {
+        $success = 0;
+        $dhr[1] = &quot;&quot; if (not defined $dhr[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$dhr[1]' for the variable 'defaultheadroom'...&quot;);
+    }
+}
+sub processDefaultMinIops {
+    my $line = shift;
+    my @dmi = split(/\s+/, $line);
+    if ((defined $dmi[1]) &amp;&amp; ($dmi[1] =~ m/^\d*(\.\d+)?$/)) {
+        $defaultMinIops{'defaultminiops'} = $dmi[1];
+    }
+    else {
+        $success = 0;
+        $dmi[1] = &quot;&quot; if (not defined $dmi[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$dmi[1]' for the variable 'defaultminiops'...&quot;);
+    }
+}
+sub processMaxCpuPercent {
+    my $line = shift;
+    my @mcp = split(/\s+/, $line);
+    if ((defined $mcp[1]) &amp;&amp; ($mcp[1] =~ m/^0*(\d{1,2}(?:\.\d+)?|100)$/)) {
+        $maxCpuPercent{'maxcpupercent'} = $mcp[1];
+    }
+    else {
+        $success = 0;
+        $mcp[1] = &quot;&quot; if (not defined $mcp[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$mcp[1]' for the variable 'maxcpupercent'...&quot;);
+    }
+}
+sub processMaxCpuDuration {
+    my $line = shift;
+    my @mcd = split(/\s+/, $line);
+    if ((defined $mcd[1]) &amp;&amp; ($mcd[1] =~ m/^\d*(\.\d+)?$/)) {
+        $maxCpuDuration{'maxcpuduration'} = $mcd[1];
+    }
+    else {
+        $success = 0;
+        $mcd[1] = &quot;&quot; if (not defined $mcd[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$mcd[1]' for the variable 'maxcpuduration'...&quot;);
+    }
+}
+sub processLogToConsole {
+    my $line = shift;
+    my @ltc = split(/\s+/, $line);
+    if ((defined $ltc[1]) &amp;&amp; ($ltc[1] =~ m/^(0|1)$/)) {
+        $logToConsole{'logtoconsole'} = $ltc[1];
+    }
+    else {
+        $success = 0;
+        $ltc[1] = &quot;&quot; if (not defined $ltc[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$ltc[1]' for the variable 'logtoconsole'...&quot;);
+    }
+}
+sub processFacility {
+    my $line = shift;
+    my @f = split(/\s+/, $line);
+    if ((defined $f[1]) &amp;&amp; ($f[1] =~ m/^[a-zA-Z_]+([a-zA-Z0-9_]+)?$/)) {
+        $facility{'facility'} = $f[1];
+    }
+    else {
+        $success = 0;
+        $f[1] = &quot;&quot; if (not defined $f[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$f[1]' for the variable 'facility'...&quot;);
+    }
+}
+sub processDebug {
+    my $line = shift;
+    my @d = split(/\s+/, $line);
+    if ((defined $d[1]) &amp;&amp; ($d[1] =~ m/^(0|1|2|3)$/)) {
+        $debug{'debug'} = $d[1];
+    }
+    else {
+        $success = 0;
+        $d[1] = &quot;&quot; if (not defined $d[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$d[1]' for the variable 'debug'...&quot;);
+    }
+}
+sub processServiceLevel {
+    my $line = shift;
+    my $serviceLevel = shift;
+    if (not defined $serviceLevel) {
+        my @sl = split(/\s+/, $line);
+        my $alreadyExistingSL = 1;
+        if (not exists $serviceLevels{$sl[1]}) {
+            $alreadyExistingSL = 0;
+            if ($sl[1] =~ m/$slParamValue{$sl[0]}/) {
+                $serviceLevels{$sl[1]}{'servicelevel'} = $sl[1];
+            }
+            else {
+                $success = 0;
+                $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$sl[1]' for the variable '$sl[0]'...&quot;);
+            }
+        }
+        return ($sl[1], $alreadyExistingSL);
+    }
+    else {
+        my @slParam = split(/\s+/, $line);
+        if (exists $slParamValue{$slParam[0]}) {
+            if (defined $slParam[1]) {
+                if ($slParam[1] =~ m/$slParamValue{$slParam[0]}/) {
+                    $serviceLevels{$serviceLevel}{$slParam[0]} = $slParam[1];
+                }
+                else {
+                    $success = 0;
+                    $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$slParam[1]' for the variable '$slParam[0]'...&quot;);
+                }
+            }
+            else {
+                $success = 0;
+                $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '' for the variable '$slParam[0]'...&quot;);
+            }
+        }
+        else {
+            $success = 0;
+            $wfa_util-&gt;sendLog('ERROR', &quot;NEW KEYWORD '$slParam[0]' FOUND for servicelevel in the config file...&quot;);
+        }
+    }
+}
+################# APIs #################</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="debug" parameterName="debug"/>
+        <parameter-mapping objectName="defaultenforcement" parameterName="defaultenforcement"/>
+        <parameter-mapping objectName="defaultheadroom" parameterName="defaultheadroom"/>
+        <parameter-mapping objectName="defaultminiops" parameterName="defaultminiops"/>
+        <parameter-mapping objectName="defaultservicelevel" parameterName="defaultservicelevel"/>
+        <parameter-mapping objectName="defaultthinmin" parameterName="defaultthinmin"/>
+        <parameter-mapping objectName="facility" parameterName="facility"/>
+        <parameter-mapping objectName="logtoconsole" parameterName="logtoconsole"/>
+        <parameter-mapping objectName="maxcpuduration" parameterName="maxcpuduration"/>
+        <parameter-mapping objectName="maxcpupercent" parameterName="maxcpupercent"/>
+        <parameter-mapping objectName="nodeaction" parameterName="nodeaction"/>
+        <parameter-mapping objectName="nodename" parameterName="nodename"/>
+        <parameter-mapping objectName="prefer" parameterName="prefer"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <parameter-definitions>
+        <parameter-definition description="“debug” is used to more deeply understand what the Kitchen Police is doing.  The default is 0, which turns off all debug messages to syslog.&#xA;&#xA;The format is:&#xA;debug decimal-number&#xA;&#xA;• Debug 1 turns on basic debugging information and frequently pauses the program for 1 second.&#xA;• Debug 2 turns on verbose debugging information and frequently pauses the program for 2 seconds.&#xA;• Debug 3 or higher turns on extremely detailed debugging information and frequently pauses the program for 3 seconds." enumValues="0,1,2,3" isMandatory="false" name="debug" type="Enum">
+            <uuid>a95be31d-8cc2-4f8b-9185-a997e5aad917</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “defaultenforcement” keyword selects the default mode for a service level.&#xA;&#xA;The format is:&#xA;defaultenforcement mode&#xA;&#xA;There are three (3) modes:&#xA;• Thick&#xA;• Thin&#xA;• Effective" enumValues="effective,thick,thin" isMandatory="false" name="defaultenforcement" type="Enum">
+            <uuid>06afbd3a-5bfd-42b4-b203-ea2f8aa6ba98</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “defaultheadroom” keyword sets the default percentage of growth headroom used to calculate the max-throughput value for the volume QoS policy.&#xA;&#xA;The format is:&#xA;defaultheadroom decimal-number" isMandatory="false" name="defaultheadroom" type="String">
+            <uuid>47e290ff-590b-4de7-9b19-4eef2182f354</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “defaultminiops” sets the default lowest number of absolute IOPS for the max-throughput value of a volume QoS policy.&#xA;&#xA;The format is:&#xA;defaultminiops decimal-number" isMandatory="false" name="defaultminiops" type="String">
+            <uuid>d6e6b622-b178-4de8-84fd-eb75809fa719</uuid>
+        </parameter-definition>
+        <parameter-definition description="The Default Service Level is the service level definition used if a volume cannot be matched to any of the service level definitions provided in the configuration file.&#xA;&#xA;The format is:&#xA;defaultservicelevel service-level-name" isMandatory="false" name="defaultservicelevel" type="String">
+            <uuid>1c2dc290-88ef-4873-95fb-07435ed22ac3</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “defaultthinmin” keyword sets the default minimum percentage of capacity used to calculate the max-throughput value for the volume QoS policy.&#xA;&#xA;The format is:&#xA;defaultthinmin decimal-number" isMandatory="false" name="defaultthinmin" type="String">
+            <uuid>b925fd3c-c96c-4c86-8172-1f6cc19f11cb</uuid>
+        </parameter-definition>
+        <parameter-definition description="“facility” is the syslog facility that tags all messages written to syslog.&#xA;&#xA;The format is:&#xA;facility syslog-facility" isMandatory="false" name="facility" type="String">
+            <uuid>6815d551-879a-4cd7-a790-63c27b6e1075</uuid>
+        </parameter-definition>
+        <parameter-definition description="“logtoconsole” controls whether messages are written to only the syslog, or also to the console.&#xA;&#xA;The format is:&#xA;logtoconsole 0-or-1&#xA;&#xA;The default is 0, which means messages are written only to syslog.  Setting this variable to 1 causes all messages to also be written to the console." enumValues="0,1" isMandatory="false" name="logtoconsole" type="Enum">
+            <uuid>1f736fd3-4947-4f5c-afb6-776d1ccfe5f1</uuid>
+        </parameter-definition>
+        <parameter-definition description="“maxcpuduration” is the amount of time that the Kitchen Police measures CPU usage of the controller hosting the cluster management IP. This value controls how often the Kitchen Police checks the volumes for changes.&#xA;&#xA;The format is:&#xA;maxcpuduration decimal-number" isMandatory="false" name="maxcpuduration" type="String">
+            <uuid>737c9d71-a04c-4fd1-99bc-5d92ee1f4428</uuid>
+        </parameter-definition>
+        <parameter-definition description="“maxcpupercent” sets the maximum CPU busy for the controller hosting the cluster management IP. &#xA;&#xA;The format is:&#xA;maxcpupercent decimal-number" isMandatory="false" name="maxcpupercent" type="String">
+            <uuid>6d30bf58-6dab-4ced-b4aa-0331fa0cc66d</uuid>
+        </parameter-definition>
+        <parameter-definition description="This parameter will provide a interface to decide whether to add or delete node. Use it along with nodename parameter when requirement is to add or delete the node. Leave this unselected if no node action is expected." enumValues="add,delete" isMandatory="false" name="nodeaction" type="Enum">
+            <uuid>a84a8fdf-fd9f-4681-a728-7d742ce24ca9</uuid>
+        </parameter-definition>
+        <parameter-definition description="nodename is way to provide a node details to Adaptive QoS Policy setup" isMandatory="false" name="nodename" type="String">
+            <uuid>47461bbc-1da4-4fa4-94a8-3918430b9c0e</uuid>
+        </parameter-definition>
+        <parameter-definition description="In the case when a volume matches multiple service level definitions in the configuration file, the “prefer” keyword is used to default select the faster or the slower of service level definitions matching the volume.&#xA;&#xA;The format is:&#xA;prefer preference&#xA;&#xA;There are two preferences:&#xA;• Faster&#xA;• Slower" enumValues="faster,slower" isMandatory="false" name="prefer" type="Enum">
+            <uuid>593ae526-25ef-4862-949b-467938c2bed9</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

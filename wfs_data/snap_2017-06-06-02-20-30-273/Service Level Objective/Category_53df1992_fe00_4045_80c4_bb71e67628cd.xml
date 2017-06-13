@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<category name="Service Level Management">
+    <certification>NONE</certification>
+    <uuid>53df1992-fe00-4045-80c4-bb71e67628cd</uuid>
+    <version>1.0.0</version>
+    <description>Service Level Manager provides set of workflows for setting up service related configuration</description>
+    <workflows>
+        <workflow>084ac331-2fa4-4b90-b1c7-48e1a6b4396f</workflow>
+        <workflow>1c0e5e1a-80eb-4243-a359-7daf6811a966</workflow>
+        <workflow>d520a532-d314-4fb7-9fce-311704b8f958</workflow>
+        <workflow>8772ffeb-8006-4001-8d43-4117f4982bfc</workflow>
+        <workflow>9f2f7f43-1241-4973-8878-b1beba8036eb</workflow>
+        <workflow>c9b2e32f-f3f6-4e68-8422-25cce6d1b199</workflow>
+    </workflows>
+</category>

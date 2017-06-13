@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<category name="Service Level based Provisioning">
+    <certification>NONE</certification>
+    <uuid>fa356566-55a9-48b9-933a-84bae986d6b3</uuid>
+    <version>1.0.0</version>
+    <description>This will provide setup of workflows which will provision volume and LUN based on service levels</description>
+    <workflows>
+        <workflow>a4800ab5-af7c-4685-af14-7f829d8f9b42</workflow>
+        <workflow>f3f048b6-4d16-48c2-8922-6b3fab69e964</workflow>
+        <workflow>552ebf0b-9e93-4024-9dd8-7f4ef4c935f3</workflow>
+    </workflows>
+</category>

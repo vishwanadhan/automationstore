@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<finder description="This will return one aggregate per edge of relation in PSL" name="Find aggregates for protection service topology" privateFinder="false">
+    <certification>NETAPP</certification>
+    <uuid>4bf64077-a7bb-4e56-bf98-be56caa68023</uuid>
+    <version>1.0.0</version>
+    <attributes>
+        <attributes alias="name" columnName="name" sortingOrder="ASCENDING">
+            <filter>98f8946d-6cf9-483d-94d8-28f22ed206d0</filter>
+        </attributes>
+        <attributes alias="node.cluster.primary_address" columnName="node.cluster.primary_address" sortingOrder="ASCENDING">
+            <filter>98f8946d-6cf9-483d-94d8-28f22ed206d0</filter>
+        </attributes>
+        <attributes alias="node.name" columnName="node.name" sortingOrder="ASCENDING">
+            <filter>98f8946d-6cf9-483d-94d8-28f22ed206d0</filter>
+        </attributes>
+        <attributes alias="protection_service_name" columnName="protection_service_name" sortingOrder="ASCENDING">
+            <filter>98f8946d-6cf9-483d-94d8-28f22ed206d0</filter>
+        </attributes>
+        <attributes alias="source" columnName="source" sortingOrder="ASCENDING">
+            <filter>98f8946d-6cf9-483d-94d8-28f22ed206d0</filter>
+        </attributes>
+        <attributes alias="target_type" columnName="target_type" sortingOrder="ASCENDING">
+            <filter>98f8946d-6cf9-483d-94d8-28f22ed206d0</filter>
+        </attributes>
+        <attributes alias="target_service_name" columnName="target_service_name" sortingOrder="ASCENDING">
+            <filter>98f8946d-6cf9-483d-94d8-28f22ed206d0</filter>
+        </attributes>
+        <attributes alias="topology_name" columnName="topology_name" sortingOrder="ASCENDING">
+            <filter>98f8946d-6cf9-483d-94d8-28f22ed206d0</filter>
+        </attributes>
+        <attributes alias="target_retention_policy" columnName="target_retention_policy" sortingOrder="ASCENDING">
+            <filter>98f8946d-6cf9-483d-94d8-28f22ed206d0</filter>
+        </attributes>
+    </attributes>
+    <dictionary-entry>e603ad9b-e582-4037-83d6-dd747a49f57f</dictionary-entry>
+    <filters>
+        <filter>98f8946d-6cf9-483d-94d8-28f22ed206d0</filter>
+        <filter>8e859ebc-2d3f-4eb7-b9db-c8e142d6e630</filter>
+    </filters>
+</finder>

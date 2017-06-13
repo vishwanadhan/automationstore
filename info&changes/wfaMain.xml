@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowstore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sfa-store-interface.xsd">
+<publish-timestamp>201312192103</publish-timestamp>
+<data-base-url>host.btc.netapp.com</data-base-url>
+<wfa-packs><wfa-pack-info>
+  <uuid>a1234</uuid>
+  <pack-name>Oracle Database Storage Provisioning</pack-name>
+  <pack-description>User for Oracle DB setup</pack-description>
+  <author>TG-Name</author>
+  <certified-by>NetApp</certified-by>
+  <version>1.0</version>
+  <min-wfa-version>3.0</min-wfa-version>
+  <keywords>Express setup, setup</keywords>
+  <pack-entities>
+      <entity type="workflow">
+          <uuid>B1234</uuid>
+          <name>Create Volume</name>
+          <description>This is to create volume</description>
+          <version>1.0.0</version>
+          <certified-by>WFA</certified-by>
+          <min-ontap-version>8.2.0</min-ontap-version>
+           <schemes>    
+              <scheme>storage</scheme>
+          </schemes>
+      </entity>
+      <entity type="command">
+          <uuid>uid</uuid>
+          <name>Create Volume</name>
+          <description>This is to create volume</description>
+          <version>1.0</version>
+          <certified-by>WFA</certified-by>
+          <min-ontap-version>8.2.0</min-ontap-version>
+          <schemes>    
+              <scheme>storage</scheme>
+          </schemes>
+      </entity>
+  </pack-entities>
+</wfa-pack-info><wfa-pack-info>
+  <uuid>a1234</uuid>
+  <pack-name>Oracle Database Storage Provisioning</pack-name>
+  <pack-description>User for Oracle DB setup</pack-description>
+  <author>TG-Name</author>
+  <certified-by>NetApp</certified-by>
+  <version>1.0</version>
+  <min-wfa-version>3.0</min-wfa-version>
+  <keywords>Express setup, setup</keywords>
+  <pack-entities>
+      <entity type="workflow">
+          <uuid>B1234</uuid>
+          <name>Create Volume</name>
+          <description>This is to create volume</description>
+          <version>1.0.0</version>
+          <certified-by>WFA</certified-by>
+          <min-ontap-version>8.2.0</min-ontap-version>
+           <schemes>    
+              <scheme>storage</scheme>
+          </schemes>
+      </entity>
+      <entity type="command">
+          <uuid>uid</uuid>
+          <name>Create Volume</name>
+          <description>This is to create volume</description>
+          <version>1.0</version>
+          <certified-by>WFA</certified-by>
+          <min-ontap-version>8.2.0</min-ontap-version>
+          <schemes>    
+              <scheme>storage</scheme>
+          </schemes>
+      </entity>
+  </pack-entities>
+</wfa-pack-info></wfa-packs>
+</workflowstore>

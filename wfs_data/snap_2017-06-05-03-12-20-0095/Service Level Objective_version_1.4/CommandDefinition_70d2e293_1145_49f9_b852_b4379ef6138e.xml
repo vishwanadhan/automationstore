@@ -1,0 +1,795 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="QoS Config File Manager (Service Level)" samplingIntervalInSeconds="60" stringRepresentation="&quot;Service Level &quot; + Action + &quot; for servicelevel '&quot; + servicelevel + &quot;'&quot; " timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>70d2e293-1145-49f9-b852-b4379ef6138e</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use warnings;
+use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+use File::Spec;
+use File::Basename;
+use Data::Dumper;
+
+################# Decl #################
+my %confFile = ();
+my %nodes = ();
+my %prefer = ();
+my %defaultServiceLevel = ();
+my %defaultEnforcement = ();
+my %defaultThinMin = ();
+my %defaultHeadRoom = ();
+my %defaultMinIops = ();
+my %maxCpuPercent = ();
+my %maxCpuDuration = ();
+my %logToConsole = ();
+my %facility = ();
+my %debug = ();
+my %serviceLevels = ();
+my $x = 1;
+my $success = 1;
+my $ConfFilePath = &quot;&quot;;
+my $Action = &quot;&quot;;
+my $ServiceLevel = &quot;&quot;;
+my $iopsthrottle = undef;
+my $enforce = undef;
+my $miniops = undef;
+my $thinmin = undef;
+my $headroom = undef;
+my $disktypes = undef;
+my $diskrpm = undef;
+my $hybrid = undef;
+my $volinclude = undef;
+my $volexclude = undef;
+my $agginclude = undef;
+my $aggexclude = undef;
+my $appendAggInclude = &quot;true&quot;;
+my $FromQoS = undef;
+my @changeReq = ();
+my $failureMessage = &quot;&quot;;
+my $removeaggrfromagginclude = undef;
+my %slParamValue = (
+                    'iopsthrottle'              =&gt; qr/^\d*(\.\d+)?$/,
+                    'enforce'                   =&gt; qr/^(thick|thin|effective)$/i,
+                    'miniops'                   =&gt; qr/^\d*(\.\d+)?$/,
+                    'thinmin'                   =&gt; qr/^0*(\d{1,2}(?:\.\d+)?|100)$/,
+                    'headroom'                  =&gt; qr/^0*(\d{1,2}(?:\.\d+)?|100)$/,
+                    'disktypes'                 =&gt; qr/^(ATA|EATA|FCAL|LUN|MSATA|SAS|BSAS|SATA|SCSI|SSD|XATA|XSAS|FSAS|unknown)(\|(ATA|EATA|FCAL|LUN|MSATA|SAS|BSAS|SATA|SCSI|SSD|XATA|XSAS|FSAS|unknown))*$/,
+                    'diskrpm'                   =&gt; qr/^\d*(\.\d+)?$/,
+                    'hybrid'                    =&gt; qr/^(true|false)$/i,
+                    'volinclude'                =&gt; qr/^([a-zA-Z_]+([a-zA-Z0-9_]+)?)(\|([a-zA-Z_]+([a-zA-Z0-9_]+)?))*$/,
+                    'volexclude'                =&gt; qr/^([a-zA-Z_]+([a-zA-Z0-9_]+)?)(\|([a-zA-Z_]+([a-zA-Z0-9_]+)?))*$/,
+                    'agginclude'                =&gt; qr/^([a-zA-Z_]+([a-zA-Z0-9_]+)?)(\|([a-zA-Z_]+([a-zA-Z0-9_]+)?))*$/,
+                    'aggexclude'                =&gt; qr/^([a-zA-Z_]+([a-zA-Z0-9_]+)?)(\|([a-zA-Z_]+([a-zA-Z0-9_]+)?))*$/,
+                    'removeaggrfromagginclude'  =&gt; qr/^([a-zA-Z_]+([a-zA-Z0-9_]+)?)(\|([a-zA-Z_]+([a-zA-Z0-9_]+)?))*$/,
+                    'servicelevel'              =&gt; qr/^[a-zA-Z_]+([a-zA-Z0-9_\-]+)?$/
+                   );
+################# Decl #################
+
+################# Main #################
+GetOptions(
+#    &quot;ConfFilePath=s&quot;               =&gt; \$ConfFilePath,
+    &quot;Action=s&quot;                      =&gt; \$Action,
+    &quot;ServiceLevel=s&quot;                =&gt; \$ServiceLevel,
+    &quot;iopsthrottle=s&quot;                =&gt; \$iopsthrottle,
+    &quot;enforce=s&quot;                     =&gt; \$enforce,
+    &quot;FromQoS=s&quot;		=&gt; \$FromQoS,
+    &quot;miniops=s&quot;                     =&gt; \$miniops,
+    &quot;thinmin=s&quot;                     =&gt; \$thinmin,
+    &quot;headroom=s&quot;                    =&gt; \$headroom,
+    &quot;disktypes=s&quot;                   =&gt; \$disktypes,
+    &quot;diskrpm=s&quot;                     =&gt; \$diskrpm,
+    &quot;hybrid=s&quot;                      =&gt; \$hybrid,
+    &quot;volinclude=s&quot;                  =&gt; \$volinclude,
+    &quot;volexclude=s&quot;                  =&gt; \$volexclude,
+    &quot;agginclude=s&quot;                  =&gt; \$agginclude,
+    &quot;aggexclude=s&quot;                  =&gt; \$aggexclude,
+    &quot;appendAggInclude=s&quot;                  =&gt; \$appendAggInclude,
+    &quot;removeaggrfromagginclude=s&quot;    =&gt; \$removeaggrfromagginclude
+) or die 'Illegal command parameters';
+
+my $wfa_util = WFAUtil-&gt;new();
+
+# Getting config file path
+if ($ConfFilePath eq &quot;&quot;) {
+    $ConfFilePath = &amp;getConfFilePath();
+}
+
+eval {
+    &amp;readConfFile($ConfFilePath);
+    if ($success) {
+        $wfa_util-&gt;sendLog('INFO', &quot;Reading of existing config file has completed successfully ...&quot;);
+    }
+    else {
+        $failureMessage = &quot;Flaws exist in the config file. CORRECT THE INPUT CONFIG FILE ...&quot;;
+        $wfa_util-&gt;sendLog('INFO', &quot;$failureMessage&quot;);
+    }
+    if ($success) {
+        &amp;makeChangeReqArray;
+        &amp;modifyConfFile($Action);
+        if ($success) {
+            $wfa_util-&gt;sendLog('INFO', &quot;Modification has done based on user input ...&quot;);
+        }
+        else {
+            $failureMessage = &quot;NO MODIFICATION HAS MADE. CONFIG FILE STAYS AS IS ...&quot;;
+            $wfa_util-&gt;sendLog('INFO', &quot;$failureMessage&quot;);
+        }
+    }
+    &amp;updateConfFile;
+    if ($success) {
+        &amp;writeConfFile;
+        $wfa_util-&gt;sendLog('INFO', &quot;Writing of modified config file has completed successfully ...&quot;);
+    }
+};
+if (!$success || $@) {
+    if ($@) {
+        $wfa_util-&gt;checkEvalFailure(&quot;Failed to change config file ($ConfFilePath) &quot;, $@);
+    }
+    else {
+        local ($@) = $failureMessage;
+        $wfa_util-&gt;checkEvalFailure(&quot;Failed to change config file ($ConfFilePath) &quot;, $@);
+    }
+}
+################# Main #################
+
+
+################# APIs #################
+sub getConfFilePath {
+    my $exeDir = dirname(File::Spec-&gt;rel2abs(__FILE__));
+    my $installDir = (split(/WFA/, $exeDir))[0];
+    my $dirSeparator = substr($installDir, -1);
+    my $filePath = join(&quot;$dirSeparator&quot;, $installDir.&quot;WFA&quot;, &quot;kitchen&quot;, &quot;config.txt&quot;);
+    return $filePath;
+}
+
+sub readConfFile {
+    my $input = shift;
+    open(CONF_FILE, &quot;&lt;&quot;, $input) || die(&quot;Cannot open file '$input' for reading: $!&quot;);
+    my @confFileContent = &lt;CONF_FILE&gt;;
+    close(CONF_FILE);
+    
+    my $y = $x;
+    my $serviceLevelOn = 0;
+    my $serviceLevel = &quot;&quot;;
+    my $alreadyExistingSL = 1;
+    my $node = &quot;&quot;;
+    my $alreadyExistingNode = 1;
+
+    foreach my $line (@confFileContent) {
+        next if ((!$line) || ($line=~/^\;/));
+        if ($line =~ m/^#/) {
+            $y = ++$x if ($x != $y);
+            push(@{$confFile{$x}}, $line);
+            $serviceLevelOn = 0;
+            next;
+        }
+        if ($serviceLevelOn) {
+            &amp;processServiceLevel($line, $serviceLevel);
+            return if (!$success);
+            next;
+        }
+        if ($line =~ m/^(nodename)/) {
+            ($node, $alreadyExistingNode) = &amp;processNodes($line);
+            return if (!$success);
+            $confFile{++$x} = $nodes{$node};
+            next;
+        }
+        if ($line =~ m/^(prefer)/) {
+            &amp;processPrefer($line);
+            return if (!$success);
+            $confFile{++$x} = \%prefer;
+            next;
+        }
+        if ($line =~ m/^(defaultservicelevel)/) {
+            &amp;processDefaultServiceLevel($line);
+            return if (!$success);
+            $confFile{++$x} = \%defaultServiceLevel;
+            next;
+        }
+        if ($line =~ m/^(defaultenforcement)/) {
+            &amp;processDefaultEnforcement($line);
+            return if (!$success);
+            $confFile{++$x} = \%defaultEnforcement;
+            next;
+        }
+        if ($line =~ m/^(defaultthinmin)/) {
+            &amp;processDefaultThinMin($line);
+            return if (!$success);
+            $confFile{++$x} = \%defaultThinMin;
+            next;
+        }
+        if ($line =~ m/^(defaultheadroom)/) {
+            &amp;processDefaultHeadRoom($line);
+            return if (!$success);
+            $confFile{++$x} = \%defaultHeadRoom;
+            next;
+        }
+        if ($line =~ m/^(defaultminiops)/) {
+            &amp;processDefaultMinIops($line);
+            return if (!$success);
+            $confFile{++$x} = \%defaultMinIops;
+            next;
+        }
+        if ($line =~ m/^(maxcpupercent)/) {
+            &amp;processMaxCpuPercent($line);
+            return if (!$success);
+            $confFile{++$x} = \%maxCpuPercent;
+            next;
+        }
+        if ($line =~ m/^(maxcpuduration)/) {
+            &amp;processMaxCpuDuration($line);
+            return if (!$success);
+            $confFile{++$x} = \%maxCpuDuration;
+            next;
+        }
+        if ($line =~ m/^(logtoconsole)/) {
+            &amp;processLogToConsole($line);
+            return if (!$success);
+            $confFile{++$x} = \%logToConsole;
+            next;
+        }
+        if ($line =~ m/^(facility)/) {
+            &amp;processFacility($line);
+            return if (!$success);
+            $confFile{++$x} = \%facility;
+            next;
+        }
+        if ($line =~ m/^(debug)/) {
+            &amp;processDebug($line);
+            return if (!$success);
+            $confFile{++$x} = \%debug;
+            next;
+        }
+        if ($line =~ m/^(servicelevel)/) {
+            $serviceLevelOn = 1;
+            ($serviceLevel, $alreadyExistingSL) = &amp;processServiceLevel($line, undef);
+            return if (!$success);
+            $confFile{++$x} = $serviceLevels{$serviceLevel};
+            next;
+        }
+    }
+}
+
+sub makeChangeReqArray {
+    push(@changeReq, &quot;servicelevel $ServiceLevel \n&quot;);
+    if (defined $iopsthrottle) {
+        push(@changeReq, &quot;iopsthrottle $iopsthrottle \n&quot;);
+    }
+    if (defined $enforce) {
+        push(@changeReq, &quot;enforce $enforce \n&quot;);
+    }
+    if (defined $miniops) {
+        push(@changeReq, &quot;miniops $miniops \n&quot;);
+    }
+    if (defined $thinmin) {
+        push(@changeReq, &quot;thinmin $thinmin \n&quot;);
+    }
+    if (defined $headroom) {
+        push(@changeReq, &quot;headroom $headroom \n&quot;);
+    }
+    if (defined $disktypes) {
+        push(@changeReq, &quot;disktypes $disktypes \n&quot;);
+    }
+    if (defined $diskrpm) {
+        push(@changeReq, &quot;diskrpm $diskrpm \n&quot;);
+    }
+    if (defined $hybrid) {
+        push(@changeReq, &quot;hybrid $hybrid \n&quot;);
+    }
+    if (defined $volinclude) {
+        push(@changeReq, &quot;volinclude $volinclude \n&quot;);
+    }
+    if (defined $volexclude) {
+        push(@changeReq, &quot;volexclude $volexclude \n&quot;);
+    }
+    if (defined $agginclude) {
+        push(@changeReq, &quot;agginclude $agginclude \n&quot;);
+    }
+    if (defined $aggexclude) {
+        push(@changeReq, &quot;aggexclude $aggexclude \n&quot;);
+    }
+    if (defined $removeaggrfromagginclude) {
+        push(@changeReq, &quot;removeaggrfromagginclude $removeaggrfromagginclude \n&quot;);
+    }
+}
+
+sub writeConfFile {
+    open(CONF_FILE, &quot;&gt;&quot;, &quot;$ConfFilePath&quot;) || die(&quot;Cannot open file '$ConfFilePath' for writing: $!&quot;);
+    my $sizeOfConfFile = keys %confFile;
+    for (my $index = 1; $index &lt;= $sizeOfConfFile; $index++) {
+        if (not exists $confFile{$index}) {
+            $sizeOfConfFile++;
+            next;
+        }
+        if (ref($confFile{$index}) eq &quot;ARRAY&quot;) {
+            my @content = @{$confFile{$index}};
+            print CONF_FILE @content;
+        }
+        if (ref($confFile{$index}) eq &quot;HASH&quot;) {
+            if (exists $confFile{$index}{'nodename'}) {
+                print CONF_FILE &quot;nodename $confFile{$index}{'nodename'} \n&quot;;
+            }
+            else {
+                my @content = ();
+                while (my( $key, $value ) = each %{$confFile{$index}}) {
+                    if ($key eq &quot;servicelevel&quot;) {
+                        unshift(@content, &quot;$key $value\n&quot;);
+                    }
+                    else {
+                        push(@content, &quot;$key $value\n&quot;);
+                    }
+                }
+                print CONF_FILE @content;
+            }
+        }
+    }
+    close(CONF_FILE)
+}
+sub modifyConfFile {
+    my $request = shift;
+
+    my $serviceLevelOn = 0;
+    my $serviceLevel = &quot;&quot;;
+    my $alreadyExistingSL = 1;
+
+    if ($request eq &quot;add&quot;) {
+        foreach my $line (@changeReq) {
+            next if ((!$line) || ($line=~/^\;/) || ($line=~/^\#/));
+            if (!$serviceLevelOn) {
+                my @slComment = (&quot;#\n&quot;,&quot;# service level definition for all nodes\n&quot;);
+                $confFile{++$x} = \@slComment;
+            }
+            if ($serviceLevelOn) {
+                &amp;processServiceLevel($line, $serviceLevel);
+                return if (!$success);
+                next;
+            }
+            if ($line =~ m/^(servicelevel)/) {
+                $serviceLevelOn = 1;
+                ($serviceLevel, $alreadyExistingSL) = &amp;processServiceLevel($line, undef);
+                return if (!$success);
+                if ($alreadyExistingSL) {
+                    delete $confFile{$x--};
+                    $wfa_util-&gt;sendLog('INFO', &quot;Duplicate Service level '$serviceLevel' found. Addition of service level has been CANCELLED ...&quot;);
+                    $success = 0;
+                    last;
+                }
+                else {
+                    $confFile{++$x} = $serviceLevels{$serviceLevel};
+                    $wfa_util-&gt;sendLog('INFO', &quot;Service level '$serviceLevel' has been added successfully ...&quot;);
+                    next;
+                }
+            }
+        }
+    }
+    if ($request eq &quot;update&quot;) {
+        #$appendAggInclude = 1;
+        foreach my $line (@changeReq) {
+            next if ((!$line) || ($line=~/^\;/) || ($line=~/^\#/));
+            if ($serviceLevelOn) {
+                &amp;processServiceLevel($line, $serviceLevel);
+                return if (!$success);
+                next;
+            }
+            if ($line =~ m/^(servicelevel)/) {
+                $serviceLevelOn = 1;
+                ($serviceLevel, $alreadyExistingSL) = &amp;processServiceLevel($line, undef);
+                return if (!$success);
+                if (!$alreadyExistingSL) {
+                    $wfa_util-&gt;sendLog('INFO', &quot;Service level '$serviceLevel' hasn't found for update ...&quot;);
+                    delete $serviceLevels{$serviceLevel};
+                    $success = 0;
+                    last;
+                }
+                next;
+            }
+        }
+    }
+    if ($request eq &quot;delete&quot;) {
+        my $deleteSuccess = 0;
+        foreach my $line (@changeReq) {
+            next if ((!$line) || ($line=~/^\;/) || ($line=~/^\#/));
+            if ($line =~ m/^(servicelevel)/) {
+                ($serviceLevel, $alreadyExistingSL) = &amp;processServiceLevel($line, undef);
+                return if (!$success);
+                if (exists $serviceLevels{$serviceLevel}) {
+                    delete $serviceLevels{$serviceLevel};
+                }
+                foreach my $entry (keys %confFile) {
+                    if ((ref($confFile{$entry}) eq &quot;HASH&quot;) &amp;&amp; (exists $confFile{$entry}{'servicelevel'}) &amp;&amp; ($confFile{$entry}{'servicelevel'} eq $serviceLevel)) {
+                        delete $confFile{$entry};
+                        delete $confFile{--$entry};
+                        $wfa_util-&gt;sendLog('INFO', &quot;Service level '$serviceLevel' has been deleted successfully ...&quot;);
+                        $deleteSuccess = 1;
+                    }
+                }
+            }
+        }
+        if (!$deleteSuccess) {
+            $wfa_util-&gt;sendLog('INFO', &quot;Service level '$serviceLevel' hasn't found for deletion ...&quot;);
+            $success = 0;
+        }
+    }
+}
+
+sub processNodes {
+    my $line = shift;
+    my $alreadyExistingNode = 1;
+    my @node = split(/\s+/, $line);
+    if (((defined $node[1]) &amp;&amp; ($node[1] =~ m/^(([a-zA-Z_]+(\.?[a-zA-Z0-9_]+)*)|(([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])))$/))) {
+        if (not exists $nodes{$node[1]}) {
+            $nodes{$node[1]}{'nodename'} = $node[1];
+            #$nodes{$node[1]}{'username'} = $node[2];
+            #$nodes{$node[1]}{'password'} = $node[3];
+            $alreadyExistingNode = 0;
+        }
+        else {
+            #$nodes{$node[1]}{'username'} = $node[2];
+            #$nodes{$node[1]}{'password'} = $node[3];
+        }
+        return ($node[1], $alreadyExistingNode);
+    }
+    else {
+        $success = 0;
+        if (not defined $node[1]) {
+            $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '' for the variable 'nodename'...&quot;);
+        }
+        else {
+            $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$node[1]' for the variable 'nodename'...&quot;);
+        }
+    }
+}
+sub processPrefer {
+    my $line = shift;
+    my @pref = split(/\s+/, $line);
+    if ((defined $pref[1]) &amp;&amp; ($pref[1] =~ m/(faster|slower)$/i)) {
+        $prefer{'prefer'} = $pref[1];
+    }
+    else {
+        $success = 0;
+        $pref[1] = &quot;&quot; if (not defined $pref[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$pref[1]' for the variable 'prefer'...&quot;);
+    }
+}
+sub processDefaultServiceLevel {
+    my $line = shift;
+    my @dsl = split(/\s+/, $line);
+    if ((defined $dsl[1]) &amp;&amp; ($dsl[1] =~ m/^[a-zA-Z_]+([a-zA-Z0-9_]+)?$/)) {
+        $defaultServiceLevel{'defaultservicelevel'} = $dsl[1];
+    }
+    else {
+        $success = 0;
+        $dsl[1] = &quot;&quot; if (not defined $dsl[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$dsl[1]' for the variable 'defaultservicelevel'...&quot;);
+    }
+}
+sub processDefaultEnforcement {
+    my $line = shift;
+    my @de = split(/\s+/, $line);
+    if ((defined $de[1]) &amp;&amp; ($de[1] =~ m/(thick|thin|effective)$/i)) {
+        $defaultEnforcement{'defaultenforcement'} = $de[1];
+    }
+    else {
+        $success = 0;
+        $de[1] = &quot;&quot; if (not defined $de[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$de[1]' for the variable 'defaultenforcement'...&quot;);
+    }
+}
+sub processDefaultThinMin {
+    my $line = shift;
+    my @dtm = split(/\s+/, $line);
+    if ((defined $dtm[1]) &amp;&amp; ($dtm[1] =~ m/^0*(\d{1,2}(?:\.\d+)?|100)$/)) {
+        $defaultThinMin{'defaultthinmin'} = $dtm[1];
+    }
+    else {
+        $success = 0;
+        $dtm[1] = &quot;&quot; if (not defined $dtm[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$dtm[1]' for the variable 'defaultthinmin'...&quot;);
+    }
+}
+sub processDefaultHeadRoom {
+    my $line = shift;
+    my @dhr = split(/\s+/, $line);
+    if ((defined $dhr[1]) &amp;&amp; ($dhr[1] =~ m/^0*(\d{1,2}(?:\.\d+)?|100)$/)) {
+        $defaultHeadRoom{'defaultheadroom'} = $dhr[1];
+    }
+    else {
+        $success = 0;
+        $dhr[1] = &quot;&quot; if (not defined $dhr[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$dhr[1]' for the variable 'defaultheadroom'...&quot;);
+    }
+}
+sub processDefaultMinIops {
+    my $line = shift;
+    my @dmi = split(/\s+/, $line);
+    if ((defined $dmi[1]) &amp;&amp; ($dmi[1] =~ m/^\d*(\.\d+)?$/)) {
+        $defaultMinIops{'defaultminiops'} = $dmi[1];
+    }
+    else {
+        $success = 0;
+        $dmi[1] = &quot;&quot; if (not defined $dmi[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$dmi[1]' for the variable 'defaultminiops'...&quot;);
+    }
+}
+sub processMaxCpuPercent {
+    my $line = shift;
+    my @mcp = split(/\s+/, $line);
+    if ((defined $mcp[1]) &amp;&amp; ($mcp[1] =~ m/^0*(\d{1,2}(?:\.\d+)?|100)$/)) {
+        $maxCpuPercent{'maxcpupercent'} = $mcp[1];
+    }
+    else {
+        $success = 0;
+        $mcp[1] = &quot;&quot; if (not defined $mcp[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$mcp[1]' for the variable 'maxcpupercent'...&quot;);
+    }
+}
+sub processMaxCpuDuration {
+    my $line = shift;
+    my @mcd = split(/\s+/, $line);
+    if ((defined $mcd[1]) &amp;&amp; ($mcd[1] =~ m/^\d*(\.\d+)?$/)) {
+        $maxCpuDuration{'maxcpuduration'} = $mcd[1];
+    }
+    else {
+        $success = 0;
+        $mcd[1] = &quot;&quot; if (not defined $mcd[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$mcd[1]' for the variable 'maxcpuduration'...&quot;);
+    }
+}
+sub processLogToConsole {
+    my $line = shift;
+    my @ltc = split(/\s+/, $line);
+    if ((defined $ltc[1]) &amp;&amp; ($ltc[1] =~ m/^(0|1)$/)) {
+        $logToConsole{'logtoconsole'} = $ltc[1];
+    }
+    else {
+        $success = 0;
+        $ltc[1] = &quot;&quot; if (not defined $ltc[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$ltc[1]' for the variable 'logtoconsole'...&quot;);
+    }
+}
+sub processFacility {
+    my $line = shift;
+    my @f = split(/\s+/, $line);
+    if ((defined $f[1]) &amp;&amp; ($f[1] =~ m/^[a-zA-Z_]+([a-zA-Z0-9_]+)?$/)) {
+        $facility{'facility'} = $f[1];
+    }
+    else {
+        $success = 0;
+        $f[1] = &quot;&quot; if (not defined $f[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$f[1]' for the variable 'facility'...&quot;);
+    }
+}
+sub processDebug {
+    my $line = shift;
+    my @d = split(/\s+/, $line);
+    if ((defined $d[1]) &amp;&amp; ($d[1] =~ m/^(0|1|2|3)$/)) {
+        $debug{'debug'} = $d[1];
+    }
+    else {
+        $success = 0;
+        $d[1] = &quot;&quot; if (not defined $d[1]);
+        $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$d[1]' for the variable 'debug'...&quot;);
+    }
+}
+sub processServiceLevel {
+    my $line = shift;
+    my $serviceLevel = shift;
+    if (not defined $serviceLevel) {
+        my @sl = split(/\s+/, $line);
+        my $alreadyExistingSL = 1;
+        if (not exists $serviceLevels{$sl[1]}) {
+            $alreadyExistingSL = 0;
+            if ($sl[1] =~ m/$slParamValue{$sl[0]}/) {
+                $serviceLevels{$sl[1]}{'servicelevel'} = $sl[1];
+            }
+            else {
+                $success = 0;
+                $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$sl[1]' for the variable '$sl[0]'...&quot;);
+            }
+        }
+        return ($sl[1], $alreadyExistingSL);
+    }
+    else {
+        my @slParam = split(/\s+/, $line);
+        if (exists $slParamValue{$slParam[0]}) {
+            if (defined $slParam[1]) {
+                if ($slParam[1] =~ m/$slParamValue{$slParam[0]}/) {
+                    if (($appendAggInclude eq &quot;true&quot;) &amp;&amp; ($slParam[0] eq &quot;agginclude&quot;) &amp;&amp; ($serviceLevels{$serviceLevel}{$slParam[0]})) {
+                        my $oldAggInclude = $serviceLevels{$serviceLevel}{$slParam[0]};
+                        $serviceLevels{$serviceLevel}{$slParam[0]} = join('|', $oldAggInclude, $slParam[1]);
+                    } elsif (($appendAggInclude eq 'false') &amp;&amp; ($slParam[0] eq &quot;agginclude&quot;) &amp;&amp; ($serviceLevels{$serviceLevel}{$slParam[0]})) {
+                        my $oldAggInclude = $serviceLevels{$serviceLevel}{$slParam[0]};
+                        $serviceLevels{$serviceLevel}{$slParam[0]} = $slParam[1];
+                    }
+                    elsif (($appendAggInclude eq &quot;true&quot;) &amp;&amp; ($slParam[0] eq &quot;removeaggrfromagginclude&quot;)) {
+                        if ($serviceLevels{$serviceLevel}{'agginclude'}) {
+                            my @removableAggregates = split(/\|/, $slParam[1]);
+                            my $aggInclude = \$serviceLevels{$serviceLevel}{'agginclude'};
+                            my @includedAggregates = split(/\|/, $$aggInclude);
+                            if (scalar(@removableAggregates) &lt;= scalar(@includedAggregates)) {
+                                my @aggrNotFound = ();
+                                foreach my $aggr (@removableAggregates) {
+                                    if ($$aggInclude =~ m/$aggr/) {
+                                        $$aggInclude =~ s/$aggr//g;
+                                    }
+                                    else {
+                                        push(@aggrNotFound, $aggr);
+                                    }
+                                }
+                                if (scalar(@aggrNotFound)) {
+                                    $success = 0;
+                                    my $aggrList = join(',', @aggrNotFound);
+                                    $wfa_util-&gt;sendLog('INFO', &quot;Aggregate(s) '$aggrList' NOT FOUND in 'agginclude' for storage service '$serviceLevel'. Hence, NO AGGREGATE REMOVAL HAPPENED...&quot;);
+                                }
+                                else {
+                                    if (scalar(@removableAggregates) == scalar(@includedAggregates)) {
+                                        delete $serviceLevels{$serviceLevel}{'agginclude'};
+                                    }
+                                    else {
+                                        $$aggInclude =~ s/\|+/\|/g;
+                                        $$aggInclude =~ s/^\|//;
+                                        $$aggInclude =~ s/\|$//;
+                                    }
+                                }
+                            }
+                            else {
+                                $success = 0;
+                                $wfa_util-&gt;sendLog('INFO', &quot;MORE NUMBER OF AGGREGATES FOUND in the removal list than 'agginclude' for storage service '$serviceLevel'. Hence, NO AGGREGATE REMOVAL HAPPENED...&quot;);
+                            }
+                        }
+                        else {
+                            $success = 0;
+                            $wfa_util-&gt;sendLog('INFO', &quot;'agginclude' NOT FOUND for storage service '$serviceLevel'. Hence, NO AGGREGATE REMOVAL HAPPENED...&quot;);
+                        }
+                    }
+                    else {
+                        $serviceLevels{$serviceLevel}{$slParam[0]} = $slParam[1] unless ($slParam[0] eq &quot;removeaggrfromagginclude&quot;);
+                    }
+                }
+                else {
+                    $success = 0;
+                    $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '$slParam[1]' for the variable '$slParam[0]'...&quot;);
+                }
+            }
+            else {
+                $success = 0;
+                $wfa_util-&gt;sendLog('ERROR', &quot;WRONG INPUT '' for the variable '$slParam[0]'...&quot;);
+            }
+        }
+        else {
+            $success = 0;
+            $wfa_util-&gt;sendLog('ERROR', &quot;NEW KEYWORD '$slParam[0]' FOUND for servicelevel in the config file...&quot;);
+        }
+    }  
+}
+
+sub updateConfFile {
+if (defined $ServiceLevel) {
+   if ($FromQoS eq 'false') {
+       if (!defined $agginclude &amp;&amp; $appendAggInclude eq 'false'){
+           if (defined $serviceLevels{$ServiceLevel}{'agginclude'}) {
+  	delete $serviceLevels{$ServiceLevel}{'agginclude'};
+           }
+      }
+      if (!defined $aggexclude &amp;&amp; $appendAggInclude eq 'false'){
+            if (defined $serviceLevels{$ServiceLevel}{'aggexclude'}) {
+  	delete $serviceLevels{$ServiceLevel}{'aggexclude'};
+           }
+      }      
+   } else {
+       if (!defined $enforce) {
+             if (defined $serviceLevels{$ServiceLevel}{'enforce'}) {
+    	    delete $serviceLevels{$ServiceLevel}{'enforce'};
+            }
+        } 
+        if (!defined $volinclude) {
+             if (defined $serviceLevels{$ServiceLevel}{'volinclude'}) {
+  	    delete $serviceLevels{$ServiceLevel}{'volinclude'};
+             }
+        }
+        if (!defined $volexclude) {
+             if (defined $serviceLevels{$ServiceLevel}{'volexclude'}) {
+	   delete $serviceLevels{$ServiceLevel}{'volexclude'};
+             }
+        }
+        if (!defined $disktypes) {
+             if (defined $serviceLevels{$ServiceLevel}{'disktypes'}) {
+	    delete $serviceLevels{$ServiceLevel}{'disktypes'};
+             }
+        }
+        if (!defined $diskrpm) {
+             if (defined $serviceLevels{$ServiceLevel}{'diskrpm'}) {
+	    delete $serviceLevels{$ServiceLevel}{'diskrpm'};
+             }
+        } 
+        if (!defined $hybrid) {
+             if (defined $serviceLevels{$ServiceLevel}{'hybrid'}) {
+	    delete $serviceLevels{$ServiceLevel}{'hybrid'};
+             }
+        }
+     }    
+}
+}
+################# APIs #################</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+        <parameter-mapping objectName="FromQoS" parameterName="FromQoS"/>
+        <parameter-mapping objectName="aggexclude" parameterName="aggexclude"/>
+        <parameter-mapping objectName="agginclude" parameterName="agginclude"/>
+        <parameter-mapping objectName="appendAggInclude" parameterName="appendAggInclude"/>
+        <parameter-mapping objectName="diskrpm" parameterName="diskrpm"/>
+        <parameter-mapping objectName="disktypes" parameterName="disktypes"/>
+        <parameter-mapping objectName="enforce" parameterName="enforce"/>
+        <parameter-mapping objectName="headroom" parameterName="headroom"/>
+        <parameter-mapping objectName="hybrid" parameterName="hybrid"/>
+        <parameter-mapping objectName="iopsthrottle" parameterName="iopsthrottle"/>
+        <parameter-mapping objectName="miniops" parameterName="miniops"/>
+        <parameter-mapping objectName="removeaggrfromagginclude" parameterName="removeaggrfromagginclude"/>
+        <parameter-mapping objectName="servicelevel" parameterName="servicelevel"/>
+        <parameter-mapping objectName="thinmin" parameterName="thinmin"/>
+        <parameter-mapping objectName="volexclude" parameterName="volexclude"/>
+        <parameter-mapping objectName="volinclude" parameterName="volinclude"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <parameter-definitions>
+        <parameter-definition enumValues="add,update,delete" isMandatory="true" name="Action" type="Enum">
+            <uuid>529dc22e-3445-443c-8666-4e26c254ab63</uuid>
+        </parameter-definition>
+        <parameter-definition description="True if command is executed from QoS configuratin workflow and false if run from Storage service level workflow" isMandatory="true" name="FromQoS" type="Boolean">
+            <uuid>824ce783-27d6-4033-80ec-9bc6aaa57c18</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “aggexclude” keyword specify a regular expression pattern to use for matching against the containing aggregate name for the volume.&#xA;&#xA;The format is:&#xA;aggexclude regular-expression-pattern&#xA;&#xA;For example:&#xA;aggexclude archive|backup&#xA;&#xA;If this keyword is omitted, a volume in any aggregate name could match this service level." isMandatory="false" name="aggexclude" type="String">
+            <uuid>fc38170d-a7b3-4c39-8864-dd7044c41e52</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “agginclude” keyword specify a regular expression pattern to use for matching against the containing aggregate name for the volume.&#xA;&#xA;The format is:&#xA;agginclude regular-expression-pattern&#xA;&#xA;For example:&#xA;agginclude exchange|database&#xA;&#xA;If this keyword is omitted, a volume in any aggregate name could match this service level." isMandatory="false" name="agginclude" type="String">
+            <uuid>a7cecbc5-dce2-4199-ab84-640ad537e67c</uuid>
+        </parameter-definition>
+        <parameter-definition description="This flag will decide if aggrInclude should be appended or replaced" isMandatory="false" name="appendAggInclude" type="Boolean">
+            <uuid>0ab7e371-e009-4a8f-935d-c676d155de94</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “diskrpm” keyword sets the range of RPM for the drives in the service level.&#xA;&#xA;The format is:&#xA;diskrpm decimal-number decimal-number&#xA;&#xA;If the “diskrpm” keyword is omitted, any disk RPM will allow a match to the service level." isMandatory="false" name="diskrpm" type="String">
+            <uuid>77b993bf-6478-436a-93c2-cdd602dca114</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “disktypes” keyword specifies a regular expression pattern to match the type of disk.&#xA;&#xA;The format is:&#xA;disktypes regular-expression-pattern&#xA;&#xA;The possible disk types used by clustered Data ONTAP are: ATA EATA FCAL LUN MSATA SAS BSAS SATA SCSI SSD XATA XSAS FSAS unknown" isMandatory="false" name="disktypes" type="String">
+            <uuid>ff407d09-5cb3-4ad2-a4ec-0185db7fe184</uuid>
+        </parameter-definition>
+        <parameter-definition description="The Kitchen Police uses the “enforce” mode determine how to calculate the max-throughput value for the volume QoS policy.&#xA;&#xA;The format is:&#xA;enforce mode&#xA;&#xA;There are three (3) enforce modes:&#xA;• Thick&#xA;• Thin&#xA;• Effective&#xA;&#xA;If the “enforce” keyword is omitted for a service level, the “defaultenforcement” mode is used." enumValues="effective,thick,thin" isMandatory="false" name="enforce" type="Enum">
+            <uuid>a4d5a8c3-a8d1-4475-be27-053d9d0cdd6a</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “headroom” keyword sets the percentage of growth headroom used to calculate the max-throughput value for the volume QoS policy maintained by the service level.&#xA;&#xA;The format is:&#xA;headroom decimal-number&#xA;&#xA;If “headroom” is omitted then the “defaultheadroom” value is used." isMandatory="false" name="headroom" type="String">
+            <uuid>53332105-4ef8-47cb-a1e8-c84dbd8b8ec7</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “hybrid” keyword specifies whether or not this service level uses a hybrid aggregate.&#xA;&#xA;The format is:&#xA;hybrid true-or-false&#xA;&#xA;If the “hybrid” keyword is omitted, any aggregate type will match the service level." isMandatory="false" name="hybrid" type="Boolean">
+            <uuid>a02c5854-df1d-4f20-9a54-4abe5c77b52b</uuid>
+        </parameter-definition>
+        <parameter-definition description="The Kitchen Police uses the “iopsthrottle” keyword to the max-throughput value for the volume’s QoS policy.&#xA;&#xA;The format is:&#xA;iopsthrottle decimal-number" isMandatory="false" name="iopsthrottle" type="String">
+            <uuid>288c154e-721f-4b53-8af4-d988040e7042</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “miniops” keyword sets the lowest number of absolute IOPS for the max-throughput value of a volume QoS policy maintained by the service level.&#xA;&#xA;The format is:&#xA;miniops decimal-number&#xA;&#xA;If &quot;miniops&quot; is omitted for a service level, the “defaultminiops” is used." isMandatory="false" name="miniops" type="String">
+            <uuid>d0a822b9-da45-4d8b-86fb-2ac289303a54</uuid>
+        </parameter-definition>
+        <parameter-definition description="Remove aggregate(s) from aggregate include list 'agginclude'.&#xA;&#xA;The format is:&#xA;removeaggrfromagginclude regular-expression-pattern&#xA;&#xA;For example:&#xA;removeaggrfromagginclude archive|backup" isMandatory="false" name="removeaggrfromagginclude" type="String">
+            <uuid>c54517f1-364f-475e-be19-9966a0b8f586</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “servicelevel” keyword starts a new service level definition. Service level names have no special meaning.  Any name can be chosen that’s a valid policy name for clustered Data ONTAP.&#xA;&#xA;The format is:&#xA;servicelevel service-level-name&#xA;&#xA;If a volume doesn’t match any of the service level definitions, it will place in the default service level." isMandatory="true" name="servicelevel" type="String">
+            <uuid>c3d514c2-c955-466a-a268-5da4f10e06c2</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “thinmin” keyword sets the minimum percentage of capacity used to calculate the max-throughput value for the volume QoS policy maintained by the service level.&#xA;&#xA;The format is:&#xA;thinmin decimal-number&#xA;&#xA;If “thinmin” is omitted then the “defaultthinmin” value is used." isMandatory="false" name="thinmin" type="String">
+            <uuid>0a50a1df-fb15-4bc2-a98a-d9040d45ee75</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “volexclude” keyword specify a regular expression pattern to use for matching against the volume name.&#xA;&#xA;The format is:&#xA;volexclude regular-expression-pattern&#xA;&#xA;For example:&#xA;volexclude archive|backup&#xA;&#xA;If this keyword is omitted, any volume name could match this service level.  " isMandatory="false" name="volexclude" type="String">
+            <uuid>e17f9ac9-75fd-4924-a08f-46308e590e9b</uuid>
+        </parameter-definition>
+        <parameter-definition description="The “volinclude” keyword specify a regular expression pattern to use for matching against the volume name.&#xA;&#xA;The format is:&#xA;volinclude regular-expression-pattern&#xA;&#xA;For example:&#xA;volinclude exchange|database&#xA;&#xA;If this keyword is omitted, any volume name could match this service level." isMandatory="false" name="volinclude" type="String">
+            <uuid>d8bc7394-a1b8-41a5-97a3-3fee095ba2c8</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

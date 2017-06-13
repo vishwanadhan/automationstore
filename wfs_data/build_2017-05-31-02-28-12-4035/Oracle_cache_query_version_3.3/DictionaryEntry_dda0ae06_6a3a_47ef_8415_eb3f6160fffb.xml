@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dictionaryEntry natural-key-case-sensitive="false" type="student">
+    <certification>NONE</certification>
+    <uuid>dda0ae06-6a3a-47ef-8415-eb3f6160fffb</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry-properties>
+        <dictionary-entry-property xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="objectAttribute" attribute-type="String" string-length="255" is-cacheable="true" name="first_name" naturalKey="true" is-nullable="false">
+            <description></description>
+            <uuid>19af2802-0125-4ec8-a515-de89ef895dff</uuid>
+        </dictionary-entry-property>
+        <dictionary-entry-property xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="objectAttribute" attribute-type="String" string-length="255" is-cacheable="true" name="last_name" naturalKey="false" is-nullable="false">
+            <description></description>
+            <uuid>0454c0b1-329c-47d3-b8d7-21a62be80ad6</uuid>
+        </dictionary-entry-property>
+        <dictionary-entry-property xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="objectAttribute" attribute-type="String" string-length="255" is-cacheable="true" name="phone" naturalKey="false" is-nullable="false">
+            <description></description>
+            <uuid>e5f4d1ed-a17c-40e9-9203-01d7ae72bed1</uuid>
+        </dictionary-entry-property>
+    </dictionary-entry-properties>
+    <scheme>91bf8d58-74cf-4ff6-a8b3-0cead03b3f81</scheme>
+</dictionaryEntry>

@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+dar-version-dhansak: 3.0.0.34.1_dhansak
+Class-Path: com.netapp.wfa.finders.model.scheme.Scheme:com.netapp.wfa.
+ cache.model.CacheQuery:com.netapp.wfa.engine.category.Category:com.ne
+ tapp.wfa.engine.context.functions.FunctionDefinition:com.netapp.wfa.c
+ ache.model.SqlDataProviderType:com.netapp.wfa.engine.workflow.table.T
+ abularWorkflow:com.netapp.wfa.command.model.CommandDefinition:com.net
+ app.wfa.finders.model.finder.Finder:com.netapp.wfa.finders.model.dict
+ ionary.DictionaryEntry:com.netapp.wfa.finders.model.policies.Policy:c
+ om.netapp.wfa.finders.model.filter.Filter:com.netapp.wfa.cache.model.
+ ScriptDataProviderType:
+dar-version-calamari_versioning: 2.2.0.1.1_calamari_versioning
+dar-version: 3.0.0.0.0
+dar-version-dhansak_wfentity: 3.0.0.4.1_dhansak_wfentity
+dar-version-dhansak_store: 3.0.0.5.0_dhansak_store
+dar-version-calamari: 2.2.0.15.7_calamari
+dar-version-dhansak_epsilon: 3.0.0.0.1_dhansak_epsilon
+
+Name: SqlDataProviderType_5f51ef3d_67a6_44f6_8d67_79c49f78d348.xml
+SHA-256-Digest: l2L8Yyve92GKSWpBmyX/1PKenNbcjKhRQiyKTb6EO7Y=
+
+Name: Scheme_91bf8d58_74cf_4ff6_a8b3_0cead03b3f81.xml
+SHA-256-Digest: dXY4MBXLWJIiNpNdMsXXx9Xf0MVJy+6p1lZPowiiK+Q=
+
+Name: CacheQuery_d1c1e765_52bf_4cea_95ee_4d59e8a6812b.xml
+SHA-256-Digest: zpJCodx79lfwz8VxEbSML7oK4vILlLF/frKdA05ACi8=
+
+Name: DictionaryEntry_dda0ae06_6a3a_47ef_8415_eb3f6160fffb.xml
+SHA-256-Digest: PJpJYjXzD7kdXdoUi50UvTN3Aua2VOHsIup4XCv2Fwo=
+
+Name: pack-info.xml
+SHA-256-Digest: TeJDiX/FmNB+REvy8jzrbokD2ZLlPnzpJzxlyTt/dZI=
+

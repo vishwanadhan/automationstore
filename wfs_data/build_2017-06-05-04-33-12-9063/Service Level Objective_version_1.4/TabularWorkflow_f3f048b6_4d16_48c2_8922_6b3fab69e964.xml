@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tabularWorkflow considerReservedElements="true" description="This workflow will create new LUN in existing Volume under specific Storage Service Level or it will create a new volume under specific SSL and provision a LUN under that new volume." enableElementExistenceValidation="true" name="Provisioing LUN based on service level" readyForProduction="true">
+    <certification>NETAPP</certification>
+    <uuid>f3f048b6-4d16-48c2-8922-6b3fab69e964</uuid>
+    <version>1.0.0</version>
+    <workflow-commands>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Search Existing Volume in specific Storage Service Level" uuid="fc586f33-8c61-474d-ab01-5fb2be5e75d4">
+            <command-definition>4e657680-686e-4fd1-a979-cb5742fcfffd</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" child-workflow="552ebf0b-9e93-4024-9dd8-7f4ef4c935f3" commandAlias="Service based volume provisoning" uuid="f81d5860-00cc-43ca-9f3e-74b26ec8933c">
+            <command-definition>228d8023-547e-4089-bb7b-1f865cc4b8f4</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Create LUN" uuid="ad719ad5-d554-4b4d-b4e7-db9a9ab7f653">
+            <command-definition>e82d25db-9f49-4129-9a3f-2a595d3891d5</command-definition>
+        </workflow-command>
+    </workflow-commands>
+    <find-charts/>
+    <minONTAPVersion>8.3.0</minONTAPVersion>
+    <return-parameters/>
+    <rows>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects>
+                        <command-mapped-object objectName="Volume" variableName="existing_volume">
+                            <dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+                            <resource-selector errorMessage="" type="ABORT">
+<dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+<execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+<filter-parameter-values>
+    <filter-parameter-value value="$ExistingVolumeName">
+        <parameter>888fc018-eafd-4356-8aac-0bc049990e60</parameter>
+    </filter-parameter-value>
+</filter-parameter-values>
+<finder>7583f739-baac-4067-b327-27814204038d</finder>
+<natural-key-values/>
+                            </resource-selector>
+                        </command-mapped-object>
+                    </command-mapped-objects>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$NewVolume == 'No'"/>
+                    <other-parameters/>
+                    <workflow-command>fc586f33-8c61-474d-ab01-5fb2be5e75d4</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects>
+                        <command-mapped-object objectName="Workflow" variableName="CreateNewVolume">
+                            <define-object>
+<define-object-property-values>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue" value="'Service based volume provisoning'">
+        <dictionary-entry-property>2a52dd81-6832-4108-b470-1660ea458b0d</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="childWorkflowValue">
+        <dictionary-entry-property>36f9061f-f9c3-4cc1-bd98-92a324fbc143</dictionary-entry-property>
+        <child-workflow-user-inputs>
+            <child-workflow-user-input>
+                <user-input-name>$PSLName</user-input-name>
+                <user-input-value>$PSLName</user-input-value>
+            </child-workflow-user-input>
+            <child-workflow-user-input>
+                <user-input-name>$SLCName</user-input-name>
+                <user-input-value>$SLCName</user-input-value>
+            </child-workflow-user-input>
+            <child-workflow-user-input>
+                <user-input-name>$SSLName</user-input-name>
+                <user-input-value>$SSLName</user-input-value>
+            </child-workflow-user-input>
+            <child-workflow-user-input>
+                <user-input-name>$Size</user-input-name>
+                <user-input-value>$VolumeSize</user-input-value>
+            </child-workflow-user-input>
+            <child-workflow-user-input>
+                <user-input-name>$UsingSLC</user-input-name>
+                <user-input-value>$UsingSLC</user-input-value>
+            </child-workflow-user-input>
+            <child-workflow-user-input>
+                <user-input-name>$VolumeName</user-input-name>
+                <user-input-value>$VolumeName</user-input-value>
+            </child-workflow-user-input>
+        </child-workflow-user-inputs>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue" value="'552ebf0b-9e93-4024-9dd8-7f4ef4c935f3'">
+        <dictionary-entry-property>87b60963-78ed-4956-bc77-7c6cb408fb0c</dictionary-entry-property>
+    </define-object-property-value>
+</define-object-property-values>
+                            </define-object>
+                            <dictionary-entry>aa02cf4a-c17d-40e1-bd22-8bc89a5c2697</dictionary-entry>
+                        </command-mapped-object>
+                    </command-mapped-objects>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$NewVolume == 'Yes' and $VolumeSize &gt; $LUNSize"/>
+                    <other-parameters/>
+                    <workflow-command>f81d5860-00cc-43ca-9f3e-74b26ec8933c</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects>
+                        <command-mapped-object objectName="Lun" variableName="new_lun">
+                            <define-object>
+<define-object-property-values>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>10c19d1b-a799-493b-8b05-d5ddfef7f0f0</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>28393dae-326f-4893-83ee-59ce121adab6</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>898283fe-e4ea-4fb9-bfb9-31a669ca70c6</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>36b371dc-bf63-45fb-aa08-b5c742520ba7</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue" value="$LUNName">
+        <dictionary-entry-property>a4ac09f7-1631-4ab2-829f-8a44df5815ae</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue" value="$OSType">
+        <dictionary-entry-property>27c0ee5d-22e6-4268-abfd-3a20b6e8a0e7</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>97da90c4-7279-4457-b30f-2e5dc53e4418</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>17f3d0d7-4c59-4c45-bdf7-ef1f4f31b279</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>7da1fb00-2dbc-4c60-b6e2-095c9d9fa801</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>4f594231-3933-4458-b874-78404a5aaba9</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue" value="$LUNSize * 1024">
+        <dictionary-entry-property>6681fd4a-2f89-4e98-bebe-50d43a555acd</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>63cfb648-ca4d-465e-84e3-475b64c09f29</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>3dcf1c20-e13a-4774-9fa4-6af7519feeb9</dictionary-entry-property>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="resourceSelectorValue">
+        <dictionary-entry-property>dcb55727-c68a-40de-9041-a41d48df4ea5</dictionary-entry-property>
+        <resource-selector errorMessage="" type="ABORT">
+            <dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+            <execution-condition xsi:type="alwaysCondition"/>
+            <filter-parameter-values>
+                <filter-parameter-value value="$NewVolume == 'Yes' ? $VolumeName:$ExistingVolumeName">
+                    <parameter>888fc018-eafd-4356-8aac-0bc049990e60</parameter>
+                </filter-parameter-value>
+            </filter-parameter-values>
+            <finder>b6fc2135-b9ca-4c0d-90fc-6caa8cac3c61</finder>
+            <natural-key-values/>
+        </resource-selector>
+    </define-object-property-value>
+    <define-object-property-value xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionValue">
+        <dictionary-entry-property>ad113125-316c-44b9-906b-ac9b6ca00ba1</dictionary-entry-property>
+    </define-object-property-value>
+</define-object-property-values>
+                            </define-object>
+                            <dictionary-entry>52cf0a49-eafa-4175-857c-374af6108fbe</dictionary-entry>
+                        </command-mapped-object>
+                    </command-mapped-objects>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+                    <other-parameters/>
+                    <workflow-command>ad719ad5-d554-4b4d-b4e7-db9a9ab7f653</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+        </row>
+    </rows>
+    <user-input-groups>
+        <user-input-group expandByDefault="false" name="">
+            <user-inputs>
+                <user-input description="Provide Name for the LUN" displayName="LUN Name" locked="false" mandatory="true" name="$LUNName" uuid="cfed4528-81da-4707-9649-b54a827a5c60">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stringUserInputType" regularExpression=""/>
+                </user-input>
+                <user-input description="Provide size of your LUN" displayName="LUN Size(GB)" locked="false" mandatory="true" name="$LUNSize" uuid="aa2bc84d-b6a7-41e1-baa1-d53c3d7c0f0a">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stringUserInputType" regularExpression=""/>
+                </user-input>
+                <user-input defaultValue="linux" displayName="LUN OS Type" locked="false" mandatory="true" name="$OSType" uuid="cddea058-a92a-4b5f-a0c4-f5b6bc313638">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumUserInputType" enumValues="solaris,windows,hpux,xen,aix,linux,netware,vmware,openvms,hyper_v,image,solaris_efi,windows_2008,windows_gpt" viewAsRadio="false"/>
+                </user-input>
+                <user-input defaultValue="false" description="By default existing volume will be selected for LUN provisioning. To create a new volume and provision LUN sekect Yes." displayName="Create LUN in new volume" locked="false" mandatory="true" name="$NewVolume" uuid="c88dc4e9-074c-4b6f-9003-316cc018e072">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="booleanUserInputType"/>
+                </user-input>
+                <user-input conditionalUserInputValues="false" defaultValue="" displayName="Storage Service Name" locked="true" mandatory="true" name="$ExistingVolSSLName" uuid="f0ebd525-7464-4fa4-8dfe-98e9aee08cea">
+                    <conditional-user-input>c88dc4e9-074c-4b6f-9003-316cc018e072</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    DISTINCT playground.storage_service_level.storage_service_name AS 'SSL',&#xA;    playground.storage_service_level.iops_throttle AS 'IOPS Throttle',&#xA;    IF (playground.storage_service_level.thin_min is NULL,&#xA;    CAST( playground.qos_default_values.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED),&#xA;    CAST(playground.storage_service_level.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED)) AS 'Minimim SLA(IOPS/TB)',&#xA;    playground.storage_service_level.comment&#xA;FROM&#xA;    playground.storage_service_level,&#xA;    playground.volume_service_map,&#xA;    playground.qos_default_values&#xA;WHERE&#xA;    playground.volume_service_map.s_s_l = playground.storage_service_level.storage_service_name"/>
+                </user-input>
+                <user-input conditionalUserInputValues="false" defaultValue="" description="Select volume in which you want to provision a LUN" displayName="Existing Volume for given Service Level" locked="true" mandatory="true" name="$ExistingVolumeName" uuid="845ceb92-6f59-419a-b662-484c82b0377b">
+                    <conditional-user-input>c88dc4e9-074c-4b6f-9003-316cc018e072</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    primary_volume_name AS 'Volume Name',&#xA;    cm_storage.volume.available_size_mb/1024 AS 'Volume Size(GB)',&#xA;    primary_cluster_primary_address AS 'Cluster IP'&#xA;FROM&#xA;    playground.volume_service_map,&#xA;    cm_storage.volume,&#xA;    cm_storage.vserver,&#xA;    cm_storage.cluster&#xA;WHERE&#xA;    playground.volume_service_map.s_s_l = '${ExistingVolSSLName}'&#xA;    AND cm_storage.volume.name = volume_name&#xA;    AND cm_storage.volume.vserver_id = cm_storage.vserver.id&#xA;    AND playground.volume_service_map.primary_vserver_name = cm_storage.vserver.name&#xA;    AND cm_storage.vserver.cluster_id = cm_storage.cluster.id&#xA;    AND cm_storage.cluster.primary_address = primary_cluster_primary_address&#xA;    AND cm_storage.volume.available_size_mb &gt; '${LUNSize}' * 1024"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+        <user-input-group expandByDefault="false" name="New Volume Details">
+            <user-inputs>
+                <user-input conditionalUserInputValues="true" defaultValue="true" description="Enable for SLC based provisioning or disable to select for provisioning based on SSL and PSL" displayName="Using SLC" locked="false" mandatory="false" name="$UsingSLC" uuid="34851bdd-74a7-4236-8c4f-aeccc96aba48">
+                    <conditional-user-input>c88dc4e9-074c-4b6f-9003-316cc018e072</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="booleanUserInputType"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="Select Service Catalog" displayName="Service Catalog" locked="true" mandatory="false" name="$SLCName" uuid="fc454dc5-864d-42f7-8a15-7546b6755c95">
+                    <conditional-user-input>34851bdd-74a7-4236-8c4f-aeccc96aba48</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    DISTINCT service_level_name AS 'Service Level Class',&#xA;    storage_service_name AS 'Storage Service',&#xA;    protection_service_name AS 'Protection Service',&#xA;    comment&#xA;FROM&#xA;    (&#xA;    SELECT&#xA;        DISTINCT playground.service_level_class.service_level_name,&#xA;        playground.service_level_class.storage_service_name,&#xA;        playground.service_level_class.protection_service_name,&#xA;        playground.service_level_class.comment&#xA;    FROM&#xA;        playground.service_level_class,&#xA;        playground.storage_service_level,&#xA;        playground.protection_service_level,&#xA;        playground.aggregate_service_map&#xA;    WHERE&#xA;        playground.service_level_class.storage_service_name = playground.storage_service_level.storage_service_name&#xA;        AND playground.service_level_class.protection_service_name = playground.protection_service_level.protection_service_name&#xA;        AND playground.storage_service_level.storage_service_name = playground.aggregate_service_map.storage_service_name) AS sl&#xA;WHERE&#xA;    '${UsingSLC}' = 'true' "/>
+                </user-input>
+                <user-input conditionalUserInputValues="false" defaultValue="" description="Select storage service name" displayName="Storage Service Name" locked="true" mandatory="false" name="$SSLName" uuid="3536a586-8df3-45de-aac9-a7473f3bc68a">
+                    <conditional-user-input>34851bdd-74a7-4236-8c4f-aeccc96aba48</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    DISTINCT storage_service_name AS 'Name',&#xA;    iops_throttle AS 'IOPS Throttle(IOPS/TB)',&#xA;    MinimimSLA AS 'Minimim SLA(IOPS/TB)',&#xA;    comment AS 'Comment'&#xA;FROM&#xA;    (&#xA;    SELECT&#xA;        DISTINCT playground.storage_service_level.storage_service_name,&#xA;        playground.storage_service_level.iops_throttle AS 'iops_throttle',&#xA;        IF (playground.storage_service_level.thin_min is NULL,&#xA;        CAST( playground.qos_default_values.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED),&#xA;        CAST(playground.storage_service_level.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED)) AS 'MinimimSLA',&#xA;        playground.storage_service_level.comment&#xA;    FROM&#xA;        playground.storage_service_level,&#xA;        playground.aggregate_service_map,&#xA;        playground.qos_default_values&#xA;    WHERE&#xA;        playground.storage_service_level.aggr_regex_enabled = 'false'&#xA;        AND playground.aggregate_service_map.storage_service_name = playground.storage_service_level.storage_service_name&#xA;    UNION&#xA;    SELECT&#xA;        DISTINCT playground.storage_service_level.storage_service_name,&#xA;        playground.storage_service_level.iops_throttle AS 'iops_throttle',&#xA;        IF (playground.storage_service_level.thin_min is NULL,&#xA;        CAST( playground.qos_default_values.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED),&#xA;        CAST(playground.storage_service_level.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED)) AS 'MinimimSLA',&#xA;        playground.storage_service_level.comment&#xA;    FROM&#xA;        playground.storage_service_level,&#xA;        playground.qos_default_values&#xA;    WHERE&#xA;        playground.storage_service_level.aggr_include_regex != &quot;&quot;&#xA;) AS SL&#xA;WHERE&#xA;'${UsingSLC}' = 'false'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="false" defaultValue="" description="Select protection service name" displayName="Protection Service Name" locked="true" mandatory="false" name="$PSLName" uuid="734c1049-edfd-4b9f-ac9c-4a1f9e3df279">
+                    <conditional-user-input>34851bdd-74a7-4236-8c4f-aeccc96aba48</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    Name,&#xA;    Comment&#xA;FROM&#xA;    (&#xA;    SELECT&#xA;        DISTINCT playground.protection_service_level.protection_service_name AS 'Name',&#xA;        playground.protection_service_level.comment AS 'Comment'&#xA;    FROM&#xA;        playground.protection_service_level&#xA;    UNION&#xA;    SELECT&#xA;        &quot;None&quot;,&#xA;        &quot;No protection&quot;&#xA;) AS PSL&#xA;WHERE&#xA;'${UsingSLC}' = 'false'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" description="Provide Name for new volume" displayName="New Volume Name" locked="false" mandatory="true" name="$VolumeName" uuid="a93e04af-a342-4f52-b6c1-666783b69fdd">
+                    <conditional-user-input>c88dc4e9-074c-4b6f-9003-316cc018e072</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stringUserInputType" regularExpression=""/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" description="This size should be more than LUN size specified for this workflow to work" displayName="New Volume Size(GB)" locked="false" mandatory="true" name="$VolumeSize" uuid="cf78dd77-5d29-41aa-a428-ede1405d3935">
+                    <conditional-user-input>c88dc4e9-074c-4b6f-9003-316cc018e072</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stringUserInputType" regularExpression=""/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+    </user-input-groups>
+    <workflow-constants/>
+</tabularWorkflow>

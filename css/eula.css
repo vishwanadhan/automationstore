@@ -1,0 +1,1743 @@
+/* ### PERSONAL_IE3.CSS, PERSONAL_IE4.CSS, PERSONAL_NS4.CSS are symbolic links to style.css */ 
+/* ### start NOW classes ################## */
+TH
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    BACKGROUND-IMAGE: none;
+    COLOR: white;
+    BACKGROUND-REPEAT: repeat;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #666666;
+    TEXT-ALIGN: left
+}
+TH A, TH A:visted
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    BACKGROUND-IMAGE: none;
+    COLOR: white;
+    BACKGROUND-REPEAT: repeat;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #666666;
+    TEXT-ALIGN: left
+}
+TD
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif
+}
+BODY
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif;   
+    COLOR: black;  
+    BACKGROUND-COLOR: white;     
+    MARGIN-TOP: 0px;
+    MARGIN-LEFT: 3px;
+    MARGIN-RIGHT: 3px;
+    MARGIN-BOTTOM: 10px;    
+    MARGIN-WIDTH: 0px;
+    MARGIN-HEIGHT: 0px;    
+    padding-left:10px;
+    padding-right:10px;
+}
+A 
+{
+    COLOR: #1d1c63;
+}
+A:visited
+{
+    /*  COLOR: #666666; */
+    COLOR: #666666;
+}
+FORM
+{
+    MARGIN-TOP: 0px;
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif
+}
+SELECT
+{
+    MARGIN-TOP: 0px
+}
+TEXTAREA
+{
+    FONT-SIZE: 12px;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif
+}
+TEXTAREA.casealerttextarea
+{
+    FONT-SIZE: 10px;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif
+}
+UNKNOWN
+{
+    FONT-SIZE: 12px;
+    COLOR: black;
+    FONT-FAMILY: Arial
+}
+UL
+{
+    FONT-SIZE: 12px;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    FONT-Weight: normal
+}
+.SecHeading
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    MARGIN-LEFT: 3px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    TEXT-DECORATION: none
+}
+.NavBarMin
+{
+    FONT-SIZE: 12px;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #FFFF99;
+    TEXT-DECORATION: none
+}
+.bannerTitle
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #666666;
+}
+.bannerText
+{
+    PADDING-RIGHT: 4px;
+    PADDING-LEFT: 4px;
+    FONT-SIZE: 12px;
+    PADDING-BOTTOM: 2px;
+    COLOR: black;
+    PADDING-TOP: 2px;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #eceeff
+}
+.NavBarMin A, .NavBarMin A:visited
+{
+    COLOR: black;
+    TEXT-DECORATION: none
+}
+.PgTtl
+{
+    FONT-SIZE: 18px;
+    COLOR: black;
+    FONT-FAMILY: Arial Black, sans-serif
+}
+.kbStepHeader
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 14pt;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif
+}
+.kbHeader
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12pt;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif
+}
+.kbText
+{
+    FONT-SIZE: 12pt;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif
+}
+.kbSolution
+{
+    FONT-SIZE: 16pt;
+    COLOR: #666666;
+    FONT-FAMILY: Arial, sans-serif
+}
+H1
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 18px;
+    COLOR: black;
+    FONT-FAMILY: Arial Black, sans-serif
+}
+H2
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 16px;
+    COLOR: black;
+    FONT-FAMILY: Arial Black, sans-serif
+}
+H3
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 14px;
+    COLOR: black;
+    FONT-FAMILY: Arial Black, sans-serif
+}
+TD.black
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: black
+}
+TD.head
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #666666;
+}
+TD.head A, TD.head A:visited
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #666666;
+}
+TD.reg
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 12px;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: white
+}
+TD.dark1
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #666666;
+}
+TD.dark1 A, TD.dark1 A:visited
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #666666;
+}
+TD.dark2
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #898581;
+}
+TD.dark2 A, TD.dark2 A:visited
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #898581;
+}
+TD.dark2nohead
+{
+    FONT-SIZE: 12px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #898581;
+}
+TD.dark2nohead A, TD.dark2nohead A:visited
+{
+    COLOR: white;
+    BACKGROUND-COLOR: #898581;    
+}
+TD.dark2nohead B
+{
+    FONT-WEIGHT: bold;
+}
+TD.gray
+{
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #e0e0e0;
+}
+TD.lightgray
+{
+    BACKGROUND-COLOR: #FCFCFC;
+}
+TD.darkgray
+{
+    COLOR: white;
+    FONT-WEIGHT: bold;    
+    BACKGROUND-COLOR: #7D7D7D;
+}
+TD.darkgray A, TD.darkgray A:visited
+{
+    COLOR: white;
+}
+TD.dark2 A, TD.dark2 A:visited
+{
+    COLOR: white;
+}
+
+TD.yellow
+{
+    FONT-FAMILY: Arial, sans-serif;
+    COLOR: black;    
+    BACKGROUND-COLOR: #FFFF99;
+}
+
+TD.yellow B
+{
+    FONT-WEIGHT: bold
+}
+TD.yellow A
+{
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #FFFF99;
+}
+TD.light1
+{
+    /* COLOR: black;
+    FONT-FAMILY: Arial, sans-serif; */
+    BACKGROUND-COLOR: #e0e0e0;
+}
+TD.light1 A
+{
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #e0e0e0;
+}
+TD.lightblue
+{
+    BACKGROUND-COLOR: #eceeff;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    FONT-WEIGHT: bold;
+}
+TD.lightblue A
+{
+    BACKGROUND-COLOR: #eceeff;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    FONT-WEIGHT: bold;
+}
+TD.casenav
+{
+    FONT-SIZE: 12px;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #eceeff;
+}
+TD.casenav A, TD.casenav A:visited
+{
+    BACKGROUND-COLOR: #eceeff;
+    text-decoration: underline;
+}
+TD.casenav .label
+{
+    FONT-WEIGHT: bold;
+    COLOR: #333333;
+}
+.bold
+{
+    FONT-WEIGHT: bold
+}
+.red
+{
+    COLOR: red
+}
+.NavBarMaj
+{
+    FONT-SIZE: 12px;
+    COLOR: #666666;
+    FONT-FAMILY: Arial, sans-serif;
+    TEXT-DECORATION: none
+}
+.NavBarTop
+{
+    FONT-SIZE: 12px;
+    COLOR: #666666;
+    FONT-FAMILY: Arial, sans-serif
+}
+.NavBarTop A
+{
+    COLOR: #666666;
+    TEXT-DECORATION: none
+}
+.NavBarMin .select
+{
+}
+.NavBarMin .select A
+{
+}
+.NavBarMaj .select
+{
+    FONT-WEIGHT: bold;
+    COLOR: #9da683;
+    FONT-FAMILY: Arial, sans-serif
+}
+.NavBarMaj .select A
+{
+    COLOR: #9da683;
+    TEXT-DECORATION: none
+}
+.NavBarMaj A
+{
+    COLOR: #666666;
+    TEXT-DECORATION: none
+}
+P
+{
+    FONT-SIZE: 12px;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif
+}
+FORM .small
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif
+}
+FORM INPUT
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif
+}
+FORM INPUT .small
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif
+}
+H4
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial Black, sans-serif
+}
+H5
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif
+}
+H6
+{
+    FONT-SIZE: 11px;
+    FONT-FAMILY: Arial, sans-serif
+}
+CODE
+{
+    FONT-FAMILY: Courier New, Courier, monospace
+}
+STRONG
+{
+    FONT-FAMILY: Arial, sans-serif
+}
+TT
+{
+    FONT-FAMILY: Courier New, Courier, monospace
+}
+PRE
+{
+    FONT-FAMILY: Courier New, Courier, monospace
+}
+OL
+{
+    FONT-SIZE: 12px;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    FONT-Weight: normal
+}
+OL.small
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif
+}
+B
+{
+    FONT-FAMILY: Arial, sans-serif
+}
+BLOCKQUOTE
+{
+    FONT-FAMILY: Arial, sans-serif
+}
+BLOCKQUOTE A
+{
+    FONT-FAMILY: Arial, sans-serif
+}
+.subhead
+{
+    FONT-SIZE: 12px;
+    COLOR: #666666;
+    FONT-FAMILY: Arial Black, sans-serif
+}
+.subhead A
+{
+    COLOR: #666666
+}
+.small
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif
+}
+.small A
+{
+    FONT-SIZE: 12px
+}
+.small B
+{
+    FONT-WEIGHT: bold
+}
+.NavBarMajSelect
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: #9da683;
+    FONT-FAMILY: Arial, sans-serif;
+    TEXT-DECORATION: none
+}
+.NavBarMajSelect A
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: #9da683;
+    FONT-FAMILY: Arial, sans-serif;
+    TEXT-DECORATION: none
+}
+TD.gray B
+{
+    FONT-WEIGHT: bold
+}
+.dark1text
+{
+    COLOR: #333333;
+    FONT-FAMILY: Arial, sans-serif
+}
+.dark1text A
+{
+    COLOR: #333333;
+}
+.dark1text B
+{
+    FONT-WEIGHT: bold
+}
+.dark1text I
+{
+    FONT-STYLE: italic
+}
+.dark2text
+{
+    COLOR: #666666;
+    FONT-FAMILY: Arial, sans-serif
+}
+.dark2text A
+{
+    COLOR: #666666;
+}
+.dark2text B
+{
+    FONT-WEIGHT: bold;
+}
+.dark2text I
+{
+    FONT-STYLE: italic
+}
+dark3text
+{
+    COLOR: #e0e0e0;
+    FONT-FAMILY: Arial, sans-serif;
+}
+.dark3text A
+{
+    COLOR: #e0e0e0;
+}
+.dark3text B
+{
+    FONT-WEIGHT: bold;
+}
+.dark3text I
+{
+    FONT-STYLE: italic
+}
+.dark4text
+{
+    COLOR: #a43302;
+    FONT-FAMILY: Arial, sans-serif
+}
+.dark4text A
+{
+    COLOR: #a43302;
+}
+.dark4text B
+{
+    FONT-WEIGHT: bold;
+}
+.dark4text I
+{
+    FONT-STYLE: italic
+}
+.graytext
+{
+    COLOR: gray;
+    FONT-FAMILY: Arial, sans-serif
+}
+.graytext B
+{
+    FONT-WEIGHT: bold;
+}
+.graytext I
+{
+    FONT-STYLE: italic
+}
+.graytextsmall
+{
+    FONT-SIZE: 12px;
+    COLOR: gray;
+    FONT-FAMILY: Arial, sans-serif
+}
+.graytextsmall B
+{
+    FONT-WEIGHT: bold
+}
+.graytextsmall I
+{
+    FONT-STYLE: italic
+}
+.whitetext
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: Arial, sans-serif;
+}
+.whitetext B
+{
+    FONT-WEIGHT: bold;
+}
+.whitetext A
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: Arial, sans-serif
+}
+.whitetextsmall
+{
+    FONT-SIZE: 12px;
+    COLOR: #ffffff;
+    FONT-FAMILY: Arial, sans-serif
+}
+.whitetextsmall B
+{
+    FONT-WEIGHT: bold;
+}
+.whitetextsmall A
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: Arial, sans-serif
+}
+TD.blackwithtext
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: black
+}
+TD.blackwithtext A
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    FONT-FAMILY: Arial;
+    BACKGROUND-COLOR: black
+}
+TD.topnav
+{
+    PADDING-RIGHT: 6px;
+    PADDING-LEFT: 6px;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #98a154;
+    TEXT-ALIGN: center;
+    TEXT-DECORATION: none
+}
+TD.topnav A
+{
+    PADDING-RIGHT: 6px;
+    PADDING-LEFT: 6px;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #98a154;
+    TEXT-ALIGN: center;
+    TEXT-DECORATION: none
+}
+TABLE.spaced
+{
+    MARGIN-TOP: 15px
+}
+.subhead2
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: #666666;
+    FONT-FAMILY: Arial, sans-serif
+}
+.subhead2 A
+{
+    COLOR: #666666;
+}
+TD TT
+{
+    FONT-FAMILY: 'Courier New', Courier, monospaced
+}
+TD TT B
+{
+    FONT-FAMILY: 'Courier New', Courier, monospaced
+}
+.afterbar
+{
+    MARGIN-TOP: 8px
+}
+.aftertable1
+{
+    MARGIN-TOP: 16px
+}
+TD.dark1c
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #666666;
+    TEXT-ALIGN: center
+}
+TD.askborder
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #666666
+}
+.searchText
+{
+    PADDING-RIGHT: 4px;
+    PADDING-LEFT: 4px;
+    FONT-SIZE: 12px;
+    COLOR: #666666;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #eceeff
+}
+.searchText A
+{
+    FONT-SIZE: 12px;
+    COLOR: #666666;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #eceeff
+}
+.xsmall
+{
+    FONT-SIZE: 10px;
+    FONT-FAMILY: Arial, sans-serif
+}
+TD.dark3
+{
+    FONT-WEIGHT: bold;
+    COLOR: #333333;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #e0e0e0;
+}
+TD.dark3 A
+{
+    FONT-WEIGHT: bold;
+    COLOR: #333333;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #e0e0e0;
+}
+TD.dark3nohead
+{
+    FONT-SIZE: 12px;
+    COLOR: #333333;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #e0e0e0;
+}
+TD.dark3nohead A
+{
+    FONT-SIZE: 12px;
+    COLOR: #333333;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #e0e0e0;
+}
+TD.dark3nohead B
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    COLOR: #333333;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #e0e0e0;
+}
+TD.dark4
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    /* BACKGROUND-COLOR: #a43302 */
+    BACKGROUND-COLOR: #FF6600;
+}
+TD.dark4 A
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    /* BACKGROUND-COLOR: #a43302 */
+    BACKGROUND-COLOR: #FF6600;
+}
+TD PRE
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: 'Courier New', Courier, monospaced
+}
+TD PRE B
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    FONT-FAMILY: 'Courier New', Courier, monospaced
+}
+CODE B
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    FONT-FAMILY: 'Courier New', Courier
+}
+TD CODE
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: 'Courier New', Courier, monospace
+}
+TD CODE B
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    FONT-FAMILY: 'Courier New', Courier, monospace
+}
+TT B
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    FONT-FAMILY: 'Courier New', Courier, monospace
+}
+PRE B
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    FONT-FAMILY: 'Courier New', Courier, monospace
+}
+TD.dark2 .brightyellow
+{
+    COLOR: #ffff00;
+    FONT-FAMILY: Arial, sans-serif
+}
+.kbbrowsenav
+{
+    BACKGROUND-COLOR: #666666;
+    COLOR: #ffffff;
+    FONT-FAMILY: Arial, sans-serif;
+    FONT-SIZE: 11px;
+    TEXT-DECORATION: none;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+.kbbrowsenav A
+{
+    BACKGROUND-COLOR: white;
+    COLOR: #666666;
+    FONT-FAMILY: Arial, sans-serif;
+    FONT-SIZE: 11px
+}
+.MainBorder
+{
+    BORDER-RIGHT: #666666 1px solid;
+    BORDER-TOP: #666666 1px solid;
+    BORDER-LEFT: #666666 1px solid;
+    BORDER-BOTTOM: #666666 1px solid
+}
+.MainHeaderColor
+{
+    BACKGROUND-COLOR: #666666
+}
+.BlockHeaderColor
+{
+    BACKGROUND-COLOR: #666666
+}
+.LeftCurve
+{
+    BACKGROUND-POSITION: left top;
+    BACKGROUND-ATTACHMENT: scroll;
+    BACKGROUND-IMAGE: url(/NOW/images/FFFFFFl.gif);
+    BACKGROUND-REPEAT: no-repeat
+}
+.RightCurve
+{
+    BACKGROUND-POSITION: right top;
+    BACKGROUND-ATTACHMENT: scroll;
+    BACKGROUND-IMAGE: url(/NOW/images/FFFFFFr.gif);
+    BACKGROUND-REPEAT: no-repeat
+}
+.MainHeaderText
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 14pt;
+    COLOR: #ffffff;
+    FONT-FAMILY: Arial, Helvetica
+}
+.BlockHeaderText
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 10pt;
+    COLOR: #ffffff;
+    FONT-FAMILY: Arial, Helvetica
+}
+.headertext
+{
+    FONT-SIZE: 10px;
+    COLOR: #ffffff;
+    FONT-FAMILY: Arial, sans-serif
+}
+TD.reg B
+{
+    FONT-WEIGHT: bold
+}
+TD.gray .small
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif
+}
+TD.gray .small B
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px
+}
+TD.yellow .small
+{
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif
+}
+TD.yellow .small B
+{
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px
+}
+.xsmall B
+{
+    FONT-WEIGHT: bold
+}
+.tempcool
+{
+    FONT-WEIGHT: bold;
+    COLOR: green;
+    FONT-FAMILY: Arial, sans-serif
+}
+.tempcool .small
+{
+    FONT-SIZE: 12px
+}
+.tempwarm
+{
+    FONT-WEIGHT: bold;
+    COLOR: #FFD800;
+    FONT-FAMILY: Arial, sans-serif
+}
+.tempwarm .small
+{
+    FONT-SIZE: 12px
+}
+.temphot
+{
+    FONT-WEIGHT: bold;
+    COLOR: red;
+    FONT-FAMILY: Arial, sans-serif
+}
+.temphot .small
+{
+    FONT-SIZE: 12px
+}
+.regtext
+{
+}
+.search_highlight
+{
+    BACKGROUND: #CCCCFF
+}
+.search_highlight B
+{
+    FONT-WEIGHT: bold
+}
+DIV.results .highlight {
+  background-color: #FFFF99;
+}
+
+.highlight-link {
+}
+TD.title
+{
+    /* FONT-WEIGHT: bold; */
+    COLOR: black;
+    FONT-FAMILY: Arial Black, Arial, sans-serif;
+    /* BACKGROUND-COLOR: #e0e0e0; */
+    FONT-SIZE: 16pt;
+}
+TD.title A
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #e0e0e0
+}
+.naHomeHotTopics a 
+{
+	font-family: arial, helvetica, sans-serif;
+	font-size: 11px;
+	color: #3366CC;
+	text-decoration: none;
+}
+.naHomeHotTopics a:hover 
+{
+	text-decoration: underline;
+}
+TD.homeJumpLinks
+{
+    FONT-SIZE: 11px;
+    COLOR: #333333;
+    /* FONT-FAMILY: Arial, sans-serif; */
+    BACKGROUND-COLOR: #e0e0e0;
+}
+TD.homeJumpLinks A, TD.homeJumpLinks A:visited
+{
+    COLOR: #333333;
+    BACKGROUND-COLOR: #e0e0e0;
+}
+TD.homeJumpLinks A:hover
+{
+    COLOR: #FF6600;
+}
+
+/* ONTAP Release Calendar colors */
+TD.releaseCalendarRC, TD.releaseCalendarRC A
+{
+    BACKGROUND-COLOR: #F5B757
+}
+TD.releaseCalendarNotGA, TD.releaseCalendarNotGA A
+{
+    BACKGROUND-COLOR: #D3D3D3
+}
+TD.releaseCalendarWillBeGA, TD.releaseCalendarWillBeGA A
+{
+    BACKGROUND-COLOR: #FFFFC0
+}
+TD.releaseCalendarGA, TD.releaseCalendarGA A
+{
+    BACKGROUND-COLOR: #FFFF80
+}
+TD.releaseCalendarWillBeGD, TD.releaseCalendarWillBeGD A
+{
+    BACKGROUND-COLOR: #C0FFC0
+}
+TD.releaseCalendarGD, TD.releaseCalendarGD A
+{
+    BACKGROUND-COLOR: #3CB371
+}
+.yellow
+{
+    FONT-FAMILY: Arial, sans-serif;
+    COLOR: black;    
+    BACKGROUND-COLOR: #FFFF99;
+    padding: 2px;
+}
+.yellow B
+{
+    FONT-WEIGHT: bold
+}
+.yellow A
+{
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: #FFFF99
+}
+.dark1bar
+{
+    Color: white;
+    Background-color: #666666;
+    FONT-WEIGHT: bold;
+    PADDING-LEFT: 3px;
+    PADDING-TOP: 3px;
+    PADDING-BOTTOM: 3px;
+}
+.dark1bar A
+{
+    Color: white;
+}
+.dark2bar
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    BACKGROUND-COLOR: #898581;
+    PADDING-LEFT: 3px;
+    PADDING-TOP: 3px;
+    PADDING-BOTTOM: 3px;    
+}
+.dark2bar A
+{
+    Color: white;
+}
+.dark3bar
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    BACKGROUND-COLOR: #e0e0e0;
+    PADDING-LEFT: 3px;
+    PADDING-TOP: 3px;
+    PADDING-BOTTOM: 3px;    
+}
+.dark3bar A
+{
+    Color: white;
+}
+.dark4bar
+{
+    FONT-WEIGHT: bold;
+    COLOR: white;
+    BACKGROUND-COLOR: #a43302;
+    PADDING-LEFT: 3px;
+    PADDING-TOP: 3px;
+    PADDING-BOTTOM: 3px;     
+}
+.dark4bar A
+{
+    Color: white;
+}
+.graybar
+{
+    COLOR: black;
+    BACKGROUND-COLOR: #e0e0e0;
+    PADDING-LEFT: 3px;
+    PADDING-TOP: 3px;
+    PADDING-BOTTOM: 3px;     
+}
+.orangeBarHeadFoot
+{
+    Background-color: #0067C5;
+    PADDING-LEFT: 0px;
+    MARGIN-BOTTOM: 3px;
+    MARGIN-TOP: 2px;    
+    PADDING-TOP: 1px;
+    PADDING-BOTTOM: 2px;
+}
+
+.blueBarHeadFoot
+{
+    Background-color: #0067C5;
+    PADDING-LEFT: 0px;
+    MARGIN-BOTTOM: 3px;
+    MARGIN-TOP: 2px;    
+    PADDING-TOP: 1px;
+    PADDING-BOTTOM: 2px;
+}
+
+.floatRight
+{
+    float: right;
+}
+table.tableSimple 
+{
+  border-collapse: collapse;
+  border: 1px black solid;
+  empty-cells: show;
+  width: 100%;
+}
+th.tableSimpleTH 
+{
+  border: 1px solid black;
+  padding: 3px;
+  background: #666666;
+  color: white;
+  vertical-align: top;
+  text-align: left;
+  FONT-WEIGHT: bold;
+}
+td.tableSimpleTD
+{
+  border: 1px solid black;
+  padding: 3px;
+  color: black;
+  background: white;
+  vertical-align: top;
+  text-align: left;
+}
+td.tableSimpleDark1
+{
+  border: 1px solid black;
+  padding: 3px;
+  background: #666666;
+  color: white;
+  vertical-align: top;
+  text-align: left;
+  FONT-WEIGHT: bold;
+}
+td.tableSimpleDark1 A
+{
+  color: white;
+}
+td.tableSimpleDark2
+{
+  border: 1px solid black;
+  padding: 3px;
+  background: #898581;
+  color: white;
+  vertical-align: top;
+  text-align: left;
+  FONT-WEIGHT: bold;
+}
+td.tableSimpleDark2 A
+{
+  color: white;
+}
+TD.tableSimpleDark3
+{
+  border: 1px solid black;
+  padding: 3px;
+  background: #e0e0e0
+  color: white;
+  vertical-align: top;
+  text-align: left;  
+  FONT-WEIGHT: bold;
+}
+td.tableSimpleDark3 A
+{
+    COLOR: white;
+}
+td.tableSimpleDark3nohead
+{
+  border: 1px solid black;
+  padding: 3px;
+  background: #e0e0e0;
+  color: #333333;
+  vertical-align: top;
+  text-align: left;  
+}
+td.tableSimpleDark3nohead A, td.tableSimpleDark3nohead A:visited
+{
+    COLOR: #333333;
+}
+td.tableSimpleDark4
+{
+  border: 1px solid black;
+  padding: 3px;
+  background: #a43302;
+  padding: 3px;
+  color: white;
+  vertical-align: top;
+  text-align: left;  
+  FONT-WEIGHT: bold;
+}
+td.tableSimpleDark4 A
+{
+    COLOR: white;
+}
+td.tableSimpleGray
+{
+  border: 1px solid black;
+  padding: 3px;
+  color: black;
+  background: #e0e0e0;
+  vertical-align: top;
+  text-align: left;
+}
+td.tableSimpleLightGray
+{
+  border: 1px solid black;
+  padding: 3px;
+  color: black;
+  background: #fcfcfc;
+  vertical-align: top;
+  text-align: left;
+}
+td.tableSimpleDarkGray
+{
+  border: 1px solid black;
+  padding: 3px;
+  color: white;
+  background: #7d7d7d;
+  vertical-align: top;
+  text-align: left;
+  FONT-WEIGHT: bold;
+}
+td.tableSimpleDarkGray A
+{
+  color: white;
+}
+td.tableSimpleYellow
+{
+  border: 1px solid black;
+  padding: 3px;
+  color: black;
+  background: #FFFF99;
+  vertical-align: top;
+  text-align: left;
+}
+td.tableSimpleLight1
+{
+  border: 1px solid black;
+  padding: 3px;
+  color: black;
+  background: #eceeff;
+  vertical-align: top;
+  text-align: left;
+}
+td.tableSimpleLightBlue
+{
+  border: 1px solid black;
+  padding: 3px;
+  color: black;
+  background: #eceeff;
+  vertical-align: top;
+  text-align: left;
+  FONT-WEIGHT: bold
+}
+table.tableSimpleNoBorder 
+{
+  #border: 1px solid black;
+  padding: 3px;
+  #color: black;
+  #background: #eceeff;
+  vertical-align: top;
+  text-align: left;
+}
+
+table.nav
+{
+  border-collapse: collapse;
+  /* border: 1px blue solid; */
+}
+td.nav
+{
+  border: 1px solid #CCCCCC;
+  padding: 0px;
+  color: black;
+  background: white;
+  vertical-align: top;
+  text-align: left;
+}
+.nav3
+{
+    FONT-SIZE: 11px;
+    COLOR: #666666;
+    font-weight: normal;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+.nav3 A, .nav3a A:visited
+{
+    COLOR: #666666;
+    TEXT-DECORATION: none;
+}
+.nav3 A:hover
+{
+    COLOR: #0067C5;
+    TEXT-DECORATION: underline;
+}
+.nav3on
+{
+    FONT-SIZE: 11px;
+    COLOR: #0067C5;
+    font-weight: normal;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+.nav3on A, .nav3on A:visited
+{
+    /* COLOR: #ffffff; */
+    /* BACKGROUND-COLOR: #e0e0e0; */
+    /* background-color: #FF6600; */
+    background-color: #E3E0E1;
+    color: #0067C5;
+    TEXT-DECORATION: none;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+td.thinBorderDark2
+{
+    /* border: 1px solid #3366CC; */
+    border: 1px solid #666666;
+    font-size: 11px;
+    border-collapse: collapse;
+}
+table.thinBorder
+{
+    border-collapse: collapse;
+}
+.thinBorderDark2
+{
+    border: 1px solid #666666;
+    border-collapse: collapse;
+}
+input.noBorder
+{
+    border: 0px;
+    font-size: 10px;
+}
+input.searchButton
+{
+    font-size: 10px;
+    /* background: #3366CC;
+    border: 1px solid blue; */
+    background: #0067C5;
+    border: 1px solid #333333;
+    color: white;
+    vertical-align: top;
+}
+.navGray, .navGray A, .navGray A:visited
+{
+    color: gray;
+    text-decoration: none;
+    font-size: 10px;
+}
+.navGray A:hover
+{
+    text-decoration: underline;
+}
+.navGrayfoot, .navGrayfoot A, .navGrayfoot A:visited
+{
+    align:center;
+	color:#84888B;
+    text-decoration: none;
+    font-size: 10px;
+	padding-top: 29px; 
+}
+.navGrayfoot A:hover
+{
+    text-decoration: underline;
+}
+.navBox1
+{
+    font-size: 11px;
+    background: white;
+    color: #666666;
+    width: 120px;
+    height: 17px;
+    text-align: center;
+    border: 1px solid #CCCCCC;
+    padding: 0px;
+}
+
+TD.navText1
+{
+    font-size: 11px;
+    font-weight: bold;
+    background: white;
+    color: #666666;
+    text-align: center;
+    border: 1px solid #CCCCCC;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+TD.navText1 A, TD.navText1 A:visited
+{
+	text-decoration: none;
+    color: #666666;
+	
+}
+TD.navText1 A:hover
+{
+    text-decoration: underline;
+    color: #0067C5;
+    /* background: #E3E0E1;
+    color: #FF6600;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px; */
+}
+TD.navText1on
+{
+    /* background: #FF6600; */
+    background: #E3E0E1;
+    color: #0067C5;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    border: 1px solid #CCCCCC;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-leading: 16px;
+}
+TD.navText1on A, TD.navText1on A:visited
+{
+	text-decoration: none;
+	color: #0067C5;
+}
+
+TD.navText2
+{
+    font-size: 11px;
+    font-weight: normal;
+    background: white;
+    color: #666666;
+    text-align: center;
+    border: 1px solid #CCCCCC;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+TD.navText2 A, TD.navText2 A:visited
+{
+	text-decoration: none;
+    color: #666666;
+}
+TD.navText2 A:hover
+{
+	text-decoration: underline;
+    color: #0067C5;
+}
+TD.navText2on
+{
+    background: #E3E0E1;
+    color: #0067C5;
+    font-size: 11px;
+    font-weight: normal;
+    text-align: center;
+    border: 1px solid #CCCCCC;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-leading: 16px;
+}
+TD.navText2on A, TD.navText2on A:visited
+{
+	text-decoration: none;
+	color: #0067C5;
+}
+
+.titleText
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 20px;
+    /* COLOR: #666666; */
+    COLOR: black;
+    FONT-FAMILY: Arial Black, sans-serif;
+}
+
+TD.nowHomeHeadings
+{
+  background: #e0e0e0;
+  color: #333333;
+  vertical-align: top;
+  text-align: left;  
+  font-weight: bold;
+}
+/* ### end Redesign2006 classes ######### */
+
+
+/* ### end NOW classes ################## */
+/* ### start Tech Pubs classes ############# */
+.ref1
+{
+
+    margin-left: 14px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    list-style-type: circle;
+    list-style-position: outside;
+}
+.pubsleftnavlev1
+{
+    MARGIN-TOP: 3px;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial black, sans-serif;
+    BACKGROUND-COLOR: white
+}
+.pubsleftnavlev1 A
+{
+    MARGIN-TOP: 5px;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 12px;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: white
+}
+.pubsleftnavlev2
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 10px;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: white
+}
+.pubsleftnavlev2 A
+{
+    MARGIN-TOP: 1px;
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 10px;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: white
+}
+.pubsleftnavlev3
+{
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 10px;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: white
+}
+.pubsleftnavlev3 A
+{
+    MARGIN-TOP: 1px;
+    FONT-WEIGHT: normal;
+    FONT-SIZE: 10px;
+    FONT-FAMILY: Arial, sans-serif;
+    BACKGROUND-COLOR: white
+}
+/* ### end Tech Pubs classes ############### */
+/* ### start VIP classes ################### */
+.GRID-td-header
+{
+    BACKGROUND-COLOR: #666666;
+    COLOR: white;
+    FONT-FAMILY: Arial, sans-serif;
+    FONT-SIZE: 12px;
+    FONT-WEIGHT: bold;
+    border: 1px solid black;
+    vertical-align: TOP;
+    align: LEFT;
+}
+.GRID-td-data
+{
+    BACKGROUND-COLOR: white;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    FONT-SIZE: 12px;
+    FONT-WEIGHT: normal;
+    border: 1px solid #999999;
+    vertical-align: TOP;
+    align: LEFT;
+}
+.GRID-tr-data
+{
+    BACKGROUND-COLOR: white;
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    FONT-SIZE: 12px;
+    FONT-WEIGHT: normal;
+    border: 1px solid #999999;
+    vertical-align: TOP;
+    align: LEFT;
+}
+.GRID-table
+{
+    
+    BORDER-PADDING: 0px;
+	BORDER-SPACING: 0px;
+    CELLSPACING: 1px;
+    border-collapse: collapse;
+}
+.SelectVip
+{
+    COLOR: black;
+    FONT-FAMILY: Arial, sans-serif;
+    FONT-SIZE: 12px;
+    WIDTH: 200px;
+}
+/* ### end VIP classes ###################### */
+
+.indent
+{
+    margin-left: 18px;
+}  
+.rightAlign
+{
+    TEXT-ALIGN: right;
+}
+
+
+.searchTitle
+{
+    COLOR: #000066;
+    /* COLOR: #FF6600; orange */
+    FONT-FAMILY: Arial Black, Arial, sans-serif;
+    font-weight: normal;
+    FONT-SIZE: 14pt;
+}
+
+.searchSelectAll, .searchSelectAll A, searchSelectAll A:visited
+{ 
+    FONT-SIZE: 10px;
+    FONT-FAMILY: Arial, sans-serif;
+    COLOR: black;
+    cursor: pointer; 
+    cursor: hand; 
+}
+td.DarkGrayBorder
+{
+  background: #7d7d7d;
+}
+
+/* New Classes for 2008 rebrand*/
+
+#atNetapp{
+    float: left;
+	height:40px;
+	width:80px;
+	margin-left:0px;
+	font-size:11px;
+	color:#84888B;
+	padding-top:5px;
+	font-weight:normal;
+}
+
+#footerLogo{
+    float: left;
+	height:50px;
+	width:119px;
+	text-align:left;
+	padding:4px 0px 0px 35px;
+}
+
+#footer{
+	float:left;
+	width:1000px;
+	height:40px;
+	padding-top:39px;
+	margin-left:0px;
+	margin-right:0px;
+}
+
+div#footerMenu {
+	float:left;
+	padding: 4px 0px 0px 9px;
+	height:30px;
+}
+
+#footerMenu ul {
+	padding: 0px 0px 0px 0px;
+	margin-left:0;
+	margin: 0px 0px 0px 0px;
+	font-size:10px;
+	color:#84888B;
+}
+
+#footerMenu ul li {
+	padding: 0px 0px 0px 0px;
+	list-style: none;
+	display:inline;
+	height:30px;
+	padding-right:2px;
+}
+
+#footerMenu ul li span {background:url(/NOW/images/footermenudevider.gif) no-repeat right;}
+#footerMenu ul li a{padding: 0px 0.4em; text-decoration:none; color:#84888B;}
+#footerMenu ul li a:hover{color:#84888B;text-decoration:underline;}

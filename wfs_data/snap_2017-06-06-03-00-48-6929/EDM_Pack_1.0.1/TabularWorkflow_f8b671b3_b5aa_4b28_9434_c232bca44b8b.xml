@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tabularWorkflow considerReservedElements="true" description="This workflow exports a WFA Cache Database Scheme to an Excel file for external viewing or reporting." enableElementExistenceValidation="true" name="EDM100 Export Scheme to Excel" readyForProduction="true">
+    <certification>NONE</certification>
+    <uuid>f8b671b3-b5aa-4b28-9434-c232bca44b8b</uuid>
+    <version>1.1.2</version>
+    <workflow-commands>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Export MySql Database to Excel" uuid="e82bd116-77eb-4604-a8fd-dc70c29f809f">
+            <command-definition>65eeb69d-f8e1-4442-a29a-f468554daf7e</command-definition>
+        </workflow-command>
+    </workflow-commands>
+    <find-charts/>
+    <return-parameters/>
+    <rows>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+                    <other-parameters>
+                        <command-parameter-value value="$ExportPath">
+                            <parameter-definition>4ff382e2-8ba1-4a95-928e-d418edcc929c</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Overwrite">
+                            <parameter-definition>bb5b8a9c-2848-4485-adda-6b8d383a6ebf</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>6d7a7362-5325-405f-846c-ae01d96a8022</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Schema">
+                            <parameter-definition>65ead16e-240e-400a-93ed-cf6957674862</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$StructureOnly">
+                            <parameter-definition>54feec41-791e-4a4c-b615-79d8ddea4669</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>e82bd116-77eb-4604-a8fd-dc70c29f809f</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+        </row>
+    </rows>
+    <user-input-groups>
+        <user-input-group expandByDefault="false" name="">
+            <user-inputs>
+                <user-input defaultValue="cm_storage" description="Select the scheme you want to export. " displayName="Select Schema to Export" locked="false" mandatory="true" name="$Schema" uuid="a6c33932-bfd8-4338-a5a8-dae6216ffef5">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    SCHEMA_NAME&#xA;FROM&#xA;    information_schema.SCHEMATA&#xA;WHERE&#xA;    SCHEMA_NAME &lt;&gt; 'information_schema'&#xA;    AND SCHEMA_NAME &lt;&gt; 'wfa'&#xA;    AND SCHEMA_NAME &lt;&gt; 'wfa_proc'&#xA;    AND SCHEMA_NAME &lt;&gt; 'wfa_staging'&#xA;    AND SCHEMA_NAME &lt;&gt; 'tmp'&#xA;    AND SCHEMA_NAME &lt;&gt; 'test' "/>
+                </user-input>
+                <user-input defaultValue="C:\Temp" description="Just the path, not the filename itself" displayName="Path of the excel file" locked="false" mandatory="true" name="$ExportPath" uuid="34ac39dd-d429-496f-a854-6edaa471fd05">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stringUserInputType" regularExpression=""/>
+                </user-input>
+                <user-input defaultValue="true" displayName="Overwrite existing file ?" locked="false" mandatory="false" name="$Overwrite" uuid="01bda34d-f499-4e19-ac00-89576123117e">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="booleanUserInputType"/>
+                </user-input>
+                <user-input defaultValue="false" displayName="Structure only ? (no data)" locked="false" mandatory="false" name="$StructureOnly" uuid="9abf7c36-bb05-47c0-9b45-ab5ae9140234">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="booleanUserInputType"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+    </user-input-groups>
+    <workflow-constants/>
+</tabularWorkflow>

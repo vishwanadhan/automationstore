@@ -1,0 +1,204 @@
+.externalFormWrapper {
+	margin: 0; 
+	font-family: 'Arial', 'Helvetica', sans-serif;
+}
+
+.externalFormWrapper .externalSearch * { 
+	margin: 0; 
+	font-family: 'Arial', 'Helvetica', sans-serif;
+}
+
+.externalFormWrapper #bugKeyWordSearch{
+	font-family: 'Arial', 'Helvetica', sans-serif;
+}
+
+.externalFormWrapper #bugKeyWordSearch span{
+	font-size:12px;
+}
+
+.externalFormWrapper input.searchIconButtonWhite {
+    background: url("/search/resources/images/search_gs_iconSearchBtnWhite.png") no-repeat scroll 0 0 transparent !important;
+    border: medium none !important;
+    cursor: pointer !important;
+    display: inline !important;
+    height: 19px !important;
+    margin-top: 1px !important;
+    padding: 0 0 0 15px !important;
+    width: 21px !important;
+}
+
+
+.externalFormWrapper input.searchIconButtonGray{
+/*
+	background: url('http://library-dev.corp.netapp.com/ecm/ecm_get_file/ECMT1001109') no-repeat;
+*/
+	background: url('/search/resources/images/search_gs_iconSearchBtnGray.png') no-repeat;
+	margin-top: 1px;
+	padding: 0 0 0 15px;
+	display: inline;
+	width: 21px;
+	height: 19px;
+	cursor: pointer;
+	border: none;
+}
+
+/*-------------------------------------------------*/
+/*---------- Header Search Form CSS ---------------*/
+/*-------------------------------------------------*/
+
+.externalFormWrapper #headerRemainingBox{ width: 100%; height: 109px; }
+
+
+/*-------------------------------------------------*/
+/*---------- External Search Form CSS -------------*/
+/*-------------------------------------------------*/
+
+/* External Search General Styles */
+.externalFormWrapper .externalSearch{
+	background-color:#f0f0f0;
+}
+
+.externalFormWrapper .externalSearch form{
+	padding: 20px 30px 0;
+}
+
+.externalFormWrapper .externalSearch .esBar{
+	margin: 0;
+	height: 21px;
+}
+
+.externalFormWrapper .externalSearch h3{
+	float: left;
+	margin-right: 12px;
+	font-size: 16px;
+	font-weight: normal;
+	line-height: 21px;
+	color: #454545
+}
+
+.externalFormWrapper .externalSearch .esInput{
+	float: left;
+	margin-right: 5px;
+	outline: none;
+	border: 1px solid #c1c1b7;
+	width:456px;
+	height: 19px;
+}
+
+.externalFormWrapper .externalSearch .esSubmit{
+	float: left;
+}
+
+.externalFormWrapper .externalSearch .esLinks{
+	float: right;
+	margin:3px 48px 0 0;
+	list-style: none;
+	clear: both;
+}
+
+.externalFormWrapper .externalSearch .esLinks li{
+	float: left;
+	margin: 0 0 0 30px;
+}
+
+.externalFormWrapper .externalSearch .esLinks li:first-child{
+	float: left;
+	margin: 0;
+}
+
+.externalFormWrapper .externalSearch .esLinks li a{
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+	color:#0067c5;
+}
+
+.externalFormWrapper .externalSearch .esLinks li a:hover{
+	text-decoration: underline;
+}
+
+.externalFormWrapper .externalSearch .esLinks li a:visited{
+	color:#009fda;
+}
+
+.externalFormWrapper .externalSearch .esMyProductsFilter{
+	top: 64px;
+	left: 30px;
+}
+
+.externalFormWrapper .externalSearch .esMyProductsFilter label{
+	font-size: 12px;
+	color:#454545;
+}
+
+
+/* Support Home Not Logged In Styles */
+.externalFormWrapper #esSupportHomePublic{
+	width:625px;
+	height:79px;
+}
+
+/* Support Home Logged In Styles */
+.externalFormWrapper #esSupportHomeLoggedInNotInternal, .externalFormWrapper #esSupportHomeLoggedInInternal{
+	width:625px;
+	height:97px;
+}
+
+/* Documentation Not Logged In Styles */
+.externalFormWrapper #esDocumentationPublic{
+	width:320px;
+	height:102px;
+}
+
+.externalFormWrapper #esDocumentationPublic form{
+	padding: 25px 20px;
+}
+
+.externalFormWrapper #esDocumentationPublic h3{
+	margin-bottom: 12px;
+}
+
+.externalFormWrapper #esDocumentationPublic .esInput{
+	width: 242px;
+}
+
+.externalFormWrapper #esDocumentationPublic .esBar{
+	height: 21px !important;
+}
+
+.externalFormWrapper #esDocumentationPublic .esMyProductsFilter{
+	position:static;
+	clear: both;
+}
+
+/* Documentation Logged In Styles */
+.externalFormWrapper #esDocumentationLoggedIn{
+	width:320px;
+	height:125px;
+}
+
+.externalFormWrapper #esDocumentationLoggedIn form{
+	padding: 25px 20px;
+}
+
+.externalFormWrapper #esDocumentationLoggedIn h3{
+	margin-bottom: 12px;
+}
+
+.externalFormWrapper #esDocumentationLoggedIn .esInput{
+	width: 242px;
+}
+
+.externalFormWrapper #esDocumentationLoggedIn .esMyProductsFilter{
+	padding-top: 8px;
+	position:static;
+	clear: both;
+}
+
+.externalFormWrapper #esDocumentationLoggedIn .esBar{
+	height: 21px !important;
+}
+
+.externalFormWrapper #header_suggestion_form .esBar .esInput{
+	width: 248px !important;
+}

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="EDM Export MySql Database to Excel" samplingIntervalInSeconds="60" stringRepresentation="SchemeName + ' -&gt; ' + ExportPath" timeoutInSeconds="600" type="STANDARD">
+    <certification>NONE</certification>
+    <uuid>65eeb69d-f8e1-4442-a29a-f468554daf7e</uuid>
+    <version>1.1.1</version>
+    <command-implementations>
+        <command-implementation>
+            <command>param
+(
+  [parameter(Mandatory=$true, HelpMessage=&quot;Database name&quot;)]
+  [string]$SchemeName,
+  
+  [parameter(Mandatory=$true, HelpMessage=&quot;Path of the export directory&quot;)]
+  [string]$ExportPath,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Force overwrite ?&quot;)]
+  [bool]$Overwrite=$true,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Structure only ? (no data)&quot;)]
+  [bool]$StructureOnly=$false
+)
+
+Import-Module &quot;..\..\..\..\PoSH\Modules\PSExcel\PSExcel&quot;
+
+# create the export directory if it does not already exist
+if ( -NOT (Test-Path $ExportPath) )
+   {
+      New-Item -Path $ExportPath -ItemType Directory -force -Confirm:$false
+   }
+
+# create the excel path 
+$ExcelPath = join-path -path $ExportPath -childpath &quot;$SchemeName.xlsx&quot;
+Get-WFALogger -Info -message $(&quot;exporting database scheme '$SchemeName' to '$ExcelPath'&quot;)
+
+# lets connect to mysql and check the scheme first
+try{
+    Get-WFALogger -Info -message $(&quot;Looking up the scheme '$SchemeName' in MySql&quot;)
+    $rsTables = Invoke-MySqlQuery -query &quot;SHOW TABLES FROM $SchemeName&quot;
+}catch{
+    Throw &quot;Failed to fetch the scheme, does it exist ?&quot;
+}
+ 
+[System.Collections.ArrayList]$tableListMySql = @()
+ 
+# are there any tables in the scheme ?
+if($rsTables[0] -gt 0){
+    $rsTables | select -Skip 1 | %{$tableListMySql+=$_[0]}
+    Get-WFALogger -Info -message $(&quot;Found $($rsTables[0]) tables&quot;)
+    #$tableListMySql | %{$i=0}{$i++;Get-WFALogger -Debug -message $(&quot;($i) $_&quot;);}
+}else{
+    Throw &quot;No tables found in this scheme&quot;
+}
+
+if(Test-Path $ExcelPath){
+	Get-WFALogger -Info -message $(&quot;Excel file '$ExcelPath' already exists&quot;)
+	if($Overwrite){
+		Get-WFALogger -Info -message $(&quot;Removing old file&quot;)
+		Remove-Item -path $ExcelPath -Force
+	}else{
+		Throw &quot;File already exists&quot;
+	}
+}
+
+
+foreach($t in $tableListMySql){
+
+
+
+	Get-WFALogger -Info -message $(&quot;Adding table '$t'&quot;)
+
+	# lets connect to mysql and check the table
+	try{
+    		$rsContent = Invoke-MySqlQuery -query &quot;SELECT * FROM $SchemeName.$t&quot;
+	}catch{
+    		Throw &quot;Failed to fetch the table, does it exist ?&quot;
+	}
+
+	$rsFields = Invoke-MySqlQuery -query &quot;SHOW FIELDS FROM $SchemeName.$t&quot;
+
+	[System.Collections.ArrayList]$fieldListMySql = @()
+ 
+	# are there any tables in the scheme ?
+	if($rsFields[0] -gt 0){
+	    $fields = $rsFields | select -Skip 1
+ 	    $fields | %{$fieldListMySql+=$_.Field}
+	}else{
+	    Throw &quot;No fields found in this table&quot;
+	}
+
+
+    	if($rsContent[0] -gt 0){
+		$content = @($rsContent | select -skip 1)
+    	}else{
+		$content = $false
+    	}
+        $tableLabels = @()
+        # make a correct ordered select
+        foreach($f in $fieldListMySql){
+            $exp = [scriptblock]::Create('$_.&quot;' + $f + '&quot;')
+            $tableLabels += @{name=$f;e=$exp}
+        }
+
+	if($StructureOnly -or -not $content){
+	        $toExport = &quot;&quot; | select -Property $tableLabels
+	}else{
+		$toExport = $content | select -Property $tableLabels
+	}
+
+	$toExport | Export-XLSX -path $ExcelPath -WorksheetName $t -Table -autofit
+	
+}
+
+
+
+
+</command>
+            <commandLanguage>POWER_SHELL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="ExportPath" parameterName="ExportPath"/>
+        <parameter-mapping objectName="Overwrite" parameterName="Overwrite"/>
+        <parameter-mapping objectName="PipelineVariable" parameterName="PipelineVariable"/>
+        <parameter-mapping objectName="SchemeName" parameterName="SchemeName"/>
+        <parameter-mapping objectName="StructureOnly" parameterName="StructureOnly"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description></description>
+    <parameter-definitions>
+        <parameter-definition description="Path of the export directory" isMandatory="true" name="ExportPath" type="String">
+            <uuid>4ff382e2-8ba1-4a95-928e-d418edcc929c</uuid>
+        </parameter-definition>
+        <parameter-definition description="Force overwrite ?" isMandatory="false" name="Overwrite" type="Boolean">
+            <uuid>bb5b8a9c-2848-4485-adda-6b8d383a6ebf</uuid>
+        </parameter-definition>
+        <parameter-definition description="" isMandatory="false" name="PipelineVariable" type="String">
+            <uuid>6d7a7362-5325-405f-846c-ae01d96a8022</uuid>
+        </parameter-definition>
+        <parameter-definition description="Database name" isMandatory="true" name="SchemeName" type="String">
+            <uuid>65ead16e-240e-400a-93ed-cf6957674862</uuid>
+        </parameter-definition>
+        <parameter-definition description="Structure only ? (no data)" isMandatory="false" name="StructureOnly" type="Boolean">
+            <uuid>54feec41-791e-4a4c-b615-79d8ddea4669</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

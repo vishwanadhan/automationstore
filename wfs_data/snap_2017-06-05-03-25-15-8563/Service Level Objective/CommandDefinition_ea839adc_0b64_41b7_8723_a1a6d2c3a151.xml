@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="KP Setup" samplingIntervalInSeconds="60" stringRepresentation="&quot;KP Script Setup&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>ea839adc-0b64-41b7-8723-a1a6d2c3a151</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+use Cwd;
+use File::Copy qw(copy move);
+use File::Find;
+use Win32;
+
+
+my ($UserName,$Password,$Action,$Software, $AddKey);
+
+GetOptions(
+	&quot;Action=s&quot; =&gt; \$Action,
+
+
+) or die 'Illegal command parameters'; 
+
+
+my $wfa_util = WFAUtil-&gt;new();
+
+$wfa_util-&gt;sendLog('INFO', 'Service Manager');
+$wfa_util-&gt;sendLog('INFO', 'Copy KP Script and ConfigFile');
+
+my ($Cwd) =   ( Win32::GetFullPathName($0) =~ /^(.*\\)(.*)\.(.*)$/ ) [0];
+my $BinDir = $Cwd.'..\..\..\..\bin';
+my $SrcDir = $Cwd.'..\..\workflow-help';
+my $scriptFile = $BinDir.'\service_manager.pl';
+my $kpScript = $BinDir.'\kp.pl';
+my $desFile;
+#my @filestoCheck = qw/$desFile, $scriptFile, $kpvScript/;
+
+
+if ($Action eq 'Create') {
+	find(\&amp;Wanted, $SrcDir);
+
+	$wfa_util-&gt;sendLog('INFO', 'DesFile '.$desFile);
+	$wfa_util-&gt;sendLog('INFO', ' Script Path '. $scriptFile);
+
+	foreach ($desFile, $scriptFile, $kpScript){
+	if (! -e $_){
+		$wfa_util-&gt;sendLog('ERROR', ' File is not copied -'.$_);
+		die;
+       	}
+	}
+	
+}
+
+if ($Action eq 'Update'){
+	find(\&amp;Wanted, $SrcDir);
+
+	foreach ($kpScript){
+	if (! -e $_){
+		$wfa_util-&gt;sendLog('ERROR', ' File is not copied -'.$_);
+		die;
+       	}
+	}
+	
+}
+
+sub Wanted{
+	/config\.txt/ or /service_manager\.pl/ or /kp\.pl/ or return;
+
+	my $pwd = getcwd;
+	my $File = $pwd.&quot;\\&quot;.$_;
+
+                if ($Action eq 'Create'){
+	    if ($_ =~/config/){
+		my $kitchenDir = $BinDir.'\..\kitchen';
+		Win32::CreateDirectory($kitchenDir);		
+		$desFile = $kitchenDir.&quot;\\&quot;.'config.txt';
+		$File=~s'/'\\'g;
+		$desFile=~s'/'\\'g;
+		$wfa_util-&gt;sendLog('INFO', 'Config File Path : '.$File);
+		$wfa_util-&gt;sendLog('INFO', 'Folder to copy config.txt : '.$kitchenDir);	
+		copy($File, $kitchenDir) or die &quot;Copy failed: $!&quot;;
+				
+	    }
+	    else{
+		$wfa_util-&gt;sendLog('INFO', 'File Path : '.$File);
+		$wfa_util-&gt;sendLog('INFO', 'Folder to copy : '.$BinDir);
+		$BinDir=$BinDir.&quot;\\&quot;;
+		copy ($File, $BinDir);	
+	    }
+	}
+                 if ($Action eq 'Update'){
+	     if ($_ =~/kp/){
+		$wfa_util-&gt;sendLog('INFO', 'File Path : '.$_);
+		$wfa_util-&gt;sendLog('INFO', 'Folder to copy : '.$BinDir);
+		$BinDir=$BinDir.&quot;\\&quot;;
+		copy ($File, $BinDir);
+	    }
+	}
+}
+</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>KP Script Setup</description>
+    <parameter-definitions>
+        <parameter-definition description="Action to be perpformed" enumValues="Create,Drop,Update" isMandatory="true" name="Action" type="Enum">
+            <uuid>cdec5a88-b5ac-4e95-bd3a-2727563f44c4</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

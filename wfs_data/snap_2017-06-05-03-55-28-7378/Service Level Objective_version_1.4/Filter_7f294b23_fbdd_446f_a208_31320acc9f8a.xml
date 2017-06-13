@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<filter description="This will ignore Storage Virtual Machine with Infinite Volume" name="Filter Storage Virtual Machines by repository">
+    <certification>NETAPP</certification>
+    <uuid>7f294b23-fbdd-446f-a208-31320acc9f8a</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry>27bfb32f-baa1-4571-abb5-c644c132ceea</dictionary-entry>
+    <parameters/>
+    <query>SELECT
+    vserver.name AS 'name',
+    cluster.primary_address AS 'cluster.primary_address'
+FROM
+    cm_storage.vserver,
+    cm_storage.cluster
+WHERE
+    vserver.is_repository IS NOT TRUE
+    AND vserver.cluster_id = cluster.id </query>
+    <returned-attributes>
+        <returned-attribute>cluster.primary_address</returned-attribute>
+        <returned-attribute>name</returned-attribute>
+    </returned-attributes>
+</filter>

@@ -1,0 +1,2551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowstore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="sfa-store-interface.xsd">
+<publish-timestamp>1446133804</publish-timestamp>
+<data-base-url>host.btc.netapp.com</data-base-url>
+<wfa-packs>
+<pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>This pack contains two workflows to set up the FC service on a Storage Virtual Machine (SVM, formerly known as Vserver), in preparation for provisioning a LUN for use as a datastore using an FC HBA the host computer (Windows or ESX). Following are the workflows contained in the pack: 1. FCP server configuration for Windows and ESX 2. FCP LUN provisioning for Windows and ESX</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=7d44f66f-1b7f-46f8-be7c-d12bdd825ca7&amp;packVersion=1.0.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=7d44f66f-1b7f-46f8-be7c-d12bdd825ca7&amp;packVersion=1.0.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A set of workflows for storage provisioning in 7-Mode and Clustered Data ONTAP storage systems. This includes workflows which provision storage objects like volumes, LUNs, qtrees, configure NFS exports, create CIFS shares, create igroups and map provisioned LUNs to those igroups.</description>
+            <name>Storage Provisioning</name>
+            <type>Category</type>
+            <uuid>41323e8f-edf5-41d5-8a12-04819e73b378</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Add or Remove Initiators from Igroup</description>
+            <name>Modify Initiator Group</name>
+            <type>Command</type>
+            <uuid>0f4d7d13-516e-4d95-b8e0-9f9ea59b6c10</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A set of workflows that help setup the storage environment.</description>
+            <name>Setup</name>
+            <type>Category</type>
+            <uuid>3fd4e387-3003-47bc-9631-0c7c6279767f</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Provisioning one or more LUNs on Clustered Data ONTAP storage systems for Windows and ESX. This workflow includes:
+
+- Creating a new aggregate or use existing one.
+- Creating a new volume or use existing one.
+- Creating a new igroup or use/modify existing one.
+- Creating one or more LUNs.
+- Mapping the LUNs to either a newly created igroup or to a specified existing igroup.</description>
+            <name>FCP LUN Provisioning</name>
+            <type>Workflow</type>
+            <uuid>baacba9d-d8a0-415f-8b42-9f64207657c4</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow configures FCP service on a Storage Virtual Machine.
+
+Configuring FCP services on a Storage Virtual Machine involves the following steps:
+    1. Creating a new aggregate or using an existing one.
+    2. Creating a new Storage Virtual Machine and setting up Active Directory account.
+    3. Setting up FCP service.
+    4. Creating a Portset.
+    5. Creating a FCP Logical Interface.
+    6. Adding FCP Logical Interface to Portset.
+
+Pre-requisites:
+
+1) FCP license must be enabled.</description>
+            <name>FCP Server Configuration</name>
+            <type>Workflow</type>
+            <uuid>b67daf1c-f5b6-413d-982f-72a85b95be60</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.0</minWfaVersion>
+    <name>Fibre Channel server configuration and provisioning pack</name>
+    <uuid>7d44f66f-1b7f-46f8-be7c-d12bdd825ca7</uuid>
+    <version>1.0.0</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>During the process of storage consolidation in your data center, you need to migrate data from third-party LUNs to a NetApp cluster. This pack contains four workflows that enable you to migrate data from third-party LUNs to a NetApp cluster using Foreign LUN Import (FLI) functionality. These packs support both Online and Offline FLI.
+	
+	The workflows in this pack should be executed in the following recommended sequence:
+		1. FLI Setup And Import
+		2. FLI Status And Restart
+		3. FLI Post Jobs
+		4. FLI Report
+
+	Prerequisites:
+
+		1. You must have installed WFA 3.1 
+		2. You must ensure that OnCommand Unified Manager 6.3 is added as a data source in your WFA
+
+		This pack contains a configuration file called "data-collector_lun_import_ext.conf". You can obtain the same from any help content of the workflows. The configuration file must be placed in the following location as per the OS selected for the Unified Manager:
+			i.  Windows user: C:\Program Files\NetApp\ocum\etc\data-collector
+			ii. Linux\Virtual Appliance (vApp) user (with root login): /opt/netapp/ocum/etc/data-collector/
+	</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=312fa634-3114-49f8-8376-98aee8e10b0f&amp;packVersion=1.0.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=312fa634-3114-49f8-8376-98aee8e10b0f&amp;packVersion=1.0.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow breaks the LUN import relationships from the cluster and also deletes any LUN of a failed LUN import operation.
+
+Deletion of LUN import relationship involves the following steps:
+    1. Deleting LUN import relationship for selected LUN import
+    2. Making LUN online if stated
+    3. Deleting LUN from ONTAP for failed LUN import
+
+Prerequisites:
+
+1) Destination SVM and Igroup should be available
+2) Destination FlexVol should be available
+3) Ensure that FCP logical interface is available on all nodes
+4) WFA Server: WFA 3.1
+5) ONTAP Version: 8.3.1 and above
+6) UM Version: 6.3</description>
+            <name>FLI Post Jobs</name>
+            <type>Workflow</type>
+            <uuid>1e86b211-b985-428d-8f38-b6147530d574</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Generates a database report for a specific database table under a specific database schema.</description>
+            <name>Database Report Genarator</name>
+            <type>Command</type>
+            <uuid>2179516b-498b-4506-bcd7-f99989a842bc</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow enables you to import data from foreign RAID array LUNs to cluster LUNs.
+
+Migration of foreign LUNs involves the following steps:
+    1. Marking disk's as foreign
+    2. Creating LUNs by size of foreign disk
+    3. Making LUNs offline
+    4. Mapping newly created LUNs to existing I-group
+    5. Creating LUN import with/without throttle
+    6. Starting of LUN imports (Offline/Online)
+    7. Verification of LUN imports (Offline)
+
+Prerequisites:
+
+1) Destination SVM and Igroup should be available
+2) Destination FlexVol should be available
+3) Ensure that FCP logical interface is available on all nodes
+4) WFA Server: WFA 3.1
+5) ONTAP Vsersion: 8.3.1 and above
+6) UM Version: 6.3</description>
+            <name>FLI Setup And Import</name>
+            <type>Workflow</type>
+            <uuid>bf5fc3eb-4298-489b-9ed2-c502b338bf69</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A disk path in a storage system.</description>
+            <name>Disk_Path</name>
+            <type>Dictionary Entry</type>
+            <uuid>9248e6d7-5842-4fe0-9a5d-946e49cd0343</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow generates a status report of the LUN import in the form of CSV. A file in the following format &lt;lun_report_dd_mm_yyyy__hh_mm_ss.csv&gt; will be created at the location, WFA Installation Directory-&gt;jboss-&gt;standalone-&gt;tmp.</description>
+            <name>FLI Report</name>
+            <type>Workflow</type>
+            <uuid>1837b62c-a373-4616-a210-467e138bde9d</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>Lun_Import for query OnCommand Unified Manager_6.3</name>
+            <type>Cache Query</type>
+            <uuid>c08ea9c5-d77c-457b-8f5e-736efc6335c9</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow is a helper workflow for the workflow "FLI Setup And Import".
+This workflow enables you to manage LUN migration jobs. You can also use this workflow to start LUN import operation.
+
+Workflow displays all migration jobs (IN_PROGRESS, FAILED, STOPPED, PAUSED and COMPLETED).
+You can perform the following actions:
+    1. Starting migration jobs which are stopped (stopped/not yet started)
+    2. Pausing migration jobs which are active or failed
+    3. Resuming migration jobs which are paused
+    4. Stopping migration jobs (import/verification) which are active or failed
+    5. Modifying throttle value (on any migration job)
+    6. Changing of import state (offline -&gt; online and vice-versa) when the import is stopped, paused
+    7. Verifying already completed import
+
+Prerequisites:
+
+1) Destination SVM and Igroup should be available
+2) Destination FlexVol should be available
+3) Ensure that FCP logical interface is available on all nodes
+4) WFA Server: WFA 3.1
+5) ONTAP Vsersion: 8.3.1 and above
+6) UM Version: 6.3</description>
+            <name>FLI Status And Restart</name>
+            <type>Workflow</type>
+            <uuid>ed78c244-20e1-41e0-b102-57c6f70e3716</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Maps the LUN to all the initiators in the specified initiator group.</description>
+            <name>LUN Map</name>
+            <type>Command</type>
+            <uuid>0bec2260-f295-44a9-b129-59cd34987e94</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Creates a single unmapped LUN of foreign disk size on a Storage Virtual Machine.</description>
+            <name>LUN Create by Size of Foreign Disk</name>
+            <type>Command</type>
+            <uuid>f74f6b65-3caa-49d9-be6a-967ad59fd6f9</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Information of a Foreign LUN Import relationship.</description>
+            <name>Lun_Import</name>
+            <type>Dictionary Entry</type>
+            <uuid>234e2812-490d-4c38-9701-c71fe7621791</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will monitor active LUN import operations on a given node. 
+
+If the number of active LUN import  operations on the given node is below the specified limit, the command will return successfully. Otherwise the command will wait until the number of LUN import is below the limit.</description>
+            <name>Wait for LUN Import and Verify</name>
+            <type>Command</type>
+            <uuid>8df8a6ff-0dbe-4783-8897-ea9a38aefe7d</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Unmaps a Cluster-Mode LUN from an igroup.</description>
+            <name>LUN Unmap</name>
+            <type>Command</type>
+            <uuid>49f5450c-edbf-4a36-ba8f-931a1d04a3dd</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Destroy the specified LUN. This operation will fail if the LUN is currently mapped and is online. The force option can be used to destroy it regardless of being online or mapped.</description>
+            <name>LUN Delete</name>
+            <type>Command</type>
+            <uuid>51d1650d-a805-43d4-9997-88e8f4601093</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>Disk_Path for query OnCommand Unified Manager_6.3</name>
+            <type>Cache Query</type>
+            <uuid>26674358-a81f-4827-83be-87f87d08b5ce</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command used to change LUN state (offline -&gt; online and online -&gt; offline) on basis of 'ChangeState' selected.
+If ChangeState is 'offline' then -&gt; Disables block-protocol accesses to the LUN. Mappings, if any, configured for the LUN are not altered.
+If ChangeState is 'online' then -&gt; Re-enables block-protocol accesses to the LUN.</description>
+            <name>Change LUN State</name>
+            <type>Command</type>
+            <uuid>507db80a-f34b-44a6-a628-43569f672d71</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command used to perform different 'lun import' operations.
+ 'create' - Create a LUN import relationship with the purpose of importing foreign disk data into the LUN
+ 'delete' - Deletes the import relationship of the specified LUN or the specified foreign disk
+ 'start' - Start the import for the specified LUN
+ 'pause' - Pause the import for the specified LUN
+ 'resume' - Resume the import for the specified LUN
+ 'stop' - Stop and abort the import for the specified LUN. All import checkpoint data will be lost
+ 'throttle' - Modify the max throughput limit for the specified import relationship
+ 'verify-start' - Start the verification of the foreign disk and LUN data. The import admin/operational state must be stopped/stopped or started/completed. The verification does a block for block comparison of the LUN and foreign disk. If the verification detects a mismatch between the foreign disk and LUN then the verify will stop
+ 'verify-stop' - Stop the verify for the specified LUN</description>
+            <name>LUN Import</name>
+            <type>Command</type>
+            <uuid>182046db-7eba-4840-849d-e66ff2f09139</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Modify the attributes of storage-disk object. A true value indicates an array LUN has been designated as a foreign LUN and cannot be assigned</description>
+            <name>Modify Storage Disk</name>
+            <type>Command</type>
+            <uuid>21def7fe-c283-4ad0-ab5c-e735495c110d</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>A set of workflows that help manage storage. This includes workflows for resizing storage, migrating volumes from their current locations to other storage systems and aggregates, and moving volumes non-disruptively in Cluster-Mode.</description>
+            <name>Migration</name>
+            <type>Category</type>
+            <uuid>9abc6dec-4f9f-41cb-bb3b-29fd4fc9cd9f</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.1.0.0.0</minWfaVersion>
+    <name>Foreign LUN Import</name>
+    <uuid>312fa634-3114-49f8-8376-98aee8e10b0f</uuid>
+    <version>1.0.0</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>This pack contains a workflow, Manage SnapMirror-SnapVault Cascade Relationship that enables you to manage the schedules and transfer updates of your existing SnapMirror-SnapVault cascade relationships.
+
+The execution of this workflow involves the following steps:
+	1. Generate a list of Snapshot copies at the SnapMirror destination that matches with SnapMirror labels at SnapVault destination.
+	2. Transfer the Snapshot copies identified in the previous step from SnapMirror destination to SnapVault destination.
+While transferring the Snapshot copies, you must check the keep and preserve fields of the SnapMirror label at SnapVault destination and then proceed with the transfer.
+
+Note: This workflow is qualified to work with Data ONTAP version 8.2.x</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=ba11fac4-9710-4f2b-90ed-a7efbd4e723a&amp;packVersion=1.0.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=ba11fac4-9710-4f2b-90ed-a7efbd4e723a&amp;packVersion=1.0.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Modify SnapMirror changes one or more parameters of a SnapMirror or SnapVault relationship. The SnapMirror or SnapVault relationship is identified by its source and destination Clusters, Storage Virtual Machines, and Volumes and these must be specified as the command input parameters.
+
+Changes made by the Modify SnapMirror command do not take effect until the next manual or scheduled update of the relationship. Changes do not affect updates that have started and have not finished yet. This command is not supported on Infinite Volume constituents.</description>
+            <name>Modify SnapMirror - DPG</name>
+            <type>Command</type>
+            <uuid>aaa8c825-a55b-4a33-8c80-b0fd6cb56ea8</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The command will generate a set of snapshots to be updated (copied/removed) in the vault location.</description>
+            <name>Generate Snapshot Set To Be Updated - PMV</name>
+            <type>Command</type>
+            <uuid>947eb640-e7b1-4281-9588-bcd0e943b768</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The command will wait for the SnapMirror relationship  to complete the update process.</description>
+            <name>Wait for Snapshot Update - PMV</name>
+            <type>Command</type>
+            <uuid>e6e80603-c475-40b1-b886-b6a4facdc2c6</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>Clustered Data ONTAP - Snapshot_</name>
+            <type>Script Data Source Type</type>
+            <uuid>537bf62a-9541-44f4-baf9-83e1900b6145</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow Manage SnapMirrror-SnapVault Cascade Relationship sets up the transfer of user defined snapshots from  snapmirror destination to snapvault by reading the SnapVault policy at the Vault Side.
+
+The feature of transferring the user defined snapshots from mirror to vault is not available in the SN.x releases, hence, this workflow can be used in place if the user wants to transfer the user defined snapshots and the workflow will be scheduled from a windows scheduler and executed as many number of times based on the schedule.
+
+SnapMirrror-SnapVault Cascade Relationship involves the following steps:
+
+1) Generate a list of snapshots at SnapMirror Destination that are matching with snapmirror labels at SnapVault Destination.
+2) Transfer the snapshots identified in previous step from SnapMirror Destination to SnapVault Destination.
+3) While Transferring the snapshots check the keep and preserve fields of snapmirror label at SnapVault destination and then transfer.
+
+Pre-requisites:
+========
+Primary, Secondary, Tertiary clusters are peered
+SVM's managing the snapmirror source, snapmirrror destination, Snapvault volumes are peered.
+Snapshot policy at the primary volume is created and applied to a SMV managing the SnapMirror Source, SnapMirror policy and its rules are created at vault side.
+Apply schedules both at mirror side and vault side and wait for transfers happen from SnapMirror Source to SnapMirror Destination.
+The secondary SnapMirror cluster must be added as a data source of type Clustered Data ONTAP - Snapshot, in WFA to aquire Snapshot copies information from the Mirror cluster.
+ONTAP version : 8.2 only</description>
+            <name>Manage SnapMirror-SnapVault Cascade Relationship</name>
+            <type>Workflow</type>
+            <uuid>b21e3fdf-d718-4f13-b9a9-a1caf1a8a05e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Snapshot of a volume on a Clustered Data ONTAP.</description>
+            <name>Snapshot</name>
+            <type>Dictionary Entry</type>
+            <uuid>5e2cf19e-c07f-452d-84fe-ce8a64170f69</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns a list of snapshots that matches the snapmirror labels from the vault side.</description>
+            <name>Filter Snapshots by snapmirror label - PMV</name>
+            <type>Filter</type>
+            <uuid>eedaebca-4526-4507-873f-b5e934ac68e8</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>cm_storage_smsv</name>
+            <type>Scheme</type>
+            <uuid>69a9700a-f4cd-4819-bd56-2d611a60cc3e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>Find snapshots by snapmirror label</name>
+            <type>Finder</type>
+            <uuid>ff4bcacf-8903-4e46-a1c3-1b62260c3448</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The command will updated the snapshot specified from mirror to vault destination.</description>
+            <name>Snapmirror SnapShot Update And Delete - PMV</name>
+            <type>Command</type>
+            <uuid>22be6f59-3935-4759-bb74-b97bc858e5c7</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The command will lock the given snapshot.</description>
+            <name>Lock SnapMirror Snapshot - PMV</name>
+            <type>Command</type>
+            <uuid>b37a1042-345d-438b-93cf-a097813c44fc</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The command will wait for the SnapMirror relationship  to complete the update process.</description>
+            <name>Wait for SnapMirror update</name>
+            <type>Command</type>
+            <uuid>e2f6997a-0faf-4863-9951-ab52fbd1327b</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The command will unlock a given snapshot.</description>
+            <name>Unlock SnapMirror SnapShot - PMV</name>
+            <type>Command</type>
+            <uuid>fb5bd546-b7c5-4f37-a94b-f1ec98bbefee</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>A set of workflows that configure data protection relationships. These workflows deal with different data protection technologies such as Volume SnapMirror and SnapVault.</description>
+            <name>Data Protection</name>
+            <type>Category</type>
+            <uuid>41ec7214-c8a8-4484-8d0f-cfacbd16f5b0</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.0</minWfaVersion>
+    <name>Manage SnapMirror-SnapVault Cascade Relationship</name>
+    <uuid>ba11fac4-9710-4f2b-90ed-a7efbd4e723a</uuid>
+    <version>1.0.0</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>This pack contains workflows to enable data protection capabilities.
+
+	Following are the workflows contained in the pack:
+	1. Converting SnapMirror Relationship to SnapVault or Version-Flexible SnapMirror Relationship. This workflow enables you to convert:
+		a. SnapMirror relationship that uses Block Replication Engine (BRE) to Logical Replication Engine with Storage Efficiency (LRSE) for version-flexible SnapMirror relationship.
+		b. SnapMirror relationship (Asynchronous Disaster Recovery) to SnapVault (Backup) relationship.
+	2. Move root volumes to a target node.
+	3. Move root volumes back to their original aggregates The move root volumes workflows enable you to move the root volumes of the Storage Virtual Machines (SVMs) that are in load-sharing mirror relationship to a node, before a Data ONTAP upgrade, and then move the root volumes back to the original aggregates, after a successful upgrade.</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=449970c7-0103-4226-ba81-125084621689&amp;packVersion=1.0.2&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=449970c7-0103-4226-ba81-125084621689&amp;packVersion=1.0.2</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Before upgrading to the latest Data ONTAP version, the root volumes of the SVMs that has load sharing 
+mirrors need be moved to a node that has been identified as a last upgrading node. This workflow 
+enables you to move the root volumes with load sharing mirrors to the selected aggregates. 
+The volumes in the SVM are moved parallel until the volume move limit (8 volumes) is reached. After 
+which, the workflow ensures that the eight volumes are first moved, and then the next set of volumes 
+are moved in parallel. With the help of volume move job IDs, the workflow keeps track of pending 
+volume moves.
+If any failure is encountered during a volume move operation for a set of volumes, the workflow 
+continues to execute the volume move operation on the next set of volumes that are in queue. 
+Appropriate failure and progress information is recorded in the log. 
+</description>
+            <name>Move Root Volumes to a target node</name>
+            <type>Workflow</type>
+            <uuid>93ae9298-3f6f-4b5e-9827-7ee08e5040d6</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns the root volumes that got moved from their original aggregates.</description>
+            <name>Filter root volumes by original source location</name>
+            <type>Filter</type>
+            <uuid>0de50086-85a7-46fe-80a3-12568e69e857</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>For a given cluster, this finder finds the root volumes that has load sharing mirrors on all the nodes and ignores the root volumes of the node specified.</description>
+            <name>Find root volumes of all the nodes except for the given node</name>
+            <type>Finder</type>
+            <uuid>c62581a5-9f1c-4bc4-82cf-63cbf1acd59f</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The dictionary contains the details of source aggregate, destination aggregate, volume name and cluster IP address.
+
+This is used to track the volume moves between source and destination aggregates.</description>
+            <name>Volume_Move_Job</name>
+            <type>Dictionary Entry</type>
+            <uuid>5b7f03c1-3e82-4344-987a-a1285529e890</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>For a given cluster and a node, the filter will return the root volumes of all nodes except the node that is specified as an input.</description>
+            <name>Filter that returns root volumes of those SVMs that have load sharing mirrors</name>
+            <type>Filter</type>
+            <uuid>22171ab9-625f-4e8a-9f55-3a4910e864bb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Moves a Cluster-Mode volume from its current aggregate to the specified target aggregate.
+
+This command initiates the move of the volume. Firstly, a series of checks are run to determine if the volume can be moved. If any of them throw a warning or error, the command fails.
+
+Once the initial checks pass, the actual move is initiated where a destination volume is created and data is transferred using snapshots. 
+
+The cutover phase can be controlled by CutoverWindow, CutoverAttempts, CutoverAction. 
+If CutoverAction is defer_on_failure which is the default, volume move job will try cutover until CutoverAttempts are exhausted and move into cutover_deferred state if it fails to cutover. If CutoverAction is abort_on_failure, the volume move job will try cutover until CutoverAttempts are exhausted and if it fails, a complete cleanup is performed. </description>
+            <name>Move volume - DPG</name>
+            <type>Command</type>
+            <uuid>7102cc55-6b85-4457-adfa-5135720620de</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The workflow will move the root volumes back to their original aggregate(s).
+
+This workflow should be excecuted after executing the workflow "Move Root Volumes to target node" which moves the root volumes of the nodes in a cluster to a target node.
+
+The volumes will be moved to their original aggregates in parallel.
+
+If there are any failures while moving the root volumes, then the workflow will still continues to move other root volumes and logs the appropriate errror messages and information messages in the log.</description>
+            <name>Move root volumes back to their original aggregate(s)</name>
+            <type>Workflow</type>
+            <uuid>0b1b9b81-39b6-4457-8a8d-2226484e5225</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Breaks a SnapMirror relationship for a given destination endpoint.</description>
+            <name>Break SnapMirror - BRE To LRSE</name>
+            <type>Command</type>
+            <uuid>b076f39e-71cc-4e23-9779-c2dc519afe5d</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>A set of workflows that configure data protection relationships. These workflows deal with different data protection technologies such as Volume SnapMirror and SnapVault.</description>
+            <name>Data Protection</name>
+            <type>Category</type>
+            <uuid>41ec7214-c8a8-4484-8d0f-cfacbd16f5b0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Creates a SnapMirror or SnapVault relationship between a source and destination volume. Before this command can be used, a source and a destination volume should have been created by the create volume command. The source volume should be in the online state and be of the read-write (RW) type. The destination volume should be in the online state and be of the data protection (DP) type. Clustered ONTAP 8.2 or later is required for creating a SnapVault relationship.</description>
+            <name>Create SnapMirror - BRE To LRSE</name>
+            <type>Command</type>
+            <uuid>af5f154e-8ce1-4255-a8b7-f41b69270c81</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>7f1443ad-72a7-444a-a992-72f29cad5444</name>
+            <type>Cache Query</type>
+            <uuid>7f1443ad-72a7-444a-a992-72f29cad5444</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will convert snapmirror relationship from Block Replication Engine (BRE) to Logical Replication engine with Storage Efficiency (LRSE/LRSE-DR).
+
+It performs the below tasks based on the inputs provided by user.
+
+1) Breaking SnapMirror DP relationship.
+2) Deleting SnapMirror DP relationship.
+3) Creating SnapMirror relationship of type 'XDP' with LRSE-DR/LRSE(vault) policy.
+4) Resyncing the SnapMirror relationship.
+
+Prerequisites:-
+1) A SnapMirror license is needed to enable LRSE based DR policies and both SnapMirror and SnapVault licenses are needed to configure the destination volume for both DR and Backup
+2) Cluster should have existing DP (BRE) relationship and only SN style relationships (relationships capability 8.2 and above) should be converted
+3) Source and destination cluster must be running Data ONTAP 8.3 or above for LRSE-DR
+
+NOTE:- Upgradation of the cluster is not a part of this workflow.</description>
+            <name>Converting SnapMirror Relationship to SnapVault or Version-Flexible SnapMirror Relationship</name>
+            <type>Workflow</type>
+            <uuid>1ae8afa6-9d0c-4c64-af33-77d1c4d47532</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Starts a resync operation to re-establish a SnapMirror or SnapVault relationship between a source volume and a destination volume, typically in the following cases:
+
+    - The SnapMirror relationship is broken (that is, the destination volume is a read-write volume and no longer a data protection mirror).
+
+    - A required common Snapshot copy was deleted on the source volume causing SnapMirror or SnapVault updates to fail.
+
+    The resync operation runs in the background on the source and the destination clusters. This command does not wait for the operation to finish. After the resync operation completes, the SnapMirror or SnapVault relationship can be manually updated or scheduled for updates. The resync operation will fail if the destination volume does not have a Snapshot copy in common with the source volume.
+
+    This command requires Clustered Data ONTAP 8.2.0 or later.
+
+    Warning: The resync operation might cause data loss on the destination volume because this operation might remove the exported Snapshot copy on the destination volume.
+    </description>
+            <name>Resync SnapMirror - BRE To LRSE</name>
+            <type>Command</type>
+            <uuid>483f0896-4e05-4c85-91ec-8edd09454c37</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>588853d3-d0ea-45af-b93a-c4ded117b207</name>
+            <type>Cache Query</type>
+            <uuid>588853d3-d0ea-45af-b93a-c4ded117b207</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>789a9f66-7701-4e4c-8907-5560b282b13d</name>
+            <type>Cache Query</type>
+            <uuid>789a9f66-7701-4e4c-8907-5560b282b13d</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Volume SnapMirror relationship for Disaster Recovery, Load Sharing, Remote Data Access, Vault, Restoring Data Protection and Extended Data Protection.</description>
+            <name>SnapMirror_MetroCluster</name>
+            <type>Dictionary Entry</type>
+            <uuid>537411fa-8240-4522-9846-048a169ac7bf</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Finds all the root volumes that got moved from their original aggregates.</description>
+            <name>Find root volumes by original locations</name>
+            <type>Finder</type>
+            <uuid>cf8fbaf0-5da4-4161-a272-9d4b5f28300e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Removes a SnapMirror relationship between the given source and destination volumes.</description>
+            <name>Remove SnapMirror - BRE To LRSE</name>
+            <type>Command</type>
+            <uuid>76a31d6b-674b-4b52-91f5-1d4ca50ce393</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.0</minWfaVersion>
+    <name>Manage load-sharing mirror and Converting SnapMirror Relationship to SnapVault or Version-Flexible SnapMirror Relationship</name>
+    <uuid>449970c7-0103-4226-ba81-125084621689</uuid>
+    <version>1.0.2</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>This pack contains five workflows to automate the migration of data from third-party LUNs to a NetApp cluster during the process of storage consolidation in your data center.
+	The workflows in this pack should be executed in the following recommended sequence:
+		1. Creating LUN Import Table 
+		2. Migrating third-party LUNs to a cluster 
+		3. Breaking LUN import relationship 
+		4. Managing LUN import migration jobs 
+		5. Generating FLI Status Report.
+	</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=cd6e0acc-b80a-439b-9a84-37c872b58f91&amp;packVersion=1.1.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=cd6e0acc-b80a-439b-9a84-37c872b58f91&amp;packVersion=1.1.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command used to start and stop the lun import verification on basis of 'action' selected.
+if action is 'start' then -&gt; Start the verification of foreign disk and LUN data for the specified LUN
+if action is 'stop' then -&gt; Stop the verify for the specified LUN.</description>
+            <name>Verify LUN import actions - FLI</name>
+            <type>Command</type>
+            <uuid>6ac33fe2-5fce-415d-91a0-f25a38fab4c4</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command delete the LUN imports which are completed or failed.
+Additionally, record from  lun_import table also deletes for failed LUN imports.</description>
+            <name>Break  LUN import  relationship - FLI </name>
+            <type>Command</type>
+            <uuid>6d085676-8f07-496c-930f-e99acde34c03</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A disk path in a storage system.</description>
+            <name>Disk_Path</name>
+            <type>Dictionary Entry</type>
+            <uuid>9248e6d7-5842-4fe0-9a5d-946e49cd0343</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow generates a status report of the LUN import in the form of CSV. A file in the following format &lt;lun_report_dd_mm_yyyy__hh_mm_ss.csv&gt; is created at the location, Program Files-&gt;NetApp-&gt;WFA-&gt;jboss-&gt;standalone-&gt;tmp-&gt;wfa.</description>
+            <name>Generating FLI Status Report</name>
+            <type>Workflow</type>
+            <uuid>5f64ff97-e120-41f4-8439-7c77babd6377</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will create a CSV file of lUN import details</description>
+            <name>Create CSV report - FLI</name>
+            <type>Command</type>
+            <uuid>c431abf8-b45a-4885-b3b9-d12b3ff07444</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Create a LUN import relationship with the purpose of importing foreign disk data into the LUN.</description>
+            <name>Create LUN import - FLI</name>
+            <type>Command</type>
+            <uuid>e2f59e9a-0c11-426c-b653-98fca2525baa</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will start, stop, pause and resume the lun import on basis of 'action' selected.
+if action is 'start' then -&gt; Start the import for the specified LUN
+if action is 'pause' then -&gt; Pause the import for the specified LUN.
+if action is 'resume' then -&gt; Resume the import for the specified LUN.
+if action is 'stop' then -&gt; Stop and abort the import for the specified LUN. All import checkpoint data will be lost.</description>
+            <name>LUN import actions - FLI</name>
+            <type>Command</type>
+            <uuid>90a69671-0917-43dd-baf5-8d2379b8ead4</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>A set of workflows that help manage storage. This includes workflows for resizing storage, migrating volumes from their current locations to other storage systems and aggregates, and moving volumes non-disruptively in Cluster-Mode.</description>
+            <name>Migration</name>
+            <type>Category</type>
+            <uuid>9abc6dec-4f9f-41cb-bb3b-29fd4fc9cd9f</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow enables you to migrate foreign LUNs to a NetApp cluster.
+
+Migration of foreign LUNs involves the following steps:
+    1. Marking disk's as foreign.
+    2. Creating LUNs.
+    3. Making LUNs Offline
+    4. Mapping newly created LUNs to existing Igroup.
+    5. Creating LUN imports.
+    6. Starting of LUN imports.
+    7. Verification of LUN imports.
+
+Pre-requisites:
+
+1) Destination SVM and Igroup is already available
+2) Destination NetApp FlexVol is already available
+3) Ensure that FCP logical interface is available on all nodes.</description>
+            <name>Migrating third-party LUNs to a Cluster</name>
+            <type>Workflow</type>
+            <uuid>f23b9687-0a16-4e97-b4b1-4a8e4d100962</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Modify the attributes of storage-disk object.</description>
+            <name>Modify storage disk - FLI </name>
+            <type>Command</type>
+            <uuid>dc02f96b-0da2-408c-9562-892168df6eec</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will monitor active LUN import operations on a given node. 
+
+If the number of active LUN import  operations on the given node is below the specified limit, the command will return successfully. Otherwise the command will wait until the number of LUN import is below the limit.</description>
+            <name>Wait for LUN import and verify - FLI</name>
+            <type>Command</type>
+            <uuid>ee310ba4-c389-4856-b8ed-0e8ad859830c</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow manages LUN import migration jobs in the cluster.
+
+Managing of LUNs import migration jobs involves the following steps:
+    1. Starting of LUN import.
+    2. Pausing of LUN import.
+    3. Resuming of LUN import.
+    4. Stopping of LUN import.
+    5. Verification of LUN import
+</description>
+            <name>Managing LUN migration jobs</name>
+            <type>Workflow</type>
+            <uuid>0a41ade1-3720-4190-b279-153f6b370231</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow creates a LUN import table in the WFA database playground scheme. If the table already exists in the database, the workflow does not create any table.
+
+Note:- This workflow need to be execute first time before executing any other FLI workflows.</description>
+            <name>Creating LUN Import Table</name>
+            <type>Workflow</type>
+            <uuid>6eece7ba-1ff9-4e10-92e9-cb9af3580abc</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will create a LUN_Import table in playground scheme.</description>
+            <name>Create LUN_Import table - FLI</name>
+            <type>Command</type>
+            <uuid>ebbe5963-cc3d-4530-a2c4-2baca67cabff</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>f56c94e7-4f01-4212-944d-1ee687344e6e</name>
+            <type>Cache Query</type>
+            <uuid>f56c94e7-4f01-4212-944d-1ee687344e6e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Maps a Cluster-Mode LUN to an initiator group</description>
+            <name>Map LUN - FLI</name>
+            <type>Command</type>
+            <uuid>e9fc5be5-7d90-48f6-b486-1a56160bc44a</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow deletes LUN import relationships from the cluster.
+
+Deletion of LUNs import relationship involves the following steps:
+    1. Deleting LUN import relationship for selected LUN import.
+    2. Deleting LUN from ONTAP for failed LUN import.</description>
+            <name>Breaking LUN import relationship</name>
+            <type>Workflow</type>
+            <uuid>21dae1d3-4258-41a4-8ad9-9524f8d1bd00</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Creates a single unmapped LUN of foreign disk size on a Storage Virtual Machine.</description>
+            <name>Create LUN of size foreign disk - FLI</name>
+            <type>Command</type>
+            <uuid>34f31de7-ca3c-45ec-8a5f-1928ab2e0620</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.0</minWfaVersion>
+    <name>Offline Foreign LUN Import pack</name>
+    <uuid>cd6e0acc-b80a-439b-9a84-37c872b58f91</uuid>
+    <version>1.1.0</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>This pack contains datasource script and dictionaries to acquire OnCommand Insight server data into WFA database for heterogeneous IT automation activity. Prerequisites for this Data Source: 1. WFA 3.0 (or later) 2. PowerShell 3.0 on the WFA Server 3. OCI 7.0 (or later). To create a new Data Source, follow these steps: 1. Import the OCI Data Source into your WFA server. 2.Use Execution-&gt;Data Sources and click New, entering IP, port, user and password credentials for the OCI server and set the timeout value to 3600. 3. After determining the amount of time to complete data acquisition from the Data Source, reduce the Timeout based on the speed of the OCI data acquisition.</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=5ad2a7c7-eaae-467f-b4a1-58f12ff8c45d&amp;packVersion=1.2.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=5ad2a7c7-eaae-467f-b4a1-58f12ff8c45d&amp;packVersion=1.2.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Annotation information as defined in OnCommand Insight. Annotations are like specialized notes that can be assigned to storage or compute resources of the environment. Annotations help customizing OnCommand Insight to track data as per the corporate requirements. Some examples of annotations could be asset end of life, tier, data center.</description>
+            <name>Annotation</name>
+            <type>Dictionary Entry</type>
+            <uuid>7fb19d68-ba6e-44cb-95d0-94cf141fdae4</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>VMDKs as discovered by OnCommand Insight.</description>
+            <name>Vmdk</name>
+            <type>Dictionary Entry</type>
+            <uuid>d39daab7-4159-471d-b415-6fe1efb90dd0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>OnCommand Insight_7.X</name>
+            <type>Script Data Source Type</type>
+            <uuid>df48c2fd-54ff-4d0d-bbd2-0f28fcbcd5c6</uuid>
+            <version>1.2.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Annotation value applied to Storage Node in OnCommand Insight.</description>
+            <name>Storage_Node_Annotation</name>
+            <type>Dictionary Entry</type>
+            <uuid>c4eeffe9-f111-4882-8928-4e5bc2970a28</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Storage node as discovered by OnCommand Insight.</description>
+            <name>Storage_Node</name>
+            <type>Dictionary Entry</type>
+            <uuid>2487dbfd-a997-4440-8399-2103565517a5</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Storage Arrays as discovered by OnCommand Insight.</description>
+            <name>Storage_Array</name>
+            <type>Dictionary Entry</type>
+            <uuid>22656253-514a-41cf-b5a8-8ece2a867f68</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Storage pool as discovered by OnCommand Insight.</description>
+            <name>Storage_Pool</name>
+            <type>Dictionary Entry</type>
+            <uuid>7b4e3d29-feea-4997-9a61-4b2b59bcc9dc</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Annotation value applied to Internal Volume in OnCommand Insight.</description>
+            <name>Internal_Volume_Annotation</name>
+            <type>Dictionary Entry</type>
+            <uuid>c7e9248c-3a15-45c5-a250-e67b5792cc41</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Annotation value applied to Switch in OnCommand Insight.</description>
+            <name>Switch_Annotation</name>
+            <type>Dictionary Entry</type>
+            <uuid>56a5b305-e8ed-4d1c-bd55-83a18da8baa0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Association object representing the association between a internal volume and an application.</description>
+            <name>Internal_Volume_Application</name>
+            <type>Dictionary Entry</type>
+            <uuid>1260d8a5-3dc6-4137-a528-d15347159d7b</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Annotation value applied to Storage Array in OnCommand Insight.</description>
+            <name>Storage_Array_Annotation</name>
+            <type>Dictionary Entry</type>
+            <uuid>c7b2d9c7-ea20-4b65-9f0c-524a4a033245</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Port as discovered by OnCommand Insight.</description>
+            <name>Port</name>
+            <type>Dictionary Entry</type>
+            <uuid>36d41aed-97cb-4191-b413-96287cc1505d</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Annotation value applied to DataStore in OnCommand Insight.</description>
+            <name>DataStore_Annotation</name>
+            <type>Dictionary Entry</type>
+            <uuid>93082def-8884-4191-beeb-cbf4c28b39c5</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Disk as discovered by OnCommand Insight.</description>
+            <name>Disk</name>
+            <type>Dictionary Entry</type>
+            <uuid>add59636-1d12-4286-8279-f2ec4cf50e5c</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Internal volume as discovered by OnCommand Insight.</description>
+            <name>Internal_Volume</name>
+            <type>Dictionary Entry</type>
+            <uuid>a0869f12-b5f9-400d-ae87-f82bf5cc1b1b</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Association object representing the association between a virtual machine and an application.</description>
+            <name>Virtual_Machine_Application</name>
+            <type>Dictionary Entry</type>
+            <uuid>16c9d810-72fe-457b-94d2-bf9d38007598</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A set of counters for the Storage Node. The counter value is the average of hourly sample data for the last 15 days.</description>
+            <name>Storage_Node_Performance</name>
+            <type>Dictionary Entry</type>
+            <uuid>11a8f0b2-d836-4745-9ef9-73edc8114061</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Application information as defined in OnCommand Insight. This helps to track the applications running in the environment and associate it with compute and storage resources.</description>
+            <name>Application</name>
+            <type>Dictionary Entry</type>
+            <uuid>70a3b1d4-fa32-4662-9bd6-0ce63ebf7535</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Annotation value applied to Volume in OnCommand Insight.</description>
+            <name>Volume_Annotation</name>
+            <type>Dictionary Entry</type>
+            <uuid>43d17e0b-2b44-43e2-9ccf-d18c2d7fdcac</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>DataStores as discovered by OnCommand Insight.</description>
+            <name>DataStore</name>
+            <type>Dictionary Entry</type>
+            <uuid>40acee28-ed00-476d-8e8d-514b4a4e6a63</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Volumes as discovered by OnCommand Insight.</description>
+            <name>Volume</name>
+            <type>Dictionary Entry</type>
+            <uuid>39660258-0d16-4011-8a7e-22920c1d05d7</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Association object representing the association between a volume and an application.</description>
+            <name>Volume_Application</name>
+            <type>Dictionary Entry</type>
+            <uuid>1450b3ee-7354-4873-8e15-b8e7a670ae06</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Hosts that are mapped to a datastore.</description>
+            <name>DataStore_Host</name>
+            <type>Dictionary Entry</type>
+            <uuid>10166bba-4b6b-4fc4-8bd9-5be3c824231c</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A set of counters for the Storage Pool. The counter value is the average of hourly sample data for the last 15 days.</description>
+            <name>Storage_Pool_Performance</name>
+            <type>Dictionary Entry</type>
+            <uuid>77a95064-8077-4502-b5de-4952e1cc6459</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A set of counters for the DataStore. The counter value is the average of hourly sample data for the last 15 days.</description>
+            <name>DataStore_Performance</name>
+            <type>Dictionary Entry</type>
+            <uuid>babd1c0b-3917-4ecc-a22f-ff5caf5d8170</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Host as discovered by OnCommand Insight.</description>
+            <name>Host</name>
+            <type>Dictionary Entry</type>
+            <uuid>73b4d918-cc78-4e9c-becd-eda4edf5bc43</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Fabric as discovered by OnCommand Insight.</description>
+            <name>Fabric</name>
+            <type>Dictionary Entry</type>
+            <uuid>292315e7-9965-4633-aa14-e002b0b39a65</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Association object representing the association between a host and an application.</description>
+            <name>Host_Application</name>
+            <type>Dictionary Entry</type>
+            <uuid>91a25a80-c320-44e7-8207-6859a4540e12</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Annotation value applied to Host in OnCommand Insight.</description>
+            <name>Host_Annotation</name>
+            <type>Dictionary Entry</type>
+            <uuid>3dd8819a-e276-44c9-af42-75fd5617a2e3</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>oci</name>
+            <type>Scheme</type>
+            <uuid>03df995f-50fe-4c60-b1b4-86415ee53b33</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Annotation enum values as discovered by OnCommand Insight.</description>
+            <name>Annotation_Enum_Value</name>
+            <type>Dictionary Entry</type>
+            <uuid>21a97868-8ad3-49b8-ac88-bbeb162562eb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Switch as discovered by OnCommand Insight.</description>
+            <name>Switch</name>
+            <type>Dictionary Entry</type>
+            <uuid>b105ba00-0c6c-4d74-95a3-1a29b5d00da5</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A set of counters for the Storage Array. The counter value is the average of hourly sample data for the last 15 days.</description>
+            <name>Storage_Array_Performance</name>
+            <type>Dictionary Entry</type>
+            <uuid>33534350-11db-4b05-8d49-62d315571685</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Annotation value applied to Storage Pool in OnCommand Insight.</description>
+            <name>Storage_Pool_Annotation</name>
+            <type>Dictionary Entry</type>
+            <uuid>2cef9bf3-0b2b-430e-a310-77d0e9ef23da</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Virtual machine as discovered by OnCommand Insight.</description>
+            <name>Virtual_Machine</name>
+            <type>Dictionary Entry</type>
+            <uuid>5ed1c56d-be44-4368-bcf6-b36d9c7d3bba</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.0</minWfaVersion>
+    <name>OnCommand Insight Connector</name>
+    <uuid>5ad2a7c7-eaae-467f-b4a1-58f12ff8c45d</uuid>
+    <version>1.2.0</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>This pack contains the Quota Management workflow that enables you to set, resize, or delete a quota on an existing or new qtree. It supports tree and user quota types. Note: (i) You must add the required cluster as a data source in WFA with "Cluster DataONTAP - Quota-8.3.X" Data Source type. (ii) ONTAP cluster version must be 8.3.1 and above.</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=c9222d3c-f96d-4a45-bef0-8ab76ea093ae&amp;packVersion=1.1.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=c9222d3c-f96d-4a45-bef0-8ab76ea093ae&amp;packVersion=1.1.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A quota policy is a collection of quota rules applied on the Vserver.</description>
+            <name>Quota_Policy</name>
+            <type>Dictionary Entry</type>
+            <uuid>48e0e814-04a7-48ee-8933-b899d77c1f35</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The command waits for the quota volume off to complete.
+
+Also it performs, quota volume on when quota is off.</description>
+            <name>Wait for quota off</name>
+            <type>Command</type>
+            <uuid>3fc551fa-ba86-4e46-aa4b-0a478670d42a</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command sets a user/qtree quota for a user according to the specified disk limit and file limit.
+
+Sets qtree Options (For both regular qtrees and qtree0)
+
+Sets a quota entry. If the type, target, volume, and tree do not exist, a new entry is created. If the type, target, volume, and tree exist, then the entry is modified.</description>
+            <name>Set quota</name>
+            <type>Command</type>
+            <uuid>4146ee9b-6909-4a56-a2b4-b10965b83557</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>cm_storage_quota</name>
+            <type>Scheme</type>
+            <uuid>3d8e9451-88be-482f-b6fb-a3c11b1bd2b6</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>A set of workflows that help setup the storage environment.</description>
+            <name>Setup</name>
+            <type>Category</type>
+            <uuid>3fd4e387-3003-47bc-9631-0c7c6279767f</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Resizes the qtree quota according to the specified disk limit and file limit.
+</description>
+            <name>Resize quota</name>
+            <type>Command</type>
+            <uuid>53c992fb-5d10-4cc5-8203-df2d8eed75bc</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A quota rule for a specific NFS/CIFS user at the volume or qtree level
+</description>
+            <name>Quota_Rule</name>
+            <type>Dictionary Entry</type>
+            <uuid>1209d9f0-3570-44d5-b1fa-cd8930b612ce</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Workflow to set, resize and delete quota for qtree or user.
+</description>
+            <name>Quota management</name>
+            <type>Workflow</type>
+            <uuid>211e0f79-b102-4e07-b4a9-368ab72a3613</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The command will get the following status of Quota Initialization:
+
+Quota State as "on": volume quota has been initialized
+</description>
+            <name>Wait for quota on</name>
+            <type>Command</type>
+            <uuid>4331009e-84b4-45ed-b9fa-e56610578015</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Deletes the qtree/user quota according to the user specification.
+</description>
+            <name>Delete quota</name>
+            <type>Command</type>
+            <uuid>7e67e5ab-3472-451d-9918-9a402dce187b</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>Clustered Data ONTAP - Quota_8.3.X  Clustered Data ONTAP</name>
+            <type>Script Data Source Type</type>
+            <uuid>039ab37b-7897-4ef0-9c41-0283c98fb643</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.0</minWfaVersion>
+    <name>Quota Management</name>
+    <uuid>c9222d3c-f96d-4a45-bef0-8ab76ea093ae</uuid>
+    <version>1.1.0</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>This pack contains 3 workflows to enable you to re-create the lost SnapMirror and SnapVault configuration after switchover/switchback operation in a MetroCluster environment.
+
+	The workflows in this pack should be executed in the following recommended sequence:
+		1. Re-create SnapMirror and SnapVault protection after MetroCluster switchover
+		2. Retain SnapMirror and SnapVault data before MetroCluster switchback
+		3. Re-create SnapMirror and SnapVault protection after MetroCluster switchback
+	
+	Note: This workflow contains new dictionaries and you must reset the cm_storage scheme in WFA by using the following steps:
+		1.Log in to WFA.
+		2.Click Execution.
+		3.Right-click the data source type that has cm_storage scheme, and then click Reset Scheme.
+	</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=6fc61582-b79e-491f-8374-7fe9c57c2556&amp;packVersion=1.0.1&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=6fc61582-b79e-491f-8374-7fe9c57c2556&amp;packVersion=1.0.1</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Volume SnapMirror relationship for Disaster recovery, Load sharing, Remote data access and Vault.</description>
+            <name>SnapMirror_MetroCluster</name>
+            <type>Dictionary Entry</type>
+            <uuid>820b27ab-f164-4db9-bf58-919f34fab1d1</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A definition of a rule in a SnapMirror policy.</description>
+            <name>SnapMirror_Policy_Rule_MetroCluster</name>
+            <type>Dictionary Entry</type>
+            <uuid>ebbdd23f-1226-4f29-93f6-b4e284fc251c</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns cron schedule details  in the local site that do not exist in the remote site in a MetroCluster environment.</description>
+            <name>Filter cron schedules in the local site in a MetroCluster</name>
+            <type>Filter</type>
+            <uuid>98b06968-a6d2-4429-944b-202cf6282712</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>01aaa4a6-8775-4838-bda2-6953087fdc71</name>
+            <type>Cache Query</type>
+            <uuid>01aaa4a6-8775-4838-bda2-6953087fdc71</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Retain SnapMirror policies and insert into wfa playground scheme.</description>
+            <name>Retain SnapMirror policy - MetroCluster</name>
+            <type>Command</type>
+            <uuid>0df8a100-707b-43d2-9fbb-a37d1736804f</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Creates a SnapMirror or SnapVault relationship between a source and destination volume. Before this command can be used, a source and a destination volume should have been created by the create volume command. The source volume should be in the online state and be of the read-write (RW) type. The destination volume should be in the online state and be of the data protection (DP) type. Clustered ONTAP 8.2 or later is required for creating a SnapVault relationship.</description>
+            <name>Create SnapMirror - BRE To LRSE</name>
+            <type>Command</type>
+            <uuid>af5f154e-8ce1-4255-a8b7-f41b69270c81</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow re-creates SnapMirror and SnapVault configurations after a MetroCluster switchback operation.
+
+Re-creating SnapMirror and SnapValut involves the following steps:
+
+1) Creating a cron schedule in the local site
+2) Creating a SnapMirror policy in the local site
+3) Creating a SnapMirror rule in the local site
+4) Creating a SnapMirror relationship in the local site
+
+Prerequisites:
+
+1) MetroCluster cluster  and Non-MetroCluster cluster must be peered.
+2) Storage Virtual Machines of the MetroCluster cluster and Non-MetroCluster cluster must be peered.
+3) Ensure that data from switchover is retained before the MetroCluster switchback operation.  
+
+
+</description>
+            <name>Re-create SnapMirror and SnapVault Protection after MetroCluster Switchback</name>
+            <type>Workflow</type>
+            <uuid>48d315d2-5d1a-4a77-8b6f-8a0c709636f2</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>588853d3-d0ea-45af-b93a-c4ded117b207</name>
+            <type>Cache Query</type>
+            <uuid>588853d3-d0ea-45af-b93a-c4ded117b207</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns SnapMirror policies in the remote site that does not already exist in the local site in a MetroCluster environment.</description>
+            <name>Filter SnapMirror policies in the remote site in a MetroCluster</name>
+            <type>Filter</type>
+            <uuid>6c165d90-c294-487c-983b-e5fbd827dda7</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Retain SnapMirror relations and insert into wfa playground scheme.</description>
+            <name>Retain SnapMirror - MetroCluster</name>
+            <type>Command</type>
+            <uuid>5b562b4b-b5f7-4a5d-9ae7-99169bf01522</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Creates a SnapMirror or SnapVault relationship between a source and destination volume. Before this command can be used, a source and a destination volume should have been created by the create volume command. The source volume should be in the online state and be of the read-write (RW) type. The destination volume should be in the online state and be of the data protection (DP) type. Clustered ONTAP 8.2 or later is required for creating a SnapVault relationship.</description>
+            <name>Create SnapMirror - MetroCluster</name>
+            <type>Command</type>
+            <uuid>ee0a1f0d-20c2-4213-9755-d0fd9bf96d8a</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Find SnapMirror relationships in the local site that does not already exist in the remote site in a MetroCluster environment.</description>
+            <name>Find SnapMirror relationships in the local site in a MetroCluster</name>
+            <type>Finder</type>
+            <uuid>78268ea5-6bd6-4adc-aba1-a3272dd6579e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Find SnapMirror policy rules in the remote site that does not already exist in the local site in a MetroCluster environment.</description>
+            <name>Find SnapMirror policy rules in the remote site in a MetroCluster</name>
+            <type>Finder</type>
+            <uuid>bf6335ff-f5eb-421e-a100-c9200a6bbb9b</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Find SnapMirror relationships in the remote site that does not already exist in the local site in a MetroCluster environment.</description>
+            <name>Find SnapMirror relationships in the remote site in a MetroCluster</name>
+            <type>Finder</type>
+            <uuid>93e0ea78-a93b-43f8-bf20-e746a0a0b013</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Volume SnapMirror relationship for Disaster Recovery, Load Sharing, Remote Data Access, Vault, Restoring Data Protection and Extended Data Protection.</description>
+            <name>SnapMirror_MetroCluster</name>
+            <type>Dictionary Entry</type>
+            <uuid>537411fa-8240-4522-9846-048a169ac7bf</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Updates a SnapMirror or SnapVault relationship between a source and destination volume. Before this command can be used, SnapMirror or SnapVault relationship should be created. Clustered ONTAP 8.2 or later is required for creating a SnapVault relationship.</description>
+            <name>SnapMirror update - MetroCluster</name>
+            <type>Command</type>
+            <uuid>7b067fcf-e120-4c17-9765-8fab4e0e35c7</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Find SnapMirror policies in the local site that does not already exist in the remote site in a MetroCluster environment.</description>
+            <name>Find SnapMirror policies in the local site in a MetroCluster</name>
+            <type>Finder</type>
+            <uuid>317185e7-07d7-40f3-a92c-bc9161c7ced3</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Quiesce a SnapMirror or SnapVault relationship terminated in the given destination volume.</description>
+            <name>Quiesce SnapMirror - MetroCluster</name>
+            <type>Command</type>
+            <uuid>0ab043bb-e2be-41ed-9746-67c88c7365b1</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow re-creates SnapMirror and SnapVault configurations after a MetroCluster switchover operation.
+
+Re-creating SnapMirror and SnapValut involves the following steps:
+
+1) Creating a cron schedule in the remote site
+2) Creating a SnapMirror policy in the remote site
+3) Creating a SnapMirror rule in the remote site
+4) Creating a SnapMirror relationship in the remote site
+
+Prerequisites:
+
+1) MetroCluster cluster  and Non-MetroCluster cluster must be peered.
+2) Storage Virtual Machines of the MetroCluster cluster and Non-MetroCluster cluster must be peered.
+</description>
+            <name>Re-create SnapMirror and SnapVault Protection after MetroCluster Switchover</name>
+            <type>Workflow</type>
+            <uuid>5e90b8ae-44fd-4b12-99e2-5e51a5097cc0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns cron schedule details in remote site that do not exist in local site in a MetroCluster environment.</description>
+            <name>Filter cron schedules in the remote site in MetroCluster</name>
+            <type>Filter</type>
+            <uuid>10961620-6b7f-4974-a0e2-1634d20f1c56</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Add a rule to a SnapMirror Policy on the clustered Data ONTAP. "SnapMirror Policy Rule" determines the retention settings of the Snapshots on the SnapVault destination. Each SnapMirror Policy Rule has a "SnapMirror Label" field. Clustered ONTAP transfers only the "labeled" source Snapshots to the SnapVault destination. If the source Snapshot does not have one of the SnapMirror labels specified in the "SnapMirror Policy Rules", that source Snapshot is not transferred to the SnapVault destination. Source volume has a "Snapshot Policy" which has a schedule for creating local snapshots. SnapMirror label specified in the "Snapshot Policy Schedule" of the source volume is applied to all the Snapshots created by that schedule. The same SnapMirror label is used in the "SnapMirror Policy Rule" to specify the retention settings for those Snapshots on the SnapVault destination.</description>
+            <name>Add rule to SnapMirror policy - MetroCluster</name>
+            <type>Command</type>
+            <uuid>da303d7d-c67e-4714-8a91-8c2124bdca4a</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Find cron schedule details in the remote site that do not exist in the local site in a MetroCluster environment.</description>
+            <name>Find cron schedules in the remote site in a MetroCluster.</name>
+            <type>Finder</type>
+            <uuid>386c4055-5332-4515-b8fe-38570a0b79e4</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>A cluster is a collection of nodes that share a single set of replicated configuration databases. This dictionary entry contains additional  MetroCluster partner information.</description>
+            <name>Cluster_MetroCluster</name>
+            <type>Dictionary Entry</type>
+            <uuid>cf9f053f-4e0e-4836-b46d-a20b3371a682</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns SnapMirror policy rules in the local site that does not already exist in the remote site in a MetroCluster environment.</description>
+            <name>Filter SnapMirror policy rules in the local site in a MetroCluster</name>
+            <type>Filter</type>
+            <uuid>66a37244-0758-44d8-a335-5a679c0a43bc</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow retains  SnapMirror and SnapVault configurations data in the local database (WFA).
+
+You must execute this workflow before your MetroCluster switchback operation.</description>
+            <name>Retain SnapMirror and SnapVault configurations before MetroCluster Switchback</name>
+            <type>Workflow</type>
+            <uuid>5fb4278d-c077-4ca1-bde6-24f118cc1df0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Delete MetroCluster cron Schedules, SnapMirror policies, SnapMirror policy rules and SnapMirror relations from WFA playground scheme.</description>
+            <name>Delete Records - MetroCluster</name>
+            <type>Command</type>
+            <uuid>78ed8101-d179-49ef-8c79-1ae4ed39b6a9</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Find SnapMirror policies in the remote site that does not already exist in the local site in a MetroCluster environment.</description>
+            <name>Find SnapMirror policies in the remote site in a MetroCluster</name>
+            <type>Finder</type>
+            <uuid>5372bcd7-c82c-456c-af88-13eba2b24fd1</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns SnapMirror policy rules in the remote site that does not already exist in the local site in a MetroCluster environment.</description>
+            <name>Filter SnapMirror policy rules in the remote site in a MetroCluster</name>
+            <type>Filter</type>
+            <uuid>6bb3e561-af9b-4a5b-ab90-5c7d26328db1</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Create a SnapMirror Policy on the Clustered ONTAP. SnapMirror policy can be assigned to the SnapMirror or SnapVault relationships.</description>
+            <name>Create SnapMirror policy - MetroCluster</name>
+            <type>Command</type>
+            <uuid>89467f07-5099-4cb1-af07-0600b2cdbc50</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns SnapMirror relationships in the remote site that does not already exist in the local site in a MetroCluster environment.</description>
+            <name>Filter SnapMirror relationships in the remote site in a MetroCluster</name>
+            <type>Filter</type>
+            <uuid>179e84e8-13a0-44c6-9a0e-2dfbc9d85cbf</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Retain SnapMirror policy rules and insert into WFA playground scheme.</description>
+            <name>Retain SnapMirror policy rule - MetroCluster</name>
+            <type>Command</type>
+            <uuid>ce297284-4dc3-4c3d-ab1c-e8caa13469f1</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>SnapMirror policy encapsulates a set of rules applicable for protection relationships. In case of vault relationships, the rules that define which Snapshot copies are protected.</description>
+            <name>SnapMirror_Policy_MetroCluster</name>
+            <type>Dictionary Entry</type>
+            <uuid>b17aba64-d3fe-4df1-bcb8-99e88c8b3041</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns MetroCluster name by specified partner MetroCluster.</description>
+            <name>Filter MetroCluster details by partner MetroCuster</name>
+            <type>Filter</type>
+            <uuid>1a2baf7c-14e5-4d33-84ea-fb2c2a7d223f</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Updates a SnapMirror or SnapVault relationship between a source and destination volume. Before this command can be used, SnapMirror or SnapVault relationship should be created. Clustered ONTAP 8.2 or later is required for creating a SnapVault relationship.</description>
+            <name>SnapMirror update - MetroCluster</name>
+            <type>Command</type>
+            <uuid>122aaa51-c304-4206-ac71-a285413651bf</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Find cron schedule details in the local site that do not exist in the remote site in a MetroCluster environment.</description>
+            <name>Find cron schedules in the local site in a MetroCluster.</name>
+            <type>Finder</type>
+            <uuid>50b60958-d652-4ed1-b834-5f2b0f9dc500</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns SnapMirror policies in the local site that does not already exist in the remote site in a MetroCluster environment.</description>
+            <name>Filter SnapMirror policies in the local site in a MetroCluster</name>
+            <type>Filter</type>
+            <uuid>c97f138e-249d-4240-9a4c-66463bb122f2</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>A set of workflows that configure data protection relationships. These workflows deal with different data protection technologies such as Volume SnapMirror and SnapVault.</description>
+            <name>Data Protection</name>
+            <type>Category</type>
+            <uuid>41ec7214-c8a8-4484-8d0f-cfacbd16f5b0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>playground</name>
+            <type>Scheme</type>
+            <uuid>37b39b5e-d285-4821-8828-2b0f58a457ea</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns SnapMirror relationships in the local site that does not already exist in the remote site in a MetroCluster environment.</description>
+            <name>Filter SnapMirror relationships in the local site in a MetroCluster</name>
+            <type>Filter</type>
+            <uuid>9c16d77d-5621-44d3-9c71-1abe24678540</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Find SnapMirror policy rules in the local site that does not already exist in the remote site in a MetroCluster environment.</description>
+            <name>Find SnapMirror policy rules in the local site in a MetroCluster</name>
+            <type>Finder</type>
+            <uuid>0c2be7b4-1d1b-45be-a542-341c378b4140</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.0</minWfaVersion>
+    <name>Re-create SnapMirror and SnapVault protection after MetroCluster switchover and switchback</name>
+    <uuid>6fc61582-b79e-491f-8374-7fe9c57c2556</uuid>
+    <version>1.0.1</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>The SLO workflow pack provides a framework for implementing SLOs. Using the SLO workflow pack, storage service providers can optimize utilization, performance modelling, trend analysis, and asset planning. This pack consists of nine workflows and enables you to define Service Levels Classes, Storage Service Level Classes, and Protection Service Level Classes, which can be associated with every provisioned volume and LUN. Service-based provisioning workflows enable you to provision LUN, or volume based on defined services. The workflows in the SLO pack should be executed in the following recommended sequence: (1) Service Catalog Initialization (Mandatory) (2) Manage Storage Service Level Class (Mandatory and Iterative) (3) Manage Protection Service Level Class (Optional) (4) Manage Service Level Class (Optional) (5) Manage Adaptive QoS Policy Configuration (Optional) (6) Adaptive QoS Service Manager (Mandatory) (7) Service Based Volume Provisioning (Optional and Iterative) (8) Provisioning LUN Based on a Service Level (Optional and Iterative) (9) Move Volumes to a New Storage Service Level Class (Optional and Iterative) Caution NetApp strongly recommends that the customer attend the Service Design Workshop (SDW) conducted at their site before using this Pack. Please contact your account team to schedule the SDW. Using this pack without attending the SDW, is done so at the risk of the Customer and against NetApp's recommendation.</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=4ce742db-7bbe-4188-a2f4-d09073506d90&amp;packVersion=1.1.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=4ce742db-7bbe-4188-a2f4-d09073506d90&amp;packVersion=1.1.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will map unmapped aggregate to storage service level. Allows you to select pool</description>
+            <name>Map Aggregate to Storage service level</name>
+            <type>Command</type>
+            <uuid>a52aca2d-1210-4063-acfd-6d7c15b4c68f</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will insert/update/delete volume services in the table 'volume_service_map' under playground.</description>
+            <name>Manage Volume Service Map</name>
+            <type>Command</type>
+            <uuid>3b2f23e7-8c94-46b6-b6ec-6d140e8ed13c</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow enables you to move a Cluster Data ONTAP volume from one storage service level class (SSLC) to another storage service level class.</description>
+            <name>Move Volume To New SSLC</name>
+            <type>Workflow</type>
+            <uuid>a4800ab5-af7c-4685-af14-7f829d8f9b42</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>Service Level Manager provides set of workflows for setting up service related configuration</description>
+            <name>Service Level Management</name>
+            <type>Category</type>
+            <uuid>53df1992-fe00-4045-80c4-bb71e67628cd</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will enter pre-canned services into cache</description>
+            <name>Enter Default Protection Services</name>
+            <type>Command</type>
+            <uuid>22e96221-2c46-4a2e-a128-721b4f9587d1</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will help in creating a Service Level Class with specific Storage Service and Protection Service.
+
+Note : This workflow is not mandatory workflow. "Service Catalog Initialization" adds some SLCs, Use this workflow only when you want new SLC with different conbination of SSLC and PSLC</description>
+            <name>Managing Service Level Class</name>
+            <type>Workflow</type>
+            <uuid>9f2f7f43-1241-4973-8878-b1beba8036eb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will 'create' or 'drop' table 'qos_default_values' under playground.</description>
+            <name>Create QoS Default Values Table</name>
+            <type>Command</type>
+            <uuid>d805137b-1adb-4d5c-89d0-b5366ead0850</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will take Service Level Class(SLC) finds associated Storage Service Level Class(SSLC) and Protection Service Level Class (PSLC) or specific SSLC and PSLC and takes care of volume provisioning.
+
+Workflow will understand the PSLC topology and prepares entire protection setup for volume as per given topology.</description>
+            <name>Service based volume provisoning</name>
+            <type>Workflow</type>
+            <uuid>552ebf0b-9e93-4024-9dd8-7f4ef4c935f3</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns the volume with the given name and if volume belongs to aggregate in mapped aggregates list</description>
+            <name>Filter volume by name</name>
+            <type>Filter</type>
+            <uuid>1624ba7d-c2e3-40a7-b76b-db586afd88da</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will manage protection service level. Following functionalities are provided with this workflow
+1) You can Add new Protection Service Level Class(PSLC)
+2) You can Remove a Protection Service Level Class
+3) You can Update the  Protection Service Level Class
+3) You can Add an Edge to a PSLC topology, Modify existing Edge in a topology and Remove an Edge in a topology OR Select "No Edge' when only primary retention policy is required
+
+Note : 'Service Catalog Initialization' workflow will add 5 protection service level classes. Use this workflow to edit parameters of those services or for adding NEW PSLC</description>
+            <name>Manage Protection Service Level Class</name>
+            <type>Workflow</type>
+            <uuid>d520a532-d314-4fb7-9fce-311704b8f958</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will handle Add/Remove/Update actions on storage service levels</description>
+            <name>Manage Storage Service</name>
+            <type>Command</type>
+            <uuid>bb9bbfd3-6c7b-4864-b90a-7d3c0e238405</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This will return one aggregate per edge of relation in PSL</description>
+            <name>Find aggregates for protection service topology</name>
+            <type>Finder</type>
+            <uuid>4bf64077-a7bb-4e56-bf98-be56caa68023</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>Get WFA credential</name>
+            <type>Command</type>
+            <uuid>af56a0db-8310-45f4-9029-0f50e15e3c60</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Return a volume details needed for creating a volume for storage service</description>
+            <name>Filter volume by Storage Service</name>
+            <type>Filter</type>
+            <uuid>3aedc7e8-8257-4e50-816e-84f894b2ce73</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Return schedules by attributes specified. For all the possible values of an attribute 'any' is used as filter.</description>
+            <name>Filter cron schedule by attribute</name>
+            <type>Filter</type>
+            <uuid>8574ff39-2a92-46c7-afcf-3c5499518328</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Modify a cron or an interval schedule on Clustered ONTAP. Only the specified parameters are modified. Parameters that are not specified are left alone. For a cron schedule, specify only the cron parameters. For interval schedule, specify only the interval parameters. Name, type and description of the schedule cannot be modified.</description>
+            <name>Modify schedule - No Verification</name>
+            <type>Command</type>
+            <uuid>a2e04404-83f2-4a8c-acd3-9de4bc3546a5</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will check if table to Service Level Class details exists, if not it will create a table.</description>
+            <name>Create Service Level Class Table</name>
+            <type>Command</type>
+            <uuid>b094c87a-9459-4c8c-aedf-b71e1ffe6774</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>Filter Destination Volumes to create snapmirror relations</name>
+            <type>Finder</type>
+            <uuid>db3aeb3b-5a6e-4437-83fe-a788a53c9495</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will handle Add/Remove/Update actions on service level class entries.</description>
+            <name>Manage Service Class</name>
+            <type>Command</type>
+            <uuid>547bb731-f29d-4fce-b94e-93ddc5fad767</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Filter that returns the list of all aggregates which are online</description>
+            <name>Get all aggregates by state as online</name>
+            <type>Filter</type>
+            <uuid>ae26012a-8f3e-4595-bc87-1a971d35476e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>Select one aggregate per edge</name>
+            <type>Filter</type>
+            <uuid>98f8946d-6cf9-483d-94d8-28f22ed206d0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This Command can Add/start/stop/remove QoS policy manager service</description>
+            <name>Service Manager</name>
+            <type>Command</type>
+            <uuid>3c5deece-ea4f-4d1a-a0c3-7c0088348b27</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will do the following for setting up environment for SLO.
+1) Create data models required to keep SLO details
+2) Add default SSLs, PSLs and SLCs
+3) The workflow adds "QoS policy" service to Windows services</description>
+            <name>Service Catalog Initialization</name>
+            <type>Workflow</type>
+            <uuid>c9b2e32f-f3f6-4e68-8422-25cce6d1b199</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will create new LUN in existing Volume under specific Storage Service Level or it will create a new volume under specific SSL and provision a LUN under that new volume.</description>
+            <name>Provisioing LUN based on service level</name>
+            <type>Workflow</type>
+            <uuid>f3f048b6-4d16-48c2-8922-6b3fab69e964</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will check if table to keep "Storage service level(SSL)" details. If not it will create the table.</description>
+            <name>Create Storage Service Level table</name>
+            <type>Command</type>
+            <uuid>0b3f427a-3d7c-4daf-aeef-5bdb5e94265e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns the Storage Virtual Machine with the specified cluster name or IP</description>
+            <name>Filter Storage Virtual Machines by cluster</name>
+            <type>Filter</type>
+            <uuid>87636742-6b94-4ef7-b953-f80d074955ff</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will provide following functionalities
+1) Define a new SSLC
+2) Update existing SSLC
+3) Remove existing SSLC
+3) Remove Aggregate from SSLC
+
+Workflow will allow following set of values for every SSLC
+i. IOPS throttle (IOPS/TB)
+ii. initial IOPS throttle
+iii. Dedupe enabled/disabled
+iv. Compression enabled
+v. Thick or Thin Provisioing
+
+IOPS throttle and initial IOPS throttle setting will be used by Adaptive QoS Policy manager service to handle performance of the volume provisioned using service based volume provisioing workflow
+
+Workflow will list down available aggregates. Select one or more aggregates to map it to specific SSLC.
+
+Mapped aggregate list allow you to remove one or more aggregates from SSLC.
+
+Note : This workflow is mandatory workflow to setup environment. Use this workflow for mapping aggregates to Storage service levels</description>
+            <name>Manage Storage Service Level Class</name>
+            <type>Workflow</type>
+            <uuid>8772ffeb-8006-4001-8d43-4117f4982bfc</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Return a snapshot details needed for creating a volume for storage service</description>
+            <name>Filter snapshot policy by Protection Service</name>
+            <type>Filter</type>
+            <uuid>67302f97-2c7c-41fd-8442-5a752cfcc998</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow enables you to modify existing storage service level class definition and to modify the default values for the QoS policy management.</description>
+            <name>Manage Adaptive QoS Policy Configuration</name>
+            <type>Workflow</type>
+            <uuid>1c0e5e1a-80eb-4243-a359-7daf6811a966</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will 'create' or 'drop' table 'volume_service_map' under playground.</description>
+            <name>Create Volume Service Map Table</name>
+            <type>Command</type>
+            <uuid>5ef0d581-e18b-47d6-b923-0b425971c844</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>This will provide setup of workflows which will provision volume and LUN based on service levels</description>
+            <name>Service Level based Provisioning</name>
+            <type>Category</type>
+            <uuid>fa356566-55a9-48b9-933a-84bae986d6b3</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow manages Qos Policy Service. It Starts/Stops QoS Policy service</description>
+            <name>Adaptive Qos Service Manager</name>
+            <type>Workflow</type>
+            <uuid>084ac331-2fa4-4b90-b1c7-48e1a6b4396f</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>KP Script Setup</description>
+            <name>KP Setup</name>
+            <type>Command</type>
+            <uuid>ea839adc-0b64-41b7-8723-a1a6d2c3a151</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will handle Add/Remove/Update actions on Protection Service Levels(PSL)</description>
+            <name>Manage Protection Service</name>
+            <type>Command</type>
+            <uuid>ffd786c7-2681-4930-a58c-4c44563745bb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>KP Script Setup</description>
+            <name>KP Uninstall</name>
+            <type>Command</type>
+            <uuid>5ffe0161-e605-40da-9009-62cebaa645dc</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will check if table to keep "Protection Service Level(PSL)" details. If not it will create the table.</description>
+            <name>Create Protection Service Level table</name>
+            <type>Command</type>
+            <uuid>c4a26d41-f845-481d-8a99-f97841287538</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Get all the volumes given PSL</description>
+            <name>Filter target volumes by protection service level</name>
+            <type>Filter</type>
+            <uuid>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will add pre-canned classes</description>
+            <name>Enter default service Classes</name>
+            <type>Command</type>
+            <uuid>62af8b8b-ec58-4738-990a-cc97f7f0fbe8</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This will ignore Storage Virtual Machine with Infinite Volume</description>
+            <name>Filter Storage Virtual Machines by repository</name>
+            <type>Filter</type>
+            <uuid>7f294b23-fbdd-446f-a208-31320acc9f8a</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will check if table to keep "Aggregate to Service Map" details exits. If not it will create.</description>
+            <name>Create Aggregate to Service Map table</name>
+            <type>Command</type>
+            <uuid>4a87fb98-48fa-4e49-b5df-607ed7244e83</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>QoS Config File Manager (Default Service Level)</name>
+            <type>Command</type>
+            <uuid>c05fad07-4b5c-48e0-b0d4-c5a4dd1383eb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This will look for aggregate by Service Level Catalog</description>
+            <name>Filter aggregate by Service Level Catalog</name>
+            <type>Filter</type>
+            <uuid>52cb4786-4085-464e-a478-2468d66a5866</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will insert/update/delete QoS default values in the table 'qos_default_values' under playground.</description>
+            <name>Manage QoS Default Values</name>
+            <type>Command</type>
+            <uuid>b179fefc-5d17-40b0-b13b-005f8acc738e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>QoS Config File Manager (Service Level)</name>
+            <type>Command</type>
+            <uuid>70d2e293-1145-49f9-b852-b4379ef6138e</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.0</minWfaVersion>
+    <name>Service Level Objective</name>
+    <uuid>4ce742db-7bbe-4188-a2f4-d09073506d90</uuid>
+    <version>1.1.0</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>The Snapshot Directory Access workflow pack allows the CIFS users to view the Snapshot directory. This workflow provides access to snapshot directory for administrators. It also provides option to users to view the snapshot directory.</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=3fd41ce3-945b-45e2-9e0d-c8426b0beb15&amp;packVersion=1.0.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=3fd41ce3-945b-45e2-9e0d-c8426b0beb15&amp;packVersion=1.0.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow configures CIFS/SMB service on a Storage Virtual Machine and uses the existing failover groups for assigning the data LIFs.
+
+a. Configuring CIFS service on a Storage Virtual Machine involves the following steps:
+
+1) Creating a new aggregate or using an existing one.
+2) Create a new Storage Virtual Machine.
+3) Setup Active Directory account.
+4) Setup CIFS with Storage Virtual Machine Name as a CIFS server name.
+5) Assign a data LIF to the failover group.
+
+b. Enables you to set up CIFS/SMB access for clients.  Setting up SMB file access involves the following steps:
+
+1) Creating a volume
+    (i).(Optional) Modifying the junction path to snapshot directory
+2) Creating CIFS/SMB shares
+3) Allows you to set share properties
+3) Configure CIFS/SMB share permissions
+
+
+Pre-requisites:
+========
+1) CIFS license must be enabled.
+2) Adding following entry into WFA Credentails (WFA portal -&gt; Execution -&gt; Credentials)
+3) CIFS_Share_ACL dictionary should be enabled
+
+
+For AD Domain : 
+==========
+Match : select 'Exact'
+Type : select 'Other'
+Name/IP : enter Fully qualified Domain name 
+User Name : enter domain Administrator
+Password : enter domain Administrator password
+
+
+
+
+</description>
+            <name>Snapshot Directory Access</name>
+            <type>Workflow</type>
+            <uuid>711fe569-05cd-4e60-887f-b12f9d8b5a25</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Adds CIFS properties entry for the specified CIFS share.</description>
+            <name>Add CIFS share properties</name>
+            <type>Command</type>
+            <uuid>9ae2077b-0ce3-47f1-be01-5503ad4b0a87</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>A set of workflows that help setup the storage environment.</description>
+            <name>Setup</name>
+            <type>Category</type>
+            <uuid>3fd4e387-3003-47bc-9631-0c7c6279767f</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.0</minWfaVersion>
+    <name>Snapshot Directory Access for Admin</name>
+    <uuid>3fd41ce3-945b-45e2-9e0d-c8426b0beb15</uuid>
+    <version>1.0.0</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>This pack consists of five workflows that enable you to perform Storage Virtual Machine Disaster Recovery related tasks.
+	You can execute the workflows in the SVM DR pack in the following recommended sequence:
+
+		1. Create and Initialize SVM DR Relationship.
+		2. Activate the Destination Storage Virtual Machine.
+		3. Failback to the Source Storage Virtual Machine.
+		4. Initialize or Update Storage Virtual Machine SnapMirror Relationship.
+		5. Configure Protocol Services for Storage Virtual Machine.
+	</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=850cde33-9372-401d-91e9-770bc05eafcd&amp;packVersion=1.0.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=850cde33-9372-401d-91e9-770bc05eafcd&amp;packVersion=1.0.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Initialize the Storage Virtual Machine (SVM)
+
+This workflow enables you to initialize the Storage Virtual Machine.
+
+Pre-requisites:
+========
+Source and destination clusters must be peered.
+Ensure that the source and destination clusters have identical licenses installed.
+Ensure that the SnapMirror relationship should exist between source and destination.
+
+Execution of this workflow involves the following steps:
+     
+1) Initialize the SnapMirror relationship, if the user choose "Initialize" option.
+2) Update the SnapMirror relationship, if the user choose "Update" option.
+3) Resync the SnapMirror relationship, if the user choose "Resync" option.
+4) Wait for initialize the SnapMirror relationship,only  if the user choose "Initialize" option.
+5) Wait for update the SnapMirror relationship,only  if the user choose "Update" option.
+6) Wait for resync the SnapMirror relationship,only  if the user choose "Resync" option.
+
+</description>
+            <name>Initialize or Update Storage Virtual Machine SnapMirror</name>
+            <type>Workflow</type>
+            <uuid>8859019c-a8d6-4282-84b0-24d220bb43f0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Creates the Storage Virtual Machines of sub-type DP.</description>
+            <name>Create DP-Destination Storage Virtual Machine</name>
+            <type>Command</type>
+            <uuid>d709b931-1186-474d-be55-4a68f1704916</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The command will get the following status of SnapMirror Initialization:
+
+1) State as "SnapMirrored": Destination volume has been initialized and is ready to receive SnapMirror updates
+2) Health Status "True" or "False" : Transfers are enabled, and no transfer is in progress.</description>
+            <name>Wait for Storage Virtual Machine SnapMirror initialize,resync or update</name>
+            <type>Command</type>
+            <uuid>b8dafac2-195c-4252-a778-596f30fe3c96</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Start or Stop Storage Virtual machine</description>
+            <name>Start or stop Storage Virtual Machine</name>
+            <type>Command</type>
+            <uuid>538180f9-6270-4fe4-84b9-b1dad736ab93</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The command will get the following status of Storage Virtual Machine status :
+
+1) State as "Started": Storage Virtual Machine operational and admin status started to serve the data.
+
+2) State as "Stop": Storage Virtual Machine operational and admin status stopped.
+
+</description>
+            <name>Wait for Storage Virtual Machine status</name>
+            <type>Command</type>
+            <uuid>2289de91-7ab5-44a4-a1fc-51a86965703d</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Creates the SnapMirror relationship between source and destination Storage Virtual Machines.</description>
+            <name>Create Storage Virtual Machine SnapMirror</name>
+            <type>Command</type>
+            <uuid>3501f67e-b01d-4516-87c4-91485e8a30a3</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Abort a SnapMirror relationship between Storage Virtual Machines.</description>
+            <name>Abort Storage Virtual Machine SnapMirror</name>
+            <type>Command</type>
+            <uuid>c08bded1-86b0-4d31-956a-1bc05e4c46f2</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Starts a resync operation to re-establish a SnapMirror or SnapVault relationship between a source volume and a destination volume, typically in the following cases:
+
+    - The SnapMirror relationship is broken (that is, the destination volume is a read-write volume and no longer a data protection mirror).
+
+    - A required common Snapshot copy was deleted on the source volume causing SnapMirror or SnapVault updates to fail.
+
+    The resync operation runs in the background on the source and the destination clusters. This command does not wait for the operation to finish. After the resync operation completes, the SnapMirror or SnapVault relationship can be manually updated or scheduled for updates. The resync operation will fail if the destination volume does not have a Snapshot copy in common with the source volume.
+
+    This command requires Clustered Data ONTAP 8.2.0 or later.
+
+    Warning: The resync operation might cause data loss on the destination volume because this operation might remove the exported Snapshot copy on the destination volume.
+    </description>
+            <name>Resync Storage Virtual Machine SnapMirror</name>
+            <type>Command</type>
+            <uuid>b85c6ee0-3a27-4a26-8c41-7978a6bbe3c6</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Initializes or update the Storage Virtual Machine SnapMirror.
+
+</description>
+            <name>Initialize or Update Storage Virtual Machine SnapMirror</name>
+            <type>Command</type>
+            <uuid>90ad183e-0cb6-43c8-83d5-2e9820bf0957</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Quiesces a SnapMirror relationship between Storage Virtual Machines.</description>
+            <name>Quiesces Storage Virtual Machine SnapMirror</name>
+            <type>Command</type>
+            <uuid>7faae4b8-c708-4059-b39b-9bd1452ab4eb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>The Release SnapMirror command  removes a SnapMirror relationship on the source endpoint. It unlocks and cleans up the snapshots pertaining to the relationship. It does not destroy any volume. One must specify the destination endpoint when using Release SnapMirror. This command must be executed on the source Storage Virtual Machine or source cluster following the deletion of the relationship on the destination Storage Virtual Machine or destination cluster. It is possible to issue Release SnapMirror on the source Storage Virtual Machine without deleting the relationship on the destination Storage Virtual Machine. However, the relationship will continue to exist because the destination is the authority. The relationship will reappear on the source on the next transfer.
+
+    Minimum ONTAP version is 8.2.0 for this command.
+    </description>
+            <name>Release Storage Virtual Machine SnapMirror</name>
+            <type>Command</type>
+            <uuid>d8174759-1e13-45eb-a4e2-b8c5fe8cc7c0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Breaking a SnapMirror relationship between Storage Virtual Machines.</description>
+            <name>Break Storage Virtual Machine SnapMirror</name>
+            <type>Command</type>
+            <uuid>ab3e4fbd-fc7d-4e29-9e13-cb7c540e14d1</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow creates DR relationship between a source Storage Virtual Machine (SVM) on a given site to a destination SVM on a remote site. 
+This workflow enables you to select either Identity Preserving or Identity Discarding option.When a disaster occurs, the destination SVM must be brought online manually or by executing "Activate Destination Storage Virtual Machine" workflow.
+
+
+Pre-requisites:
+========
+1) Both source and destination site clusters must be peered.
+2) Destination cluster should have a data aggregate.
+3) NFS, CIFS, FCP and ISCSI licenses must be enabled.
+4) FCP adapters in the cluster should have been already configured as target.
+5) Add the following entries into WFA credentials (WFA Portal &gt; Execution &gt; Credentials).
+
+For AD Domain : 
+==========
+Match : Select 'Exact'
+Type : Select 'Other'
+Name/IP : Enter fully qualified domain name 
+User Name : Enter domain administrator
+Password : Enter domain administrator password
+
+
+This workflow involves the following steps:
+     
+1) Create a new SVM.
+2) Create SVM peering.
+3) Create cron schedule.
+4) Create SnapMirror policy.
+5) Create SnapMirror relationship.
+6) Create Logical Interface.
+4) Set up CIFS service.
+5) Set up DNS service.
+6) Initialize SnapMirror relationship.
+
+
+
+</description>
+            <name>Create and Initialize SVM DR  Relationship</name>
+            <type>Workflow</type>
+            <uuid>73b5f722-ff5a-4ff8-8966-1fc86573ee37</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Activating the Destination Storage Virtual Machine (SVM)
+
+This workflow enables you to activate the destination Storage Virtual Machine when the source SVM  is down.
+
+Pre-requisites:
+========
+Source and destination clusters must be peered.
+Ensure that the source and destination clusters have identical licenses installed.
+
+
+Execution of this workflow involves the following steps:
+     
+
+1) Stop the source SVM, if the SVM is running.
+2) Abort the SnapMirror relationship.
+3) Update the SnapMirror relationship in destination.
+4) Quiesce the SnapMirror relationship in destination.
+5) Break the SnapMirror relationship.
+6) Start the destination SVM.</description>
+            <name>Activate the Destination Storage Virtual Machine</name>
+            <type>Workflow</type>
+            <uuid>b984a1bf-c68d-4256-a40e-8590827c1faa</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Removes a SnapMirror or SnapVault relationship between the given source and destination volumes.</description>
+            <name>Remove Storage Virtual Machine SnapMirror</name>
+            <type>Command</type>
+            <uuid>04d97c86-6816-44e3-8bd7-255ec49eb4c2</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Creates a DNS Configuration for the Storage Virtual Machine.</description>
+            <name>Create DNS Service</name>
+            <type>Command</type>
+            <uuid>9c22aa69-611e-4ac7-94cb-af53312b7cb4</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow configures CIFS, NFS, FCP and iSCSI services on a Storage Virtual Machine (SVM).
+
+
+Pre-requisites:
+========
+1) NFS, CIFS, FCP and iSCSI licenses must be enabled.
+2) FCP adapters in the cluster must have already been configured as target.
+3) Add the following entries to WFA Credentials (WFA portal &gt; Execution &gt; Credentials).
+
+For AD Domain : 
+==========
+Match : Select 'Exact'
+Type : Select 'Other'
+Name/IP : Enter fully qualified domain name 
+User Name : Enter domain administrator
+Password : Enter domain administrator password
+
+
+Execution of this workflow involves the following steps:
+   
+1) Create a new data logical interface.
+2) Set up CIFS and NFS services.
+3) Add export rule to default export policy.
+4) Set up FCP and iSCSI services.
+5) Create iSCSI and FCP portsets.
+6) Create iSCSI and FCP logical interface.
+7) Add  iSCSI and FCP logical interface to portset.</description>
+            <name>Configure Protocol Services for Storage Virtual Machine</name>
+            <type>Workflow</type>
+            <uuid>31b03d63-d738-4f66-ab81-e6d4b93f38b9</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>A set of workflows that configure data protection relationships. These workflows deal with different data protection technologies such as Volume SnapMirror and SnapVault.</description>
+            <name>Data Protection</name>
+            <type>Category</type>
+            <uuid>41ec7214-c8a8-4484-8d0f-cfacbd16f5b0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Activating the Source Storage Virtual Machine (SVM)
+
+This workflow enables you to activate the primary Storage Virtual Machine after recovery. 
+Using this workflow, you can re-create an SVM  or activate an existing SVM.
+
+
+Pre-requisites:
+========
+Source and destination cluster must be peered.
+Ensure that source and destination clusters have identical licenses installed.
+The cluster has at least one non-root aggregate with sufficient space.
+
+
+
+Execution of this workflow involves the following steps:
+   
+1. Recreating and activating the source SVM:
+	a) Delete existing SnapMirror relationship between the source SVM (completely destroyed) and the destination SVM
+	b) Create a new SVM of subtype dp-destination in the source
+	c) Create and initialize SnapMirror relationship between the new source and the destination SVM from the source cluster
+	d) Stop destination Storage Virtual Machine
+	e) Update SnapMirror relationship in the source 
+	f) Break SnapMirror relationship in the source
+	g) Start Storage Virtual Machine in the source
+	h) Create a SnapMirror relationship between the new source and destination SVM from the destination cluster
+	i) Resync SnapMirror from the destination cluster
+
+2. Reactivating the existing source SVM:
+	a) Create the SnapMirror relationship between the source and the destination SVM from the source cluster
+	b) Resync SnapMirror in the source
+	c) Stop destination Storage Virtual Machine
+	d) Update SnapMirror relationship in the source
+	e) Break SnapMirror relationship in the source
+	f) Start Storage Virtual Machine in the source
+	g) Resync SnapMirror from the destination cluster
+
+</description>
+            <name>Failback to Source Storage Virtual Machine</name>
+            <type>Workflow</type>
+            <uuid>812eaabe-96ce-4943-a9ef-7ab4c0049ee4</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.1.0.0.0</minWfaVersion>
+    <name>Storage Virtual Machine Disaster Recovery</name>
+    <uuid>850cde33-9372-401d-91e9-770bc05eafcd</uuid>
+    <version>1.0.0</version>
+</pack><pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>This pack contains datasource script to acquire VMware vCenter server data into WFA database for heterogeneous IT automation activity. Prerequisites for this Data Source: 1. WFA 3.1 2. PowerShell 3.0 on the WFA Server 3. vMWare PowerCLI 6.0 4. VMWare vCenter (version 6.0). To create a new Data Source, follow these steps: 1. Import the VMware vCenter Data Source into your WFA server. 2. Use Execution-&gt;Data Sources and click New, entering IP, port, user and password credentials for the VMware vCenter server and set the timeout value to 3600. 3. After determining the amount of time to complete data acquisition from the Data Source, reduce the Timeout based on the speed of the VMware vCenter data acquisition.</description>
+    <downloadUrl>http://automationstore.netapp.com/2.0/download-page.php?packUuid=4ce32c21-1878-47a0-9c53-ef6e8eb7b3a3&amp;packVersion=1.0.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/2.0/pack-detail.shtml?packUuid=4ce32c21-1878-47a0-9c53-ef6e8eb7b3a3&amp;packVersion=1.0.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>VMware vCenter 6.0_6.0</name>
+            <type>Script Data Source Type</type>
+            <uuid>9adc0b76-24b0-427f-9cb5-51f8430cf88a</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.1.0.0.0</minWfaVersion>
+    <name>Datasource Script for VMware vCenter 6.0</name>
+    <uuid>4ce32c21-1878-47a0-9c53-ef6e8eb7b3a3</uuid>
+    <version>1.0.0</version>
+</pack><pack>
+    <author>Shivani</author>
+    <certification>NETAPP</certification>
+    <description>this is a packe with new cache query and a new scheme&lt;h1&gt;This is just a dummy text &lt;/h1&gt;
+&lt;p&gt;&lt;ul&gt;&lt;li&gt;India &lt;/li&gt;&lt;li&gt;China &lt;/li&gt;&lt;li&gt;US &lt;/li&gt;&lt;li&gt;UK &lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;
+	</description>
+    <downloadUrl>http://automationstore.netapp.com/download-page.php?packUuid=a6c4e30e-ce81-48f7-92cb-fcbcb25a454b&amp;packVersion=2.0.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/pack-detail.shtml?packUuid=a6c4e30e-ce81-48f7-92cb-fcbcb25a454b&amp;packVersion=2.0.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>
+				
+			</description>
+            <name>oracle</name>
+            <type>Scheme</type>
+            <uuid>91bf8d58-74cf-4ff6-a8b3-0cead03b3f81</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>student</name>
+            <type>DictionaryEntry</type>
+            <uuid>dda0ae06-6a3a-47ef-8415-eb3f6160fffb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>Oracle JDBC_</name>
+            <type>SqlDataProviderType</type>
+            <uuid>5f51ef3d-67a6-44f6-8d67-79c49f78d348</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>d1c1e765-52bf-4cea-95ee-4d59e8a6812b</name>
+            <type>CacheQuery</type>
+            <uuid>d1c1e765-52bf-4cea-95ee-4d59e8a6812b</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.0.0.0.0</minWfaVersion>
+    <name>Oracle cache query pack with new scheme</name>
+    <uuid>a6c4e30e-ce81-48f7-92cb-fcbcb25a454b</uuid>
+    <version>2.0.0</version>
+</pack><pack>
+    <author>Shivani</author>
+    <certification>NETAPP</certification>
+    <description>This is a packe with new cache query and a new scheme&lt;h1&gt;This is just a dummy text &lt;/h1&gt;
+&lt;p&gt;&lt;ul&gt;&lt;li&gt;India &lt;/li&gt;&lt;li&gt;China &lt;/li&gt;&lt;li&gt;US &lt;/li&gt;&lt;li&gt;UK &lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;
+	</description>
+    <downloadUrl>http://automationstore.netapp.com/download-page.php?packUuid=a6c4e30e-ce81-48f7-92cb-fcbcb25a454b&amp;packVersion=2.1.0&amp;packType=workflow</downloadUrl><packUrl>http://automationstore.netapp.com/pack-detail.shtml?packUuid=a6c4e30e-ce81-48f7-92cb-fcbcb25a454b&amp;packVersion=2.1.0</packUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>
+				
+			</description>
+            <name>oracle</name>
+            <type>Scheme</type>
+            <uuid>91bf8d58-74cf-4ff6-a8b3-0cead03b3f81</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>student</name>
+            <type>DictionaryEntry</type>
+            <uuid>dda0ae06-6a3a-47ef-8415-eb3f6160fffb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>Oracle JDBC_</name>
+            <type>SqlDataProviderType</type>
+            <uuid>5f51ef3d-67a6-44f6-8d67-79c49f78d348</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description/>
+            <name>d1c1e765-52bf-4cea-95ee-4d59e8a6812b</name>
+            <type>CacheQuery</type>
+            <uuid>d1c1e765-52bf-4cea-95ee-4d59e8a6812b</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.1.0.0.0</minWfaVersion>
+    <name>Oracle cache query pack with new scheme</name>
+    <uuid>a6c4e30e-ce81-48f7-92cb-fcbcb25a454b</uuid>
+    <version>2.1.0</version>
+</pack></wfa-packs><alertMessage>This is dummy text</alertMessage>
+</workflowstore>

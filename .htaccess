@@ -1,0 +1,65 @@
+# BEGIN htaccess
+<IfModule mod_rewrite.c>
+
+Options +FollowSymLinks
+#DirectoryIndex login.php
+
+RewriteEngine On    	
+RewriteBase /workflowstore
+
+Options All -Indexes
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-s 
+
+#RewriteCond %{REQUEST_URI} !under-construction\.shtml
+#RewriteRule ^(.*)$ /under-construction.shtml [R=302,L]
+
+
+RewriteRule ^(wfsmetadata)$ webservices/webservice.php?request=$1 [QSA,NC,L]
+RewriteRule ^(timestamp)$ webservices/webservice.php?request=$1 [QSA,NC,L]
+RewriteRule ^(storeversion)$ webservices/webservice.php?request=$1 [QSA,NC,L] 
+
+#RewriteRule ^(wfsmetadata/([0-9]+))$ webservices/webservice.php?request=$1&apiKey=$2 [QSA,NC,L]
+#RewriteRule ^(timestamp/([0-9]+))$ webservices/webservice.php?request=$1&apiKey=$2 [QSA,NC,L]
+#RewriteRule ^(storeversion)$ webservices/webservice.php?request=$1&apiKey=$2 [QSA,NC,L]     
+
+#RewriteRule ^login.shtml$ /login.shtml [NC,L]
+#RewriteRule ^logout$ /logout.shtml [NC,L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+#RewriteRule ^(.*)$ $1.php [QSA,NC,L]
+RewriteRule ^(.*)\.shtml$ $1.php [QSA,NC,L]  
+
+#ADDED TO PASS SECURITY METRICS XSS CROSS SITE SCRIPTING ERRORS
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+RewriteRule ^(.*)$ 404.php [L]
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+RewriteRule .* - [F]
+#END OF XSS FIX
+
+
+#ashish changes 
+	#RewriteCond %{REQUEST_FILENAME}.php -f
+	#RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+#RewriteRule ^oberr.cgi$ http://store.netapp.com/login.php [NC,L]
+
+RewriteRule ^oberr.cgi$ 404.php [NC,L]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.*)$ 404.php?file=$1 [NC,L]  
+
+#old RewriteRule (.*) 404.php?file=$1 [L]
+
+</IfModule>
+# END

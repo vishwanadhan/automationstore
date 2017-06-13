@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Manage QoS Default Values" samplingIntervalInSeconds="60" stringRepresentation="Action + &quot; table qos_default_values&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>b179fefc-5d17-40b0-b13b-005f8acc738e</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+
+my $Action;
+my $Debug;
+my $Enforcement;
+my $Facility;
+my $Headroom;
+my $MinIops;
+my $ServiceLevel;
+my $ThinMin;
+my $LogToConsole;
+my $MaxCpuDuration;
+my $MaxCpuPercent;
+my $Prefer;
+
+GetOptions(
+    &quot;Action=s&quot;          =&gt; \$Action,
+    &quot;Debug=s&quot;           =&gt; \$Debug,
+    &quot;Enforcement=s&quot;     =&gt; \$Enforcement,
+    &quot;Facility=s&quot;        =&gt; \$Facility,
+    &quot;Headroom=s&quot;        =&gt; \$Headroom,
+    &quot;MinIops=s&quot;         =&gt; \$MinIops,
+    &quot;ServiceLevel=s&quot;    =&gt; \$ServiceLevel,
+    &quot;ThinMin=s&quot;         =&gt; \$ThinMin,
+    &quot;LogToConsole=s&quot;    =&gt; \$LogToConsole,
+    &quot;MaxCpuDuration=s&quot;  =&gt; \$MaxCpuDuration,
+    &quot;MaxCpuPercent=s&quot;   =&gt; \$MaxCpuPercent,
+    &quot;Prefer=s&quot;          =&gt; \$Prefer
+) or die 'Illegal command parameters\n';
+
+my $wfa_util = WFAUtil-&gt;new();
+
+############################################# Query #############################################
+
+my $queryInsertIntoTableQoSDefaultValues =
+    &quot;INSERT IGNORE INTO playground.qos_default_values(debug, enforcement, facility, headroom, min_iops, service_level, thin_min, log_to_console, max_cpu_duration, max_cpu_percent, prefer)
+        VALUES (
+                '$Debug',
+                '$Enforcement',
+                '$Facility',
+                '$Headroom',
+                '$MinIops',
+                '$ServiceLevel',
+                '$ThinMin',
+                '$LogToConsole',
+                '$MaxCpuDuration',
+                '$MaxCpuPercent',
+                '$Prefer'
+               )
+    &quot;;
+
+my $queryUpdateTableQoSDefaultValues =
+    &quot;UPDATE playground.qos_default_values
+        SET
+            debug = '$Debug',
+            enforcement = '$Enforcement',
+            facility = '$Facility',
+            headroom = '$Headroom',
+            min_iops = '$MinIops',
+            service_level = '$ServiceLevel',
+            thin_min = '$ThinMin',
+            log_to_console = '$LogToConsole',
+            max_cpu_duration = '$MaxCpuDuration',
+            max_cpu_percent = '$MaxCpuPercent',
+            prefer = '$Prefer'
+    &quot;;
+
+my $queryDeleteFromTableQoSDefaultValues =
+    &quot;DELETE FROM playground.qos_default_values&quot;;
+
+########################################### End Query ###########################################
+
+########################################### Run_Query ###########################################
+
+my $schema = &quot;playground&quot;;
+my @queryData = ();
+
+eval {
+    if ($Action eq &quot;insert&quot;) {
+        $wfa_util-&gt;sendLog('INFO', &quot;Initializing table 'qos_default_values' under 'playground' ...&quot;);
+        @queryData = $wfa_util-&gt;invokeMySqlQuery($queryInsertIntoTableQoSDefaultValues, $schema);
+    }
+    elsif ($Action eq &quot;update&quot;) {
+        $wfa_util-&gt;sendLog('INFO', &quot;Updating table 'qos_default_values' under 'playground' ...&quot;);
+        @queryData = $wfa_util-&gt;invokeMySqlQuery($queryUpdateTableQoSDefaultValues, $schema);
+    }
+    else {
+        $wfa_util-&gt;sendLog('INFO', &quot;Deleting all rows in the table 'qos_default_values' under 'playground' ...&quot;);
+        @queryData = $wfa_util-&gt;invokeMySqlQuery($queryDeleteFromTableQoSDefaultValues, $schema);
+    }
+};
+if ($@) {
+    $wfa_util-&gt;sendLog('ERROR', &quot;Unable to do '$Action' table 'qos_default_values': &quot; . $@);
+}
+else {
+    $wfa_util-&gt;sendLog('INFO', &quot;$Action table done successfully for QoS default values: &quot; . @queryData);
+}
+
+######################################### End Run_Query #########################################</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+        <parameter-mapping objectName="Debug" parameterName="Debug"/>
+        <parameter-mapping objectName="Enforcement" parameterName="Enforcement"/>
+        <parameter-mapping objectName="Facility" parameterName="Facility"/>
+        <parameter-mapping objectName="Headroom" parameterName="Headroom"/>
+        <parameter-mapping objectName="LogToConsole" parameterName="LogToConsole"/>
+        <parameter-mapping objectName="MaxCpuDuration" parameterName="MaxCpuDuration"/>
+        <parameter-mapping objectName="MaxCpuPercent" parameterName="MaxCpuPercent"/>
+        <parameter-mapping objectName="MinIops" parameterName="MinIops"/>
+        <parameter-mapping objectName="Prefer" parameterName="Prefer"/>
+        <parameter-mapping objectName="ServiceLevel" parameterName="ServiceLevel"/>
+        <parameter-mapping objectName="ThinMin" parameterName="ThinMin"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will insert/update/delete QoS default values in the table 'qos_default_values' under playground.</description>
+    <parameter-definitions>
+        <parameter-definition description="What is planned action on QoS default values.&#xA;Possible values are:&#xA;1) insert&#xA;2) update&#xA;3) delete" enumValues="insert,update,delete" isMandatory="true" name="Action" type="Enum">
+            <uuid>a5467506-d699-45ae-8206-84436c5726ea</uuid>
+        </parameter-definition>
+        <parameter-definition description="“debug” is used to more deeply understand what the Kitchen Police is doing. The default is 0, which turns off all debug messages to syslog.&#xA;&#xA;The format is:&#xA;debug decimal-number&#xA;&#xA;• Debug 1 turns on basic debugging information and frequently pauses the program for 1 second.&#xA;• Debug 2 turns on verbose debugging information and frequently pauses the program for 2 seconds.&#xA;• Debug 3 or higher turns on extremely detailed debugging information and frequently pauses the program for 3 seconds." enumValues="0,1,2,3" isMandatory="false" name="Debug" type="Enum">
+            <uuid>5e720fa3-74d6-456e-83d7-487933500c83</uuid>
+        </parameter-definition>
+        <parameter-definition description="The default enforcement (keyword: defaultenforcement) selects the default mode for a service level.&#xA;&#xA;The format is:&#xA;defaultenforcement mode&#xA;&#xA;There are three (3) modes:&#xA;• thick&#xA;• thin&#xA;• effective" enumValues="thick,thin,effective" isMandatory="false" name="Enforcement" type="Enum">
+            <uuid>019b7b6d-193d-4eb8-b7c6-df14471e2bf5</uuid>
+        </parameter-definition>
+        <parameter-definition description="“facility” is the syslog facility that tags all messages written to syslog.&#xA;&#xA;The format is:&#xA;facility syslog-facility" isMandatory="false" name="Facility" type="String">
+            <uuid>d883992c-8eb1-4d3c-b5e3-878a3f5573a9</uuid>
+        </parameter-definition>
+        <parameter-definition description="The default headroom (keyword: defaultheadroom) sets the default percentage of growth headroom used to calculate the max-throughput value for the volume QoS policy.&#xA;&#xA;The format is:&#xA;defaultheadroom decimal-number" isMandatory="false" name="Headroom" type="Double">
+            <uuid>b6f83afa-d17d-40b6-81a3-f26e3d32282e</uuid>
+        </parameter-definition>
+        <parameter-definition description="Log to console (keyword: logtoconsole) controls whether messages are written to only the syslog, or also to the console.&#xA;&#xA;The format is:&#xA;logtoconsole 0-or-1&#xA;&#xA;The default is 0, which means messages are written only to syslog.  Setting this variable to 1 causes all messages to also be written to the console." enumValues="0,1" isMandatory="false" name="LogToConsole" type="Enum">
+            <uuid>38dab083-f923-47e9-9c99-4aa35f312f6d</uuid>
+        </parameter-definition>
+        <parameter-definition description="Max CPU duration (keyword: maxcpuduration) is the amount of time that the Kitchen Police measures CPU usage of the controller hosting the cluster management IP. This value controls how often the Kitchen Police checks the volumes for changes.&#xA;&#xA;The format is:&#xA;maxcpuduration decimal-number" isMandatory="false" name="MaxCpuDuration" type="Double">
+            <uuid>79142200-1b1f-4375-88e3-bcf42281c3ad</uuid>
+        </parameter-definition>
+        <parameter-definition description="Max CPU percent (keyword: maxcpupercent) sets the maximum CPU busy for the controller hosting the cluster management IP. &#xA;&#xA;The format is:&#xA;maxcpupercent decimal-number" isMandatory="false" name="MaxCpuPercent" type="Double">
+            <uuid>76306272-d1d1-4f91-94ca-ee2bf4bf6ecc</uuid>
+        </parameter-definition>
+        <parameter-definition description="The defaultminiops (keyword: defaultminiops) sets the default lowest number of absolute IOPS for the max-throughput value of a volume QoS policy.&#xA;&#xA;The format is:&#xA;defaultminiops decimal-number" isMandatory="false" name="MinIops" type="Double">
+            <uuid>afc1ee32-2a4e-4c8c-a320-ab85d5bf00ed</uuid>
+        </parameter-definition>
+        <parameter-definition description="In the case when a volume matches multiple service level definitions in the configuration file, the “prefer” keyword is used to default select the faster or the slower of service level definitions matching the volume.&#xA;&#xA;The format is:&#xA;prefer preference&#xA;&#xA;There are two preferences:&#xA;• faster&#xA;• slower" enumValues="faster,slower" isMandatory="false" name="Prefer" type="Enum">
+            <uuid>fba9636c-d63c-4dac-9745-c51851d70cb6</uuid>
+        </parameter-definition>
+        <parameter-definition description="The Default Service Level (keyword: defaultservicelevel) is the service level definition used if a volume cannot be matched to any of the service level definitions provided in the configuration file.&#xA;&#xA;The format is:&#xA;defaultservicelevel service-level-name" isMandatory="false" name="ServiceLevel" type="String">
+            <uuid>973e765b-50c7-4601-bcc8-1af681fee8a6</uuid>
+        </parameter-definition>
+        <parameter-definition description="The default thinmin (keyword: defaultthinmin) sets the default minimum percentage of capacity used to calculate the max-throughput value for the volume QoS policy.&#xA;&#xA;The format is:&#xA;defaultthinmin decimal-number" isMandatory="false" name="ThinMin" type="Double">
+            <uuid>1cf1d9ba-cdc7-456a-a2b6-e6a0a29dee3d</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

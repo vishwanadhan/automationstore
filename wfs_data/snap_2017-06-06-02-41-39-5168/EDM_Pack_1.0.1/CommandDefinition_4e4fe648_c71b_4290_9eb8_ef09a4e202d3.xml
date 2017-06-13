@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="EDM Manage PSExcel" samplingIntervalInSeconds="60" stringRepresentation="action + ' PSExcel'" timeoutInSeconds="600" type="STANDARD">
+    <certification>NONE</certification>
+    <uuid>4e4fe648-c71b-4290-9eb8-ef09a4e202d3</uuid>
+    <version>1.4.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>param (
+  [parameter(Mandatory=$true, HelpMessage=&quot;Action - Install or Remove&quot;)]
+  [string] $action
+
+)
+
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+function Invoke-Unzip
+{
+    param([string]$zipfile, [string]$outpath)
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
+}
+
+#  Description: Install (from .zip) or Remove PSExcel
+#
+#  Change-History:
+#    1.0.0 - initial clone from another similar custom command
+#    1.1.0 - Added logic to place PSExcel where it belongs
+#    1.2.0 - Added logic to pull PSExcel from proper location
+#    1.3.0 - Adjusted path to source zip file
+#    1.4.0 -
+#
+#  Where is the PSExcel Module file?
+#    C:\Program Files\NetApp\WFA\jboss\standalone\deployments\help.war\workflow\TabularWorkflow_d034e499-f142-41a8-89c7-118bd7907e24\files
+
+$debug = $false
+
+$wfaCurrentPath = Get-Location
+$wfaPoSHModulesPath = &quot;..\..\..\..\PoSH\Modules&quot;
+$wfaHelpFilesPath = &quot;..\..\workflow-help&quot;
+$wfaWorkflowUUID = &quot;d034e499-f142-41a8-89c7-118bd7907e24&quot;
+$wfaZipFilePath = &quot;..\..\..\..\jboss\standalone\help.war\workflow\TabularWorkflow_$wfaWorkflowUUID\files\PSExcel-zip.jpg&quot;
+
+if ( $debug )
+    {
+	Get-WFALogger -info -message &quot; &quot;
+	Get-WFALogger -info -message &quot;=== Current environment command as running:&quot;
+	Get-WFALogger -info -message &quot;====== Current Working Directory Path: $wfaCurrentPath&quot;
+	Get-WFALogger -info -message &quot;====== PowerShell Modules Relative Path: $wfaPoSHModulesPath&quot;
+	Get-WFALogger -info -message &quot;====== Workflow Help Files Relative Path: $wfaHelpFilesPath&quot;
+	Get-WFALogger -info -message &quot;====== PSExcel Modules Zip File Relative Path: $wfaZipFilePath&quot;
+    }
+
+	Get-WFALogger -info -message &quot; &quot;
+
+if ( $action -eq &quot;Install&quot; )
+    {
+        Get-WFALogger -info -message &quot;=== Installing PSExcel&quot;
+        Get-WFALogger -info -message &quot;====== Installing into: $wfaPoSHModulesPath&quot;
+
+        Get-WFALogger -info -message &quot;========= Removing PSExcel directory if it exists&quot;
+        If ( Test-Path $wfaPoSHModulesPath\PSExcel )
+	    {
+		Get-WFALogger -info -message &quot;============ PSExcel modules directory found, removing&quot;
+		Remove-Item -Path $wfaPoSHModulesPath\PSExcel -Recurse -Confirm:$false
+	    }
+
+        Get-WFALogger -info -message &quot;========= Unzipping PSExcel modules into modules directory&quot;
+        Invoke-Unzip -ZipFile $WfaZipFilePath -OutPath &quot;$wfaPoSHModulesPath&quot;
+	
+	Get-WFALogger -info -message &quot; &quot;
+    }
+#
+if ( $action -eq &quot;Remove&quot; )
+    {
+        Get-WFALogger -info -message &quot;========= Removing PSExcel directory if it exists&quot;
+        If ( Test-Path $wfaPoSHModulesPath\PSExcel )
+	    {
+		Get-WFALogger -info -message &quot;============ PSExcel modules directory found, removing&quot;
+		Remove-Item -Path $wfaPoSHModulesPath\PSExcel -Recurse -Confirm:$false
+	    }
+	
+	Get-WFALogger -info -message &quot; &quot;
+ 
+    }
+#</command>
+            <commandLanguage>POWER_SHELL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="PipelineVariable" parameterName="PipelineVariable"/>
+        <parameter-mapping objectName="action" parameterName="action"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>Install or Remove the PSExcel Module Library into WFA's PoSH module path</description>
+    <parameter-definitions>
+        <parameter-definition description="" isMandatory="false" name="PipelineVariable" type="String">
+            <uuid>182c26ec-29a6-43e7-89e8-20b1b8a1120b</uuid>
+        </parameter-definition>
+        <parameter-definition description="Action - Install or Remove" isMandatory="true" name="action" type="String">
+            <uuid>fb8f7202-80ad-4969-bea7-e35fa683b2a5</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

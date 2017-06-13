@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tabularWorkflow considerReservedElements="true" description="This workflow should be run immediately after importing the EDM dar file. The workflow installs the prerequisite modules (i.e.; PSExcel.zip) and places the EDM sample edm.xlsx into C:\Temp." enableElementExistenceValidation="true" name="EDM000 Pack Initialization" readyForProduction="true">
+    <certification>NONE</certification>
+    <uuid>d034e499-f142-41a8-89c7-118bd7907e24</uuid>
+    <version>1.2.4</version>
+    <workflow-commands>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="EDM Manage PSExcel" uuid="bc8d0d63-36de-481f-86bc-803c4d2c9d59">
+            <command-definition>4e4fe648-c71b-4290-9eb8-ef09a4e202d3</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="EDM Place edm.xlsx" uuid="d31ad1cd-be13-4138-abe3-5f47ae99a376">
+            <command-definition>00772dc7-0fd8-4c9f-90ee-8ee317d94d2e</command-definition>
+        </workflow-command>
+    </workflow-commands>
+    <find-charts/>
+    <return-parameters/>
+    <rows>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+                    <other-parameters>
+                        <command-parameter-value>
+                            <parameter-definition>182c26ec-29a6-43e7-89e8-20b1b8a1120b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$action">
+                            <parameter-definition>fb8f7202-80ad-4969-bea7-e35fa683b2a5</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>bc8d0d63-36de-481f-86bc-803c4d2c9d59</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="ACTION == 'Install'"/>
+                    <other-parameters>
+                        <command-parameter-value>
+                            <parameter-definition>175aa7ea-6cfb-4135-8505-6dda7d0a5e66</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="'edm-xlsx.jpg'">
+                            <parameter-definition>f5236391-bab1-4bea-b043-fc6f05922f86</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="'C:\\Temp'">
+                            <parameter-definition>e2ed6ef6-2e8d-4d5b-9c02-3fb42d0504f0</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="'edm.xlsx'">
+                            <parameter-definition>1d1ff932-9fd1-4b0e-ace5-734e3217786f</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>d31ad1cd-be13-4138-abe3-5f47ae99a376</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+        </row>
+    </rows>
+    <user-input-groups>
+        <user-input-group expandByDefault="false" name="">
+            <user-inputs>
+                <user-input defaultValue="Install" description="Select 'Install' to install the EDM Pack requisite PowerShell modules in the WFA's modules path or 'Remove' to remove the modules from WFA's modules path." displayName="Select Action" locked="true" mandatory="true" name="$action" uuid="1bc1e968-f591-402a-9772-c73c7e703b35">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumUserInputType" enumValues="Install,Remove" viewAsRadio="false"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+    </user-input-groups>
+    <workflow-constants>
+        <workflow-constant name="ACTION" value="$action">
+            <description></description>
+        </workflow-constant>
+    </workflow-constants>
+</tabularWorkflow>

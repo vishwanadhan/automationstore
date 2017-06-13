@@ -1,0 +1,226 @@
+
+.searchCloseIcon{
+	cursor: pointer;
+        margin-left:30px; 
+	display: -moz-inline-stack;
+	display: inline;
+*display:inline;
+	height: 10px;
+	margin-top: 10px;
+        margin-left: 30px;  
+  position: absolute;
+	width: 10px;
+	z-index: 2000;	
+}
+
+.srchClose{
+	cursor: pointer;
+        background:url(/NOW/css/sa/images/close_icon.png) center center no-repeat;
+	display:inline-block;
+        height: 10px;
+        width: 10px;
+	zoom:1;
+}
+/**
+ * Cascading Style Sheet for GSA Suggest.
+ */
+
+/* Classes for suggestion box */
+.support-home-public {
+width:456px; 
+margin-left:63px;
+margin-top:-1px; 
+visibility:hidden;
+table-layout: fixed;
+}
+
+extended-form-width {
+width:250px;
+}
+
+.support-header {
+width:340px; 
+visibility:hidden;
+table-layout: fixed;
+}
+
+.ss-gac-m {
+  background: white;
+   border: 1px solid black;
+  cursor: default;
+  font-size: 13px;
+  line-height: 17px;
+  margin: 0;
+  z-index: 3880;
+  position: absolute;
+}
+
+.ss-gac-h {
+  background: white;
+  cursor: default;
+  font-size: 13px;
+  line-height: 17px;
+  margin: 0;
+  z-index: -1;
+  position: absolute;
+ width:165px;
+}
+
+
+.ss-gac-c {
+  overflow: hidden;
+  padding-left: 3px;
+  text-align: left;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.ss-gac-d {
+  color: green;
+  font-size: 10px;
+  overflow: hidden;
+  padding: 0 3px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ss-gac-cat td{
+  color: black;
+  font-size: 10px;
+  padding: 0 3px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ss-gac-b td {
+  background:#82bcda;
+  color:#000000;
+}
+
+.ss-gac-e td {
+  font-size: 10px;
+  line-height: 15px;
+  padding: 0 3px 2px;
+  text-align: right;
+}
+
+.ss-gac-e span {
+  color: #00c;
+  cursor:pointer;
+  text-decoration: underline;
+}
+
+/* Debug console */
+
+div#ss_debug_console {
+  background: #ffefef;
+  border: 1px solid #cf7f7f;
+  bottom: 2%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 83%;
+  height: 60%;
+  left: 5%;
+  opacity: 0.95;
+  overflow: auto;
+  padding: 0.5em;
+  position: absolute;
+  width: 90%;
+  z-index: 5000;
+}
+
+.searchResults_ph3  table{/*height:235px;width:412px; */
+	z-index: auto !important;
+	background: #fff url(../images/searchBox_dropDown.png) bottom left repeat-x;
+	border: 1px solid #025fbc;
+	float: left;
+	width: 330px;
+	display: none;
+	margin-left: -1px;
+	margin-top:-2px;
+}
+
+
+
+.gsaSuggestContainer{
+   width : 360px; 
+   height:auto;
+    padding:0px;
+    margin-top:0px;
+    margin-left:0px;
+    border:1px solid #009fda;
+    padding-bottom: 12px;
+    font-size: 10px !important;
+    position:absolute !important;
+    z-index: 9999 !important;
+    *background-color:#F2F7FC !important;
+    *background: url(/NOW/css/sa/images/serch_container1.png) repeat-y 0px 0px !important;
+    background: #F2F7FC url("/NOW/css/sa/images/serch_container1.png") repeat-y 0px 0px !important;
+    *position:relative;
+    z-index:9999 !important; 
+}
+
+table#header_search_suggest.suggestionsData{
+	width:165px;
+	visibility:visible;
+	table-layout:fixed;
+	*overflow: hidden;
+	cellpadding:0px;
+	cellspacing:0px;
+	border:0px;
+	*background-color:#F2F7FC !important;
+	*background: url(/NOW/css/sa/images/serch_container1.png) repeat-y 0px 0px !important;
+	position:absolute !important;
+	z-index: 5000 !important;
+	*display:block; 
+}
+
+a.gsaSuggestCloseIcon{
+    float: right;
+    height: 10px; 
+    position: relative;
+    right: 10px;
+    top: -20px;
+    width: 10px;
+}
+
+div#ss_debug_console.expanded {
+  height: 60%;
+}
+
+div#ss_debug_console.contracted {
+  height: 8%;
+}
+
+div#ss_debug_console h1 {
+  color: #af0000;
+  display: inline;
+  font-size: 100%;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+div#ss_debug_console button {
+  margin: 0em 0.5em;
+}
+
+div#ss_debug_console table {
+  border-collapse: collapse;
+  font-size: 90%;
+  line-height: 120%;
+  margin-top: 1em;
+}
+
+div#ss_debug_console table th {
+  padding: 0.2em 1em;
+  text-align: left;
+}
+
+div#ss_debug_console table td {
+  border-top: 1px solid #cf7f7f;
+  padding: 0.2em 1em;
+}
+
+div#ss_debug_console table td.no {
+  text-align: right;
+}

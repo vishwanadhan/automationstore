@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<pack>
+    <author>NetApp</author>
+    <certification>NETAPP</certification>
+    <description>The SLO workflow pack provides a framework for implementing SLOs. Using the SLO workflow pack, storage service providers can optimize utilization, performance modelling, trend analysis, and asset planning. This pack consists of nine workflows and enables you to define Service Levels Classes, Storage Service Level Classes, and Protection Service Level Classes, which can be associated with every provisioned volume and LUN. Service-based provisioning workflows enable you to provision LUN, or volume based on defined services. The workflows in the SLO pack should be executed in the following recommended sequence: (1) Service Catalog Initialization (Mandatory) (2) Manage Storage Service Level Class (Mandatory and Iterative) (3) Manage Protection Service Level Class (Optional) (4) Manage Service Level Class (Optional) (5) Manage Adaptive QoS Policy Configuration (Optional) (6) Adaptive QoS Service Manager (Mandatory) (7) Service Based Volume Provisioning (Optional and Iterative) (8) Provisioning LUN Based on a Service Level (Optional and Iterative) (9) Move Volumes to a New Storage Service Level Class (Optional and Iterative) Caution NetApp strongly recommends that the customer attend the Service Design Workshop (SDW) conducted at their site before using this Pack. Please contact your account team to schedule the SDW. Using this pack without attending the SDW, is done so at the risk of the Customer and against NetApp's recommendation.</description>
+    <downloadUrl></downloadUrl>
+    <entities>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Return a volume details needed for creating a volume for storage service</description>
+            <name>Filter volume by Storage Service</name>
+            <type>Filter</type>
+            <uuid>3aedc7e8-8257-4e50-816e-84f894b2ce73</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will check if table to keep node details exists, if not it will create a table.</description>
+            <name>Create QoS Node Table</name>
+            <type>Command</type>
+            <uuid>dacc8cf8-3ace-4fa1-b49d-e675598ded6c</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will check if table to Service Level Class details exists, if not it will create a table.</description>
+            <name>Create Service Level Class Table</name>
+            <type>Command</type>
+            <uuid>b094c87a-9459-4c8c-aedf-b71e1ffe6774</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>KP Script Setup</description>
+            <name>KP Uninstall</name>
+            <type>Command</type>
+            <uuid>5ffe0161-e605-40da-9009-62cebaa645dc</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>This will provide setup of workflows which will provision volume and LUN based on service levels</description>
+            <name>Service Level based Provisioning</name>
+            <type>Category</type>
+            <uuid>fa356566-55a9-48b9-933a-84bae986d6b3</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow manages Qos Policy Service. It Starts/Stops QoS Policy service</description>
+            <name>Adaptive Qos Service Manager</name>
+            <type>Workflow</type>
+            <uuid>084ac331-2fa4-4b90-b1c7-48e1a6b4396f</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will take Service Level Class(SLC) finds associated Storage Service Level Class(SSLC) and Protection Service Level Class (PSLC) or specific SSLC and PSLC and takes care of volume provisioning.
+
+Workflow will understand the PSLC topology and prepares entire protection setup for volume as per given topology.</description>
+            <name>Service based volume provisoning</name>
+            <type>Workflow</type>
+            <uuid>552ebf0b-9e93-4024-9dd8-7f4ef4c935f3</uuid>
+            <version>1.0.1</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will handle Add/Remove/Update actions on storage service levels</description>
+            <name>Manage Storage Service</name>
+            <type>Command</type>
+            <uuid>bb9bbfd3-6c7b-4864-b90a-7d3c0e238405</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This Command can Add/start/stop/remove QoS policy manager service</description>
+            <name>Service Manager</name>
+            <type>Command</type>
+            <uuid>3c5deece-ea4f-4d1a-a0c3-7c0088348b27</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>KP Script Setup</description>
+            <name>KP Setup</name>
+            <type>Command</type>
+            <uuid>ea839adc-0b64-41b7-8723-a1a6d2c3a151</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will provide following functionalities
+1) Define a new SSLC
+2) Update existing SSLC
+3) Remove existing SSLC
+3) Remove Aggregate from SSLC
+
+Workflow will allow following set of values for every SSLC
+i. IOPS throttle (IOPS/TB)
+ii. initial IOPS throttle
+iii. Dedupe enabled/disabled
+iv. Compression enabled
+v. Thick or Thin Provisioing
+
+IOPS throttle and initial IOPS throttle setting will be used by Adaptive QoS Policy manager service to handle performance of the volume provisioned using service based volume provisioing workflow
+
+Workflow will list down available aggregates. Select one or more aggregates to map it to specific SSLC.
+
+Mapped aggregate list allow you to remove one or more aggregates from SSLC.
+
+Note : This workflow is mandatory workflow to setup environment. Use this workflow for mapping aggregates to Storage service levels</description>
+            <name>Manage Storage Service Level Class</name>
+            <type>Workflow</type>
+            <uuid>8772ffeb-8006-4001-8d43-4117f4982bfc</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will insert/update/delete QoS default values in the table 'qos_default_values' under playground.</description>
+            <name>Manage QoS Default Values</name>
+            <type>Command</type>
+            <uuid>b179fefc-5d17-40b0-b13b-005f8acc738e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will check if table to keep &quot;Aggregate to Service Map&quot; details exits. If not it will create.</description>
+            <name>Create Aggregate to Service Map table</name>
+            <type>Command</type>
+            <uuid>4a87fb98-48fa-4e49-b5df-607ed7244e83</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will handle Add/Remove/Update actions on Protection Service Levels(PSL)</description>
+            <name>Manage Protection Service</name>
+            <type>Command</type>
+            <uuid>ffd786c7-2681-4930-a58c-4c44563745bb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This will look for aggregate by Service Level Catalog</description>
+            <name>Filter aggregate by Service Level Catalog</name>
+            <type>Filter</type>
+            <uuid>52cb4786-4085-464e-a478-2468d66a5866</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>QoS Config File Manager (Default Service Level)</name>
+            <type>Command</type>
+            <uuid>c05fad07-4b5c-48e0-b0d4-c5a4dd1383eb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will help in creating a Service Level Class with specific Storage Service and Protection Service.
+
+Note : This workflow is not mandatory workflow. &quot;Service Catalog Initialization&quot; adds some SLCs, Use this workflow only when you want new SLC with different conbination of SSLC and PSLC</description>
+            <name>Managing Service Level Class</name>
+            <type>Workflow</type>
+            <uuid>9f2f7f43-1241-4973-8878-b1beba8036eb</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will manage protection service level. Following functionalities are provided with this workflow
+1) You can Add new Protection Service Level Class(PSLC)
+2) You can Remove a Protection Service Level Class
+3) You can Update the  Protection Service Level Class
+3) You can Add an Edge to a PSLC topology, Modify existing Edge in a topology and Remove an Edge in a topology OR Select &quot;No Edge' when only primary retention policy is required
+
+Note : 'Service Catalog Initialization' workflow will add 5 protection service level classes. Use this workflow to edit parameters of those services or for adding NEW PSLC</description>
+            <name>Manage Protection Service Level Class</name>
+            <type>Workflow</type>
+            <uuid>d520a532-d314-4fb7-9fce-311704b8f958</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns the Storage Virtual Machine with the specified cluster name or IP</description>
+            <name>Filter Storage Virtual Machines by cluster</name>
+            <type>Filter</type>
+            <uuid>87636742-6b94-4ef7-b953-f80d074955ff</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This will ignore Storage Virtual Machine with Infinite Volume</description>
+            <name>Filter Storage Virtual Machines by repository</name>
+            <type>Filter</type>
+            <uuid>7f294b23-fbdd-446f-a208-31320acc9f8a</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will handle Add/delete actions of QoS Nodes</description>
+            <name>Manage Qos Nodes</name>
+            <type>Command</type>
+            <uuid>d20b982e-9eaa-4e4d-b29c-2e5ec8a4496d</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will 'create' or 'drop' table 'volume_service_map' under playground.</description>
+            <name>Create Volume Service Map Table</name>
+            <type>Command</type>
+            <uuid>5ef0d581-e18b-47d6-b923-0b425971c844</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Return schedules by attributes specified. For all the possible values of an attribute 'any' is used as filter.</description>
+            <name>Filter cron schedule by attribute</name>
+            <type>Filter</type>
+            <uuid>8574ff39-2a92-46c7-afcf-3c5499518328</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will insert/update/delete volume services in the table 'volume_service_map' under playground.</description>
+            <name>Manage Volume Service Map</name>
+            <type>Command</type>
+            <uuid>3b2f23e7-8c94-46b6-b6ec-6d140e8ed13c</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will map unmapped aggregate to storage service level. Allows you to select pool</description>
+            <name>Map Aggregate to Storage service level</name>
+            <type>Command</type>
+            <uuid>a52aca2d-1210-4063-acfd-6d7c15b4c68f</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Filter that returns the list of all aggregates which are online</description>
+            <name>Get all aggregates by state as online</name>
+            <type>Filter</type>
+            <uuid>ae26012a-8f3e-4595-bc87-1a971d35476e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Returns the volume with the given name and if volume belongs to aggregate in mapped aggregates list</description>
+            <name>Filter volume by name</name>
+            <type>Filter</type>
+            <uuid>1624ba7d-c2e3-40a7-b76b-db586afd88da</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will do the following for setting up environment for SLO.
+1) Create data models required to keep SLO details
+2) Add default SSLs, PSLs and SLCs
+3) The workflow adds &quot;QoS policy&quot; service to Windows services</description>
+            <name>Service Catalog Initialization</name>
+            <type>Workflow</type>
+            <uuid>c9b2e32f-f3f6-4e68-8422-25cce6d1b199</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will enter pre-canned services into cache</description>
+            <name>Enter Default Protection Services</name>
+            <type>Command</type>
+            <uuid>22e96221-2c46-4a2e-a128-721b4f9587d1</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>Select one aggregate per edge</name>
+            <type>Filter</type>
+            <uuid>98f8946d-6cf9-483d-94d8-28f22ed206d0</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Modify a cron or an interval schedule on Clustered ONTAP. Only the specified parameters are modified. Parameters that are not specified are left alone. For a cron schedule, specify only the cron parameters. For interval schedule, specify only the interval parameters. Name, type and description of the schedule cannot be modified.</description>
+            <name>Modify schedule - No Verification</name>
+            <type>Command</type>
+            <uuid>a2e04404-83f2-4a8c-acd3-9de4bc3546a5</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will add pre-canned classes</description>
+            <name>Enter default service Classes</name>
+            <type>Command</type>
+            <uuid>62af8b8b-ec58-4738-990a-cc97f7f0fbe8</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This will return one aggregate per edge of relation in PSL</description>
+            <name>Find aggregates for protection service topology</name>
+            <type>Finder</type>
+            <uuid>4bf64077-a7bb-4e56-bf98-be56caa68023</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will handle Add/Remove/Update actions on service level class entries.</description>
+            <name>Manage Service Class</name>
+            <type>Command</type>
+            <uuid>547bb731-f29d-4fce-b94e-93ddc5fad767</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will check if table to keep &quot;Protection Service Level(PSL)&quot; details. If not it will create the table.</description>
+            <name>Create Protection Service Level table</name>
+            <type>Command</type>
+            <uuid>c4a26d41-f845-481d-8a99-f97841287538</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow will create new LUN in existing Volume under specific Storage Service Level or it will create a new volume under specific SSL and provision a LUN under that new volume.</description>
+            <name>Provisioing LUN based on service level</name>
+            <type>Workflow</type>
+            <uuid>f3f048b6-4d16-48c2-8922-6b3fab69e964</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will check if table to keep &quot;Storage service level(SSL)&quot; details. If not it will create the table.</description>
+            <name>Create Storage Service Level table</name>
+            <type>Command</type>
+            <uuid>0b3f427a-3d7c-4daf-aeef-5bdb5e94265e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>Filter Destination Volumes to create snapmirror relations</name>
+            <type>Finder</type>
+            <uuid>db3aeb3b-5a6e-4437-83fe-a788a53c9495</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Get all the volumes given PSL</description>
+            <name>Filter target volumes by protection service level</name>
+            <type>Filter</type>
+            <uuid>65a0990a-d36b-4f04-a35f-7ccb98aaa0c6</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow enables you to move a Cluster Data ONTAP volume from one storage service level class (SSLC) to another storage service level class.</description>
+            <name>Move Volume(s) to different Storage Service Level Class</name>
+            <type>Workflow</type>
+            <uuid>a4800ab5-af7c-4685-af14-7f829d8f9b42</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NONE</certification>
+            <description>Service Level Manager provides set of workflows for setting up service related configuration</description>
+            <name>Service Level Management</name>
+            <type>Category</type>
+            <uuid>53df1992-fe00-4045-80c4-bb71e67628cd</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This workflow enables you to modify existing storage service level class definition and to modify the default values for the QoS policy management.</description>
+            <name>Manage Adaptive QoS Policy Configuration</name>
+            <type>Workflow</type>
+            <uuid>1c0e5e1a-80eb-4243-a359-7daf6811a966</uuid>
+            <version>1.1.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>QoS Config File Manager (Service Level)</name>
+            <type>Command</type>
+            <uuid>70d2e293-1145-49f9-b852-b4379ef6138e</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>This command will 'create' or 'drop' table 'qos_default_values' under playground.</description>
+            <name>Create QoS Default Values Table</name>
+            <type>Command</type>
+            <uuid>d805137b-1adb-4d5c-89d0-b5366ead0850</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <name>Get WFA credential</name>
+            <type>Command</type>
+            <uuid>af56a0db-8310-45f4-9029-0f50e15e3c60</uuid>
+            <version>1.0.0</version>
+        </entity>
+        <entity>
+            <certification>NETAPP</certification>
+            <description>Return a snapshot details needed for creating a volume for storage service</description>
+            <name>Filter snapshot policy by Protection Service</name>
+            <type>Filter</type>
+            <uuid>67302f97-2c7c-41fd-8442-5a752cfcc998</uuid>
+            <version>1.0.0</version>
+        </entity>
+    </entities>
+    <minWfaVersion>3.1.0.0.2</minWfaVersion>
+    <name>Service Level Objective</name>
+    <uuid>b1e57fd4-77dd-4071-a61b-cbb819fcbc66</uuid>
+    <version>1.4</version>
+</pack>

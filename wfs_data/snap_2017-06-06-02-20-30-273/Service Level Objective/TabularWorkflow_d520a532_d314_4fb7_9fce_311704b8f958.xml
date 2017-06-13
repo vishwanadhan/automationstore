@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tabularWorkflow considerReservedElements="true" description="This workflow will manage protection service level. Following functionalities are provided with this workflow&#xA;1) You can Add new Protection Service Level Class(PSLC)&#xA;2) You can Remove a Protection Service Level Class&#xA;3) You can Update the  Protection Service Level Class&#xA;3) You can Add an Edge to a PSLC topology, Modify existing Edge in a topology and Remove an Edge in a topology OR Select &quot;No Edge' when only primary retention policy is required&#xA;&#xA;Note : 'Service Catalog Initialization' workflow will add 5 protection service level classes. Use this workflow to edit parameters of those services or for adding NEW PSLC" enableElementExistenceValidation="true" name="Manage Protection Service Level Class" readyForProduction="true">
+    <certification>NETAPP</certification>
+    <uuid>d520a532-d314-4fb7-9fce-311704b8f958</uuid>
+    <version>1.0.0</version>
+    <workflow-commands>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Manage Protection Service Level Class" uuid="8c45fd0d-3f96-4b8a-b8ef-65b76fcbc38f">
+            <command-definition>ffd786c7-2681-4930-a58c-4c44563745bb</command-definition>
+        </workflow-command>
+    </workflow-commands>
+    <find-charts/>
+    <return-parameters/>
+    <rows>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+                    <other-parameters>
+                        <command-parameter-value value="$Action">
+                            <parameter-definition>a90e55e7-7101-47d1-ab99-629be9ef40af</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Target">
+                            <parameter-definition>42283be6-c5f7-4470-ab8c-03100ccc460e</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Comment">
+                            <parameter-definition>a0641c7b-80a4-441c-a5a1-fd64e4d9ba1e</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$RPO">
+                            <parameter-definition>fcd654f6-470b-4f11-bd9e-9e0627d1a658</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$PSL">
+                            <parameter-definition>34ab0883-2001-4018-9bf9-f6d16c6e70c9</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$SnapshotPolicy">
+                            <parameter-definition>1c20ccec-fa55-43aa-aa64-ae96046a1eb5</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$TargetSSL">
+                            <parameter-definition>bcf4e5ce-8d82-45b7-82eb-ac260d9ac81c</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="'Remote'">
+                            <parameter-definition>ed004f17-4584-4880-afaf-8a564227023f</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$TopologyName">
+                            <parameter-definition>19f6d373-0438-40df-b18d-dd73f7f58cfd</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$Source">
+                            <parameter-definition>3cae272f-6da5-49a0-8dee-b514acfab273</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$RetentionCount">
+                            <parameter-definition>030fbaf9-1b6b-47ba-84b3-b781526e31bb</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$TopologyAction">
+                            <parameter-definition>8449526a-c395-4d5a-9ac4-295d5c83703b</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>8c45fd0d-3f96-4b8a-b8ef-65b76fcbc38f</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+        </row>
+    </rows>
+    <user-input-groups>
+        <user-input-group expandByDefault="false" name="">
+            <user-inputs>
+                <user-input defaultValue="Update PSL" description="Add PSL- for adding new protection service level class(PSLC)&#xA;Modify PSL- for modifying existing PSLC&#xA;Delete PSL- for deleting entire PSLC&#xA;" displayName="Action" locked="true" mandatory="true" name="$Action" uuid="e6fc51fe-c34c-439d-b638-47bc3b36f4df">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumUserInputType" enumValues="Add PSL,Update PSL,Remove PSL" viewAsRadio="false"/>
+                </user-input>
+                <user-input defaultValue="" description="For &quot;Add PSL&quot; action, provide a unique name for new protection service level class. For Modify PSL or Delete PSL, select existing PSL from drop down." displayName="Protection Service Level Class" locked="false" mandatory="true" name="$PSL" uuid="545187b0-8e59-48aa-90cc-e96752120840">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    DISTINCT playground.protection_service_level.protection_service_name AS 'Name'&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    '${Action}'!='Add PSL'"/>
+                </user-input>
+                <user-input defaultValue="" description="Retention policy to be attached with primary volume.&#xA;E.g. 1) w:1:2/d:1:6 to create 2 weekly snapshots and 6 daily snaphots&#xA;&#xA;Format is &lt;frequency qualifier&gt;:&lt;frequency&gt;:&lt;no of copies&gt;&#xA;&#xA;frequency qualifier : &lt;m/h/w/d/M&gt;&#xA;m: is minutes (Frequecy : comma separated values (1:59))&#xA;h: is hours (Frequecy : comma separated values (1:23))&#xA;w: is days of week (Frequecy : comma separated values (1:6))&#xA;d: is days of month (Frequecy : comma separated values (1:31))&#xA;M: is months (Frequecy : comma separated values (1:11))" displayName="Snapshot Policy" locked="false" mandatory="true" name="$SnapshotPolicy" uuid="3ec3a80c-2a1c-4d75-bc8a-d65f1571cf10">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.protection_service_level.snapshot_policy AS 'Primary Snapshot Policy'&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.geo = 'local' "/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+        <user-input-group expandByDefault="true" name="Topology Details">
+            <user-inputs>
+                <user-input conditionalUserInputValues="Add PSL,Update PSL" defaultValue="" description="Add Edge -  For adding new backup or disaster&#xA;Modify Edge - For changing existing backup or disaster&#xA;Remove Edge - For deleting backup or disaster&#xA;No Edge - For PSLC with primary snapshot policy only" displayName="Edge Action?" locked="true" mandatory="true" name="$TopologyAction" uuid="de4aa50a-e4fd-481d-ac16-27d59799b70a">
+                    <conditional-user-input>e6fc51fe-c34c-439d-b638-47bc3b36f4df</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    a AS Action&#xA;FROM&#xA;    (&#xA;    SELECT&#xA;        d.a&#xA;    FROM&#xA;        (&#xA;        SELECT&#xA;            'Add Edge' a&#xA;        UNION&#xA;        SELECT&#xA;            'No Edge' a&#xA;    ) d ) as act&#xA;WHERE&#xA;'${Action}' = 'Add PSL'&#xA;UNION&#xA;SELECT&#xA;a AS Action&#xA;FROM&#xA;(&#xA;SELECT&#xA;    d.a&#xA;FROM&#xA;    (&#xA;    SELECT&#xA;        'Update Edge' a&#xA;    UNION&#xA;    SELECT&#xA;        'Add Edge' a&#xA;    UNION&#xA;    SELECT&#xA;        'Remove Edge' a&#xA;) d&#xA;) as act&#xA;WHERE&#xA;'${Action}' = 'Update PSL' "/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add Edge,Update Edge, Remove Edge" defaultValue="" description="When adding new edge, provide a unique name for the relation between 2 edges.&#xA;E.g. remote_backup_1" displayName="Edge Name" locked="false" mandatory="false" name="$TopologyName" uuid="59413891-ab45-4334-8fdb-99fb66160b5f">
+                    <conditional-user-input>de4aa50a-e4fd-481d-ac16-27d59799b70a</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.protection_service_level.topology_name&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND '${TopologyAction}' != 'Add Edge'&#xA;    AND playground.protection_service_level.topology_name != ''"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add Edge,Update Edge" defaultValue="" description="Source of the Edge. &quot;Primary&quot; is source when edge is against the Primary volume. Selecting other Edge name means, you are creating a tertiary backup and disaster targets" displayName="Edge Source" locked="true" mandatory="true" name="$Source" uuid="ad01add5-79ab-465d-b6eb-4d111cd1e810">
+                    <conditional-user-input>de4aa50a-e4fd-481d-ac16-27d59799b70a</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.protection_service_level.source&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.topology_name='${TopologyName}'&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    'Primary' AS 'playground.protection_service_level.topology_name'&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    playground.protection_service_level.topology_name&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.source = '${TopologyName}'&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    playground.protection_service_level.topology_name&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.topology_name != '${TopologyName}'&#xA;    AND playground.protection_service_level.topology_name != ''"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add Edge,Update Edge" defaultValue="" description="Want to create Backup or Disaster target, choose." displayName="Edge Type" locked="true" mandatory="true" name="$Target" uuid="3a10bec5-03b0-4c82-8b88-73a27c6474af">
+                    <conditional-user-input>de4aa50a-e4fd-481d-ac16-27d59799b70a</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.protection_service_level.target_type AS 'Target Type'&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.topology_name='${TopologyName}'&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    'Backup' as 'Target Type'&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    'Disaster' as 'Target Type' "/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add Edge,Update Edge" defaultValue="" description="Choose, what should be your target's SSLC" displayName="Edge Destination's Storage Service Level Class" locked="true" mandatory="true" name="$TargetSSL" uuid="60c7cfa2-9305-4ffd-80a3-c2e2ffb07873">
+                    <conditional-user-input>de4aa50a-e4fd-481d-ac16-27d59799b70a</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    &quot;same-as-source&quot; AS &quot;Storage Service Level Class&quot;,&#xA;    &quot;-&quot; AS 'IOPS Throttle',&#xA;    &quot;-&quot; AS 'Minimim SLA(IOPS/TB)',&#xA;    &quot;-&quot; AS comment&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.target_storage_service_level = &quot;same-as-source&quot;&#xA;    AND playground.protection_service_level.topology_name = '${TopologyName}'&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    playground.storage_service_level.storage_service_name AS &quot;Storage Service Level Class&quot;,&#xA;    playground.storage_service_level.iops_throttle AS 'IOPS Throttle',&#xA;    IF (playground.storage_service_level.thin_min is NULL,&#xA;    CAST( playground.qos_default_values.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED),&#xA;    CAST(playground.storage_service_level.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED)) AS 'Minimim SLA(IOPS/TB)',&#xA;    playground.storage_service_level.comment AS &quot;Comment&quot;&#xA;FROM&#xA;    playground.storage_service_level,&#xA;    playground.protection_service_level,&#xA;    playground.qos_default_values&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.target_storage_service_level = playground.storage_service_level.storage_service_name&#xA;    AND playground.protection_service_level.topology_name = '${TopologyName}'&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    playground.storage_service_level.storage_service_name AS &quot;Storage Service Level Class&quot;,&#xA;    playground.storage_service_level.iops_throttle AS 'IOPS Throttle',&#xA;    IF (playground.storage_service_level.thin_min is NULL,&#xA;    CAST( playground.qos_default_values.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED),&#xA;    CAST(playground.storage_service_level.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED)) AS 'Minimim SLA(IOPS/TB)',&#xA;    playground.storage_service_level.comment AS &quot;Comment&quot;&#xA;FROM&#xA;    playground.storage_service_level,&#xA;    playground.protection_service_level,&#xA;    playground.qos_default_values&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.target_storage_service_level = playground.storage_service_level.storage_service_name&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    playground.storage_service_level.storage_service_name AS &quot;Storage Service Level Class&quot;,&#xA;    playground.storage_service_level.iops_throttle AS 'IOPS Throttle',&#xA;    IF (playground.storage_service_level.thin_min is NULL,&#xA;    CAST( playground.qos_default_values.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED),&#xA;    CAST(playground.storage_service_level.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED)) AS 'Minimim SLA(IOPS/TB)',&#xA;    playground.storage_service_level.comment AS &quot;Comment&quot;&#xA;FROM&#xA;    playground.storage_service_level,&#xA;    playground.qos_default_values&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    &quot;same-as-source&quot; AS &quot;Storage Service Level Class&quot;,&#xA;    &quot;-&quot; AS 'IOPS Throttle',&#xA;    &quot;-&quot; AS 'Minimum IOPS',&#xA;    &quot;-&quot; AS &quot;Comment&quot; "/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add Edge,Update Edge" defaultValue="" description="Decide what should be Recovery Point Objective of the edge.&#xA;RPO value 0 will lead to no relation creation. It is logical way of saying true DR. Present scenario only &quot;Metro Cluster&quot; from NetApp is RPO 0 solution." displayName="Edge Recovery Point Object (in Hours)" locked="false" mandatory="false" name="$RPO" uuid="3c1d1968-e2d4-4503-9642-bf72cbed866c">
+                    <conditional-user-input>de4aa50a-e4fd-481d-ac16-27d59799b70a</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.protection_service_level.rpo AS 'Edge RPO'&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.topology_name='${TopologyName}'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Backup" defaultValue="" description="This is backup retention count.&#xA;E,g, w:52/d:6/h:6 will say, backup should keep 52 weekly snapshots and 6 daily snapshots and 6 hourly snapshots" displayName="Edge Destination's Snapshot Retention Policy" locked="false" mandatory="false" name="$RetentionCount" uuid="74ebd860-4dd0-4dc3-97eb-5b45f1e626e9">
+                    <conditional-user-input>3a10bec5-03b0-4c82-8b88-73a27c6474af</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.protection_service_level.retention_count AS 'Edge Retention Policy'&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.topology_name='${TopologyName}'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add Edge,Update Edge" defaultValue="" description="Comment for protection service" displayName="Comment" locked="false" mandatory="false" name="$Comment" uuid="722bd1d4-3486-4612-a832-b40ba4a4bcca">
+                    <conditional-user-input>de4aa50a-e4fd-481d-ac16-27d59799b70a</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.protection_service_level.comment AS 'Edge Comment'&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'&#xA;    AND playground.protection_service_level.topology_name='${TopologyName}'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="View PSL" defaultValue="" description="This will list down all the backup setups done for specific service. Select 'Action' as 'Modify' and select one or more rows here to modify the RPO." displayName="Existing Topology details (Edges)" locked="true" mandatory="false" name="$ExistingTopologies" uuid="b7d055ba-1fdc-4dd6-a7c1-12911583ceed">
+                    <conditional-user-input>e6fc51fe-c34c-439d-b638-47bc3b36f4df</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryMultiSelectUserInputType" query="SELECT&#xA;    playground.protection_service_level.protection_service_name AS 'Name',&#xA;    playground.protection_service_level.topology_name AS 'Topology Name',&#xA;    playground.protection_service_level.RPO AS 'RPO(Hours)',&#xA;    playground.protection_service_level.retention_count AS 'Remote Retention Policy',&#xA;    playground.protection_service_level.target_type AS 'Destination Type',&#xA;    playground.protection_service_level.source AS 'Source',&#xA;    playground.protection_service_level.target_storage_service_level AS 'Destination Storage Service Level',&#xA;    playground.protection_service_level.geo AS 'Location',&#xA;    playground.protection_service_level.snapshot_policy AS 'Local Retention Policy',&#xA;    playground.protection_service_level.comment AS 'Comment'&#xA;FROM&#xA;    playground.protection_service_level&#xA;WHERE&#xA;    playground.protection_service_level.protection_service_name='${PSL}'" rowSelectionType="Multiple"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+    </user-input-groups>
+    <workflow-constants>
+        <workflow-constant name="ExistingTopologies" value="$ExistingTopologies">
+            <description></description>
+        </workflow-constant>
+        <workflow-constant name="TopologyName" value="$TopologyName">
+            <description></description>
+        </workflow-constant>
+        <workflow-constant name="Source" value="$Source">
+            <description></description>
+        </workflow-constant>
+        <workflow-constant name="TopologyAction" value="$TopologyAction">
+            <description></description>
+        </workflow-constant>
+    </workflow-constants>
+</tabularWorkflow>

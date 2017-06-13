@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Create QoS Node Table" samplingIntervalInSeconds="60" stringRepresentation="&quot;Creating qos_nodes table&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <lockedBy>admin</lockedBy>
+    <uuid>dacc8cf8-3ace-4fa1-b49d-e675598ded6c</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+ 
+my $Action;
+
+
+GetOptions(
+    &quot;Action=s&quot;   =&gt; \$Action,
+) or die 'Illegal command parameters\n';
+
+my $result; 
+
+my $Query;
+
+
+my $wfa_util = WFAUtil-&gt;new();
+
+if ($Action eq 'Create')  {
+
+$wfa_util-&gt;sendLog('INFO', 'Creating table');
+
+$Query = &quot;CREATE TABLE IF NOT EXISTS playground.qos_nodes ( 
+	             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+  	             node_ip VARCHAR(255) UNIQUE)&quot;;
+}
+else {
+
+$wfa_util-&gt;sendLog('INFO', 'Dropping a table');
+
+$Query = &quot;DROP TABLE playground.qos_nodes&quot;;
+
+}
+
+
+
+# Creating table lun_import if not exists 
+
+my $database=&quot;playground&quot;;
+
+eval { 
+	$result = $wfa_util-&gt;invokeMySqlQuery($Query,$database); 
+}; 
+
+if($@) 
+{ 
+	$wfa_util-&gt;sendLog('ERROR', 'Unable to create Lun_import table: ' .$@); 
+} 
+else 
+{ 
+	$wfa_util-&gt;sendLog('INFO', 'Creating Lun_import table: ' . $result); 
+} 
+
+
+
+
+
+
+
+</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will check if table to keep node details exists, if not it will create a table.</description>
+    <parameter-definitions>
+        <parameter-definition description="Provides a option to create or drop table" enumValues="Create,Drop" isMandatory="true" name="Action" type="Enum">
+            <uuid>37b1e0bb-0ce4-4116-9224-c44e6efdd32e</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

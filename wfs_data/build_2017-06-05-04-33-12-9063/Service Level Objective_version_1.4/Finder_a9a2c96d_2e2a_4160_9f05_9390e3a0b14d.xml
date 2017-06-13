@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<finder name="89ed9442-cf78-427d-8d1b-b953e0308050" privateFinder="true">
+    <certification>NETAPP</certification>
+    <uuid>a9a2c96d-2e2a-4160-9f05-9390e3a0b14d</uuid>
+    <version>1.0.0</version>
+    <attributes>
+        <attributes alias="name" columnName="name" sortingOrder="ASCENDING">
+            <filter>3aedc7e8-8257-4e50-816e-84f894b2ce73</filter>
+        </attributes>
+        <attributes alias="vserver.cluster.primary_address" columnName="vserver.cluster.primary_address" sortingOrder="ASCENDING">
+            <filter>3aedc7e8-8257-4e50-816e-84f894b2ce73</filter>
+        </attributes>
+        <attributes alias="vserver.name" columnName="vserver.name" sortingOrder="ASCENDING">
+            <filter>3aedc7e8-8257-4e50-816e-84f894b2ce73</filter>
+        </attributes>
+        <attributes alias="compression" columnName="compression" sortingOrder="ASCENDING">
+            <filter>3aedc7e8-8257-4e50-816e-84f894b2ce73</filter>
+        </attributes>
+        <attributes alias="dedupe_enabled" columnName="dedupe_enabled" sortingOrder="ASCENDING">
+            <filter>3aedc7e8-8257-4e50-816e-84f894b2ce73</filter>
+        </attributes>
+        <attributes alias="space_guarantee" columnName="space_guarantee" sortingOrder="ASCENDING">
+            <filter>3aedc7e8-8257-4e50-816e-84f894b2ce73</filter>
+        </attributes>
+    </attributes>
+    <dictionary-entry>54ad014d-062b-4c49-97f0-9e291646ec1a</dictionary-entry>
+    <filters>
+        <filter>3aedc7e8-8257-4e50-816e-84f894b2ce73</filter>
+    </filters>
+</finder>

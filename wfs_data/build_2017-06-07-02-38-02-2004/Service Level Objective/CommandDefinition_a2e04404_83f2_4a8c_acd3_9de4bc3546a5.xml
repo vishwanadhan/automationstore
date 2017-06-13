@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Modify schedule - No Verification" reservationRepresentation="&quot;Modify schedule `&quot; + ScheduleName + &quot;` on cluster `&quot; + Cluster + &quot;`&quot;" samplingIntervalInSeconds="60" stringRepresentation="Cluster + &quot;:&quot; + ScheduleName" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>a2e04404-83f2-4a8c-acd3-9de4bc3546a5</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>param (
+  [parameter(Mandatory=$true, HelpMessage=&quot;Name or IP address of a cluster where the schedule exists.&quot;)]
+  [string]$Cluster,
+
+  [parameter(Mandatory=$true, HelpMessage=&quot;Name of the schedule.&quot;)]
+  [string]$ScheduleName,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Months in which the schedule executes. This is a comma separated list of values from 0 through 11. Value -1 means all months. If this parameter is not specified, the existing value remains unchanged.&quot;)]
+  [ValidateRange(-1, 11)]
+  [array]$CronMonths,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Days of the month when the schedule executes. This is a comma separated list of values from 1 through 31. Value -1 means all days. If this parameter is not specified, the existing value remains unchanged.&quot;)]
+  [ValidateRange(-1, 31)]
+  [array]$CronDaysOfMonth,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Days of the week when the schedule runs. This is a comma separated list of integers from 0 through 6 where Sunday is 0, Monday is 1 etc. Value -1 means all days. If this parameter is not specified, the existing value remains unchanged.&quot;)]
+  [ValidateRange(-1, 6)]
+  [array]$CronDaysOfWeek,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Hours of the day when the schedule runs. This is a comma separated list of integers between 0 and 23 inclusive. Value of -1 means all hours of the day. If this parameter is not specified, the existing value remains unchanged.&quot;)]
+  [ValidateRange(-1, 23)]
+  [array]$CronHours,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Minutes within each hour when the schedule runs. This is a comma separated list of integers between 0 and 59 inclusive. Value of -1 means all minutes. If this parameter is not specified, the existing value remains unchanged.&quot;)]
+  [ValidateRange(-1, 59)]
+  [array]$CronMinutes,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Number of days between jobs. Valid for interval type schedule only. If this parameter is not specified, the existing value remains unchanged.&quot;)]
+  [long]$IntervalDays,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Number of hours between jobs. Valid for interval type schedule only. If this parameter is not specified, the existing value remains unchanged.&quot;)]
+  [long]$IntervalHours,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Number of minutes between jobs. Valid for interval type schedule only. If this parameter is not specified, the existing value remains unchanged.&quot;)]
+  [long]$IntervalMinutes,
+
+  [parameter(Mandatory=$false, HelpMessage=&quot;Number of seconds between jobs. Valid for interval type schedule only. If this parameter is not specified, the existing value remains unchanged.&quot;)]
+  [long]$IntervalSeconds
+)
+
+Get-WFALogger -Info -message $(&quot;Connecting to the cluster: &quot; +$Cluster)
+# connect to controller
+Connect-WfaCluster $Cluster
+
+# Make sure that the schedule exists. You can't change the schedule type.
+$type = 'cron'
+$schedule = Get-NcJobCronSchedule -Name $ScheduleName
+
+if(!$schedule)
+{
+  $type = 'interval'
+  $schedule = Get-NcJobIntervalSchedule -Name $ScheduleName
+}
+
+if(!$schedule)
+{
+  throw &quot;Schedule '$ScheduleName' does not exist&quot;
+}
+
+if($type -eq 'cron')
+{
+  if ($IntervalDays -or $IntervalHours -or $IntervalMinutes -or $IntervalSeconds) {
+    throw &quot;Interval parameters must not be specified for a cron schedule.&quot;
+  }
+  Get-WFALogger -Info -message $(&quot;Modifying a cron schedule '$ScheduleName'&quot;)
+  $command = &quot;Set-NcJobCronSchedule -ErrorAction Stop -Name '$ScheduleName'&quot;;
+
+  if ($CronMonths)
+  {
+    $command = $command + &quot; -Month &quot; + '$CronMonths'
+  }
+  if ($CronDaysOfMonth)
+  {
+    $command = $command + &quot; -Day &quot; + '$CronDaysOfMonth'
+  }
+  if ($CronDaysOfWeek)
+  {
+    $command = $command + &quot; -DayOfWeek &quot; + '$CronDaysOfWeek'
+  }
+  if ($CronHours)
+  {
+    $command = $command + &quot; -Hour &quot; + '$CronHours'
+  }
+  if ($CronMinutes)
+  {
+    $command = $command + &quot; -Minute &quot; + '$CronMinutes'
+  }
+}
+else {
+  if ($CronMonths -or $CronDaysOfMonth -or $CronDaysOfWeek -or $CronHours -or $CronMinutes) {
+    throw &quot;Cron parameters must not be specified for an interval schedule.&quot;
+  }
+  Get-WFALogger -Info -message $(&quot;Modifying an interval schedule '$ScheduleName'&quot;)
+  $command = &quot;Set-NcJobIntervalSchedule -ErrorAction Stop -Name '$ScheduleName' &quot;
+
+  if($IntervalDays) {
+    $command += &quot; -Days $IntervalDays&quot;
+  }
+  if($IntervalHours) {
+    $command += &quot; -Hours $IntervalHours&quot;
+  }
+  if($IntervalMinutes) {
+    $command += &quot; -Minutes $IntervalMinutes&quot;
+  }
+  if($IntervalSeconds) {
+    $command += &quot; -Seconds $IntervalSeconds&quot;
+  }
+}
+
+Invoke-Expression -ErrorAction Stop $command
+</command>
+            <commandLanguage>POWER_SHELL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping attribute="cluster.primary_address" objectName="Schedule" parameterName="Cluster">
+            <dictionary-entry>a576587e-c4c3-479c-8aee-ee3e03d2ad09</dictionary-entry>
+        </parameter-mapping>
+        <parameter-mapping attribute="" objectName="Cron_Days_Of_Month" parameterName="CronDaysOfMonth"/>
+        <parameter-mapping objectName="Cron_Days_Of_Week" parameterName="CronDaysOfWeek"/>
+        <parameter-mapping objectName="Cron_Hours" parameterName="CronHours"/>
+        <parameter-mapping objectName="Cron_Minutes" parameterName="CronMinutes"/>
+        <parameter-mapping objectName="Cron_Months" parameterName="CronMonths"/>
+        <parameter-mapping objectName="Interval_Days" parameterName="IntervalDays"/>
+        <parameter-mapping objectName="Interval_Hours" parameterName="IntervalHours"/>
+        <parameter-mapping objectName="Interval_Minutes" parameterName="IntervalMinutes"/>
+        <parameter-mapping objectName="Interval_Seconds" parameterName="IntervalSeconds"/>
+        <parameter-mapping attribute="name" objectName="Schedule" parameterName="ScheduleName">
+            <dictionary-entry>a576587e-c4c3-479c-8aee-ee3e03d2ad09</dictionary-entry>
+        </parameter-mapping>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>Modify a cron or an interval schedule on Clustered ONTAP. Only the specified parameters are modified. Parameters that are not specified are left alone. For a cron schedule, specify only the cron parameters. For interval schedule, specify only the interval parameters. Name, type and description of the schedule cannot be modified.</description>
+    <parameter-definitions>
+        <parameter-definition description="Name or IP address of a cluster where the schedule exists." isMandatory="true" name="Cluster" type="String">
+            <uuid>bb45a473-77f6-4782-9031-75d71d854430</uuid>
+        </parameter-definition>
+        <parameter-definition description="Days of the month when the schedule executes. This is a comma separated list of values from 1 through 31. Value -1 means all days. If this parameter is not specified, the existing value remains unchanged." isMandatory="false" name="CronDaysOfMonth" type="Array">
+            <uuid>22704bb5-26e2-433e-9171-f0232eefb74d</uuid>
+        </parameter-definition>
+        <parameter-definition description="Days of the week when the schedule runs. This is a comma separated list of integers from 0 through 6 where Sunday is 0, Monday is 1 etc. Value -1 means all days. If this parameter is not specified, the existing value remains unchanged." isMandatory="false" name="CronDaysOfWeek" type="Array">
+            <uuid>e0cf2b55-ee8d-4dfa-a1ad-028b7368c849</uuid>
+        </parameter-definition>
+        <parameter-definition description="Hours of the day when the schedule runs. This is a comma separated list of integers between 0 and 23 inclusive. Value of -1 means all hours of the day. If this parameter is not specified, the existing value remains unchanged." isMandatory="false" name="CronHours" type="Array">
+            <uuid>e865ea35-e38c-4f30-8f9c-06308ed68a31</uuid>
+        </parameter-definition>
+        <parameter-definition description="Minutes within each hour when the schedule runs. This is a comma separated list of integers between 0 and 59 inclusive. Value of -1 means all minutes. If this parameter is not specified, the existing value remains unchanged." isMandatory="false" name="CronMinutes" type="Array">
+            <uuid>d9adb363-890e-4706-af74-a96f52e08fec</uuid>
+        </parameter-definition>
+        <parameter-definition description="Months in which the schedule executes. This is a comma separated list of values from 0 through 11. Value -1 means all months. If this parameter is not specified, the existing value remains unchanged." isMandatory="false" name="CronMonths" type="Array">
+            <uuid>01edd92e-ba5c-4be9-b027-9721dbe7c225</uuid>
+        </parameter-definition>
+        <parameter-definition description="Number of days between jobs. Valid for interval type schedule only. If this parameter is not specified, the existing value remains unchanged." isMandatory="false" name="IntervalDays" type="Long">
+            <uuid>1b6c418b-611b-46cd-a648-57e07a798dea</uuid>
+        </parameter-definition>
+        <parameter-definition description="Number of hours between jobs. Valid for interval type schedule only. If this parameter is not specified, the existing value remains unchanged." isMandatory="false" name="IntervalHours" type="Long">
+            <uuid>04be34cf-562f-4c4b-aea1-7dbe6aba6097</uuid>
+        </parameter-definition>
+        <parameter-definition description="Number of minutes between jobs. Valid for interval type schedule only. If this parameter is not specified, the existing value remains unchanged." isMandatory="false" name="IntervalMinutes" type="Long">
+            <uuid>6f6d2058-47ad-49f9-8db6-af483f094818</uuid>
+        </parameter-definition>
+        <parameter-definition description="Number of seconds between jobs. Valid for interval type schedule only. If this parameter is not specified, the existing value remains unchanged." isMandatory="false" name="IntervalSeconds" type="Long">
+            <uuid>0fd9d11d-3de3-4b3a-9d6e-bd37d2670809</uuid>
+        </parameter-definition>
+        <parameter-definition description="Name of the schedule." isMandatory="true" name="ScheduleName" type="String">
+            <uuid>64e5a1a6-6d57-4f66-b448-d7b772aace0a</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript>UPDATE
+    cm_storage.schedule s, cm_storage.cluster c
+SET
+    s.cron_days_of_month = IFNULL('${CronDaysOfMonth}',
+    s.cron_days_of_month),
+    s.cron_days_of_week = IFNULL('${CronDaysOfWeek}',
+    s.cron_days_of_week),
+    s.cron_hours = IFNULL('${CronHours}',
+    s.cron_hours),
+    s.cron_minutes = IFNULL('${CronMinutes}',
+    s.cron_minutes),
+    s.cron_months = IFNULL('${CronMonths}',
+    s.cron_months),
+    s.interval_days = IFNULL('${IntervalDays}',
+    s.interval_days),
+    s.interval_hours = IFNULL('${IntervalHours}',
+    s.interval_hours),
+    s.interval_minutes = IFNULL('${IntervalMinutes}',
+    s.interval_minutes),
+    s.interval_seconds = IFNULL('${IntervalSeconds}',
+    s.interval_seconds)
+WHERE
+    s.name = '${ScheduleName}'
+    AND s.cluster_id = c.id
+    AND (
+        c.primary_address = '${Cluster}'
+        OR c.name = '${Cluster}'
+    ) ; </reservationScript>
+    <schemeNames>cm_storage</schemeNames>
+</commandDefinition>

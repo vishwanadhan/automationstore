@@ -1,0 +1,39 @@
+# only online non-root non-mirror/vault volumes are managed
+# iopsthrottle is expressed as IOPS per TB. 0 means no throttle.
+# disktypes is expressed as a perl regular expression, case sensitive
+# ATA EATA FCAL LUN MSATA SAS BSAS SATA SCSI SSD XATA XSAS FSAS unknown
+# volinclude, volexclude, agginclude, and aggexclude are expressed as a perl case sensitive regular expressions.
+# the default service level if a volume doesn't match any definition
+defaultservicelevel none
+#
+# prefer faster or slower service level if multiple matches to definitions
+prefer faster
+#
+# default throttle enforcement, thick (committed), thin (used) or effective (used + space saved by efficiency)
+defaultenforcement effective
+#
+# default thin enforcement minimum %, minimum capacity for QoS throttle calculation
+# defaultthinmin is the default minimum IOPS throttle for a volume, in percentage of the volume size
+defaultthinmin 50
+#
+# defaultminiops is the default minimum IOPS throttle for a volume, in absolute IOPS
+defaultminiops 75
+#
+#
+# Wait for CPU utilization to fall below this percentage
+maxcpupercent 90
+#
+# Measure cpu utilization over this many seconds (sleep period)
+maxcpuduration 60
+#
+# log to console=1, log only to syslog=0
+logtoconsole 0
+#
+# syslog facility: user, local0, ...
+facility user
+#
+# debug=0 no debug information
+# debug=1 basic debug information
+# debug=2 verbose debug information and stop after every change
+# debug=3 all debug information and stop after every change
+debug 0

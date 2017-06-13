@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commandDefinition name="Manage Volume Service Map" samplingIntervalInSeconds="60" stringRepresentation="Action + &quot; table volume_service_map&quot;" timeoutInSeconds="600" type="STANDARD">
+    <certification>NETAPP</certification>
+    <uuid>3b2f23e7-8c94-46b6-b6ec-6d140e8ed13c</uuid>
+    <version>1.0.0</version>
+    <command-implementations>
+        <command-implementation>
+            <command>use strict;
+use Getopt::Long;
+use NaServer;
+use WFAUtil;
+
+my $Action;
+my $Volume;
+my $ClusterPrimaryAddress;
+my $Cluster;
+my $Vserver;
+my $PrimaryVolume;
+my $PrimaryClusterPrimaryAddress;
+my $PrimaryVserver;
+my $SLC;
+my $SSL;
+my $PSL;
+my $Aggregate;
+my $Node;
+my $EdgeName;
+my $Source;
+my $EdgeType;
+my $EdgeServiceName;
+
+GetOptions(
+    &quot;Action=s&quot;                  =&gt; \$Action,
+    &quot;Volume=s&quot;                  =&gt; \$Volume,
+    &quot;ClusterPrimaryAddress=s&quot;   =&gt; \$ClusterPrimaryAddress,
+    &quot;Cluster=s&quot;                 =&gt; \$Cluster,
+    &quot;Vserver=s&quot;                 =&gt; \$Vserver,
+    &quot;PrimaryVolume=s&quot;                  =&gt; \$PrimaryVolume,
+    &quot;PrimaryClusterPrimaryAddress=s&quot;   =&gt; \$PrimaryClusterPrimaryAddress,
+    &quot;PrimaryVserver=s&quot;                 =&gt; \$PrimaryVserver,
+    &quot;SLC=s&quot;                     =&gt; \$SLC,
+    &quot;SSL=s&quot;                     =&gt; \$SSL,
+    &quot;PSL=s&quot;                     =&gt; \$PSL,
+    &quot;Aggregate=s&quot;               =&gt; \$Aggregate,
+    &quot;Node=s&quot;                    =&gt; \$Node,
+    &quot;EdgeName=s&quot;                =&gt; \$EdgeName,
+    &quot;Source=s&quot;                  =&gt; \$Source,
+    &quot;EdgeType=s&quot;                =&gt; \$EdgeType,
+    &quot;EdgeServiceName=s&quot;         =&gt; \$EdgeServiceName
+) or die 'Illegal command parameters\n';
+
+my $wfa_util = WFAUtil-&gt;new();
+
+############################################# Query #############################################
+
+my $queryInsertIntoTableVolumeServiceMap =
+    &quot;INSERT INTO playground.volume_service_map(volume_name, cluster_primary_address, cluster_name, vserver_name, primary_volume_name, primary_cluster_primary_address, primary_vserver_name, s_l_c, s_s_l, p_s_l, aggregate_name, node_name, edge, source, target_type, target_storage_service_level)
+        VALUES (
+                '$Volume',
+                '$ClusterPrimaryAddress',
+                '$Cluster',
+                '$Vserver',
+                '$PrimaryVolume',
+                '$PrimaryClusterPrimaryAddress',
+                '$PrimaryVserver',
+                '$SLC',
+                '$SSL',
+                '$PSL',
+                '$Aggregate',
+                '$Node',
+                '$EdgeName',
+                '$Source',
+                '$EdgeType',
+                '$EdgeServiceName'
+               )
+    &quot;;
+
+my $queryUpdateTableVolumeServiceMap =
+    &quot;UPDATE playground.volume_service_map
+        SET
+            s_l_c = 'NULL',
+            s_s_l = '$SSL',
+            p_s_l = '$PSL',
+            aggregate_name = '$Aggregate',
+            node_name = '$Node'
+        WHERE
+            volume_name = '$Volume'
+            AND cluster_primary_address = '$ClusterPrimaryAddress'
+            AND vserver_name = '$Vserver'
+    &quot;;
+
+my $queryDeleteFromTableVolumeServiceMap =
+    &quot;DELETE FROM playground.volume_service_map
+        WHERE
+            volume_name = '$Volume'
+            AND cluster_primary_address = '$ClusterPrimaryAddress'
+            AND vserver_name = '$Vserver'
+    &quot;;
+
+########################################### End Query ###########################################
+
+########################################### Run_Query ###########################################
+
+my $schema = &quot;playground&quot;;
+my @queryData = ();
+
+eval {
+    if ($Action eq &quot;insert&quot;) {
+        $wfa_util-&gt;sendLog('INFO', &quot;Inserting into table 'volume_service_map' under 'playground' ...&quot;);
+        @queryData = $wfa_util-&gt;invokeMySqlQuery($queryInsertIntoTableVolumeServiceMap, $schema);
+    }
+    elsif ($Action eq &quot;update&quot;) {
+        $wfa_util-&gt;sendLog('INFO', &quot;Updating table 'volume_service_map' under 'playground' ...&quot;);
+        @queryData = $wfa_util-&gt;invokeMySqlQuery($queryUpdateTableVolumeServiceMap, $schema);
+    }
+    else {
+        $wfa_util-&gt;sendLog('INFO', &quot;Deleting row in the table 'volume_service_map' under 'playground' ...&quot;);
+        @queryData = $wfa_util-&gt;invokeMySqlQuery($queryDeleteFromTableVolumeServiceMap, $schema);
+    }
+};
+if ($@) {
+    $wfa_util-&gt;sendLog('ERROR', &quot;Unable to do '$Action' table 'volume_service_map': &quot; . $@);
+}
+else {
+    $wfa_util-&gt;sendLog('INFO', &quot;$Action table done successfully for volume service map: &quot; . @queryData);
+}
+
+######################################### End Run_Query #########################################</command>
+            <commandLanguage>PERL</commandLanguage>
+        </command-implementation>
+    </command-implementations>
+    <parameter-mappings>
+        <parameter-mapping objectName="Action" parameterName="Action"/>
+        <parameter-mapping objectName="Aggregate" parameterName="Aggregate"/>
+        <parameter-mapping objectName="Cluster" parameterName="Cluster"/>
+        <parameter-mapping objectName="ClusterPrimaryAddress" parameterName="ClusterPrimaryAddress"/>
+        <parameter-mapping objectName="EdgeName" parameterName="EdgeName"/>
+        <parameter-mapping objectName="EdgeServiceName" parameterName="EdgeServiceName"/>
+        <parameter-mapping objectName="EdgeType" parameterName="EdgeType"/>
+        <parameter-mapping objectName="Node" parameterName="Node"/>
+        <parameter-mapping objectName="PSL" parameterName="PSL"/>
+        <parameter-mapping objectName="PrimaryClusterPrimaryAddress" parameterName="PrimaryClusterPrimaryAddress"/>
+        <parameter-mapping objectName="PrimaryVolume" parameterName="PrimaryVolume"/>
+        <parameter-mapping objectName="PrimaryVserver" parameterName="PrimaryVserver"/>
+        <parameter-mapping objectName="SLC" parameterName="SLC"/>
+        <parameter-mapping objectName="SSL" parameterName="SSL"/>
+        <parameter-mapping objectName="Source" parameterName="Source"/>
+        <parameter-mapping objectName="Volume" parameterName="Volume"/>
+        <parameter-mapping objectName="Vserver" parameterName="Vserver"/>
+    </parameter-mappings>
+    <congruenceTest></congruenceTest>
+    <description>This command will insert/update/delete volume services in the table 'volume_service_map' under playground.</description>
+    <parameter-definitions>
+        <parameter-definition description="What is planned action on QoS default values.&#xA;Possible values are:&#xA;1) insert&#xA;2) update&#xA;3) delete" enumValues="insert,update,delete" isMandatory="true" name="Action" type="Enum">
+            <uuid>9d103695-cff4-45e9-a66f-5e729f858fe9</uuid>
+        </parameter-definition>
+        <parameter-definition description="Name of the aggregate where the volume resides." isMandatory="true" name="Aggregate" type="String">
+            <uuid>33b9c48c-3bf2-4953-9a04-b711453cd7d6</uuid>
+        </parameter-definition>
+        <parameter-definition description="Name of the cluster." isMandatory="true" name="Cluster" type="String">
+            <uuid>73919261-0826-4909-9b5a-4d279266ae04</uuid>
+        </parameter-definition>
+        <parameter-definition description="Primary address of the cluster." isMandatory="true" name="ClusterPrimaryAddress" type="String">
+            <uuid>1600fde8-b098-4fe9-be2f-c246e0294ff5</uuid>
+        </parameter-definition>
+        <parameter-definition description="EdgeName." isMandatory="false" name="EdgeName" type="String">
+            <uuid>fade4db6-87d3-4d46-9931-568b289d6d85</uuid>
+        </parameter-definition>
+        <parameter-definition description="EdgeServiceName." isMandatory="false" name="EdgeServiceName" type="String">
+            <uuid>e226c386-598c-4793-86b5-6e995636e46c</uuid>
+        </parameter-definition>
+        <parameter-definition description="EdgeType." isMandatory="false" name="EdgeType" type="String">
+            <uuid>04c75b4c-b1fc-4add-9c9a-d1281c994c0e</uuid>
+        </parameter-definition>
+        <parameter-definition description="Name of the node where the volume resides." isMandatory="true" name="Node" type="String">
+            <uuid>ace014e8-d51a-476d-b3bb-63c070431d25</uuid>
+        </parameter-definition>
+        <parameter-definition description="PSL." isMandatory="true" name="PSL" type="String">
+            <uuid>11d26e71-8606-4ecc-bff9-23a13d509e35</uuid>
+        </parameter-definition>
+        <parameter-definition description="IP address of the primary volume's cluster" isMandatory="true" name="PrimaryClusterPrimaryAddress" type="String">
+            <uuid>fee162c1-b8e8-4bd7-8c80-23c069479ed8</uuid>
+        </parameter-definition>
+        <parameter-definition description="Name of the Primary Volume." isMandatory="true" name="PrimaryVolume" type="String">
+            <uuid>b4af9d2b-0663-4559-93cc-8df25de242f8</uuid>
+        </parameter-definition>
+        <parameter-definition description="Name of the primary volume's storage virtual machine." isMandatory="true" name="PrimaryVserver" type="String">
+            <uuid>fc8ad8ec-bda8-4ca6-b903-d0618f7f41ba</uuid>
+        </parameter-definition>
+        <parameter-definition description="SLC." isMandatory="false" name="SLC" type="String">
+            <uuid>7eae7ae1-392d-44b4-8e18-d4948caf1dc6</uuid>
+        </parameter-definition>
+        <parameter-definition description="SSL." isMandatory="true" name="SSL" type="String">
+            <uuid>77c68bac-8858-4b76-97c6-0929c515cb89</uuid>
+        </parameter-definition>
+        <parameter-definition description="Source." isMandatory="false" name="Source" type="String">
+            <uuid>52cf8c34-06b3-465b-a0c2-cd067be970fd</uuid>
+        </parameter-definition>
+        <parameter-definition description="Name of the volume." isMandatory="true" name="Volume" type="String">
+            <uuid>a515b412-62f3-4b99-9948-c8aea1ef38d0</uuid>
+        </parameter-definition>
+        <parameter-definition description="Name of the storage virtual machine associated with the volume." isMandatory="true" name="Vserver" type="String">
+            <uuid>cf3af9e5-1d20-4cf0-90d9-1fe5f53c8b8b</uuid>
+        </parameter-definition>
+    </parameter-definitions>
+    <reservationScript></reservationScript>
+    <schemeNames></schemeNames>
+</commandDefinition>

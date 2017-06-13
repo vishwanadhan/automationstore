@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<filter description="Filter that returns the list of all aggregates which are online" name="Get all aggregates by state as online">
+    <certification>NETAPP</certification>
+    <uuid>ae26012a-8f3e-4595-bc87-1a971d35476e</uuid>
+    <version>1.0.0</version>
+    <dictionary-entry>e603ad9b-e582-4037-83d6-dd747a49f57f</dictionary-entry>
+    <parameters/>
+    <query>SELECT
+    aggregate.name,
+    node.name AS 'node.name',
+    cluster.primary_address AS 'node.cluster.primary_address'
+FROM
+    cm_storage.aggregate,
+    cm_storage.node,
+    cm_storage.cluster
+WHERE
+    node.id = aggregate.node_id
+    AND aggregate.state = 'online'</query>
+    <returned-attributes>
+        <returned-attribute>name</returned-attribute>
+        <returned-attribute>node.cluster.primary_address</returned-attribute>
+        <returned-attribute>node.name</returned-attribute>
+    </returned-attributes>
+</filter>

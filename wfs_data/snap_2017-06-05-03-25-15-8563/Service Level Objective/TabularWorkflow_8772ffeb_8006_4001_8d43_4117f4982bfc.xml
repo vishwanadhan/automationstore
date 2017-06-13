@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tabularWorkflow considerReservedElements="true" description="This workflow will provide following functionalities&#xA;1) Define a new SSLC&#xA;2) Update existing SSLC&#xA;3) Remove existing SSLC&#xA;3) Remove Aggregate from SSLC&#xA;&#xA;Workflow will allow following set of values for every SSLC&#xA;i. IOPS throttle (IOPS/TB)&#xA;ii. initial IOPS throttle&#xA;iii. Dedupe enabled/disabled&#xA;iv. Compression enabled&#xA;v. Thick or Thin Provisioing&#xA;&#xA;IOPS throttle and initial IOPS throttle setting will be used by Adaptive QoS Policy manager service to handle performance of the volume provisioned using service based volume provisioing workflow&#xA;&#xA;Workflow will list down available aggregates. Select one or more aggregates to map it to specific SSLC.&#xA;&#xA;Mapped aggregate list allow you to remove one or more aggregates from SSLC.&#xA;&#xA;Note : This workflow is mandatory workflow to setup environment. Use this workflow for mapping aggregates to Storage service levels" enableElementExistenceValidation="true" name="Manage Storage Service Level Class" readyForProduction="true">
+    <certification>NETAPP</certification>
+    <uuid>8772ffeb-8006-4001-8d43-4117f4982bfc</uuid>
+    <version>1.0.0</version>
+    <workflow-commands>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Modifying Adaptive QoS Policy manager configuration" uuid="deefc2ff-31a0-4309-ad6d-e3d623778f5a">
+            <command-definition>70d2e293-1145-49f9-b852-b4379ef6138e</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Mangaing Storage Service Level Class settings" uuid="832563dd-75fd-4f67-b489-e2c09771f68f">
+            <command-definition>bb9bbfd3-6c7b-4864-b90a-7d3c0e238405</command-definition>
+        </workflow-command>
+        <workflow-command breakpointBeforeCommand="false" commandAlias="Adding/Removing Aggregate Mapping" uuid="d7229fdd-fd0b-46c9-894b-ed54c1bac58e">
+            <command-definition>a52aca2d-1210-4063-acfd-6d7c15b4c68f</command-definition>
+        </workflow-command>
+    </workflow-commands>
+    <find-charts/>
+    <minONTAPVersion>8.3.0</minONTAPVersion>
+    <return-parameters/>
+    <rows>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$Action == &quot;Add SSL&quot; || $Action == &quot;Remove SSL&quot; || $Action == &quot;Update SSL&quot;"/>
+                    <other-parameters>
+                        <command-parameter-value value="$Action == &quot;Add SSL&quot;? &quot;add&quot; : $Action == &quot;Remove SSL&quot;? &quot;delete&quot; : $Action == &quot;Update SSL&quot;? &quot;update&quot;">
+                            <parameter-definition>529dc22e-3445-443c-8666-4e26c254ab63</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$aggrExcludeRegex">
+                            <parameter-definition>fc38170d-a7b3-4c39-8864-dd7044c41e52</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$aggrIncludeRegex">
+                            <parameter-definition>a7cecbc5-dce2-4199-ab84-640ad537e67c</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>77b993bf-6478-436a-93c2-cdd602dca114</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>ff407d09-5cb3-4ad2-a4ec-0185db7fe184</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>a4d5a8c3-a8d1-4475-be27-053d9d0cdd6a</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>53332105-4ef8-47cb-a1e8-c84dbd8b8ec7</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>a02c5854-df1d-4f20-9a54-4abe5c77b52b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$IOPSThrottle">
+                            <parameter-definition>288c154e-721f-4b53-8af4-d988040e7042</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>d0a822b9-da45-4d8b-86fb-2ac289303a54</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$StorageServiceName">
+                            <parameter-definition>c3d514c2-c955-466a-a268-5da4f10e06c2</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="($minSLA * 100)/$IOPSThrottle">
+                            <parameter-definition>0a50a1df-fb15-4bc2-a98a-d9040d45ee75</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>e17f9ac9-75fd-4924-a08f-46308e590e9b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>d8bc7394-a1b8-41a5-97a3-3fee095ba2c8</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>c54517f1-364f-475e-be19-9966a0b8f586</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$aggrRegExEnabled == &quot;true&quot;?false:true">
+                            <parameter-definition>0ab7e371-e009-4a8f-935d-c676d155de94</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="false">
+                            <parameter-definition>824ce783-27d6-4033-80ec-9bc6aaa57c18</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>deefc2ff-31a0-4309-ad6d-e3d623778f5a</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$Action == 'Add SSL' || $Action == 'Remove SSL' || $Action == 'Update SSL' "/>
+                    <other-parameters>
+                        <command-parameter-value value="$Action">
+                            <parameter-definition>7dbb238b-4ba1-4046-b8d7-ec319a6bb8d5</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$aggrExcludeRegex">
+                            <parameter-definition>bd55c0fe-6fb3-4b7e-aaec-7dd4028e17e0</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$comment">
+                            <parameter-definition>f9b2c962-eb7c-4778-9fe1-550b64426d0f</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$CompressionType">
+                            <parameter-definition>6b95655e-6c6f-4fea-8504-e1181501c91e</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="DEDUPE_CLONE_PERCENT_GAIN">
+                            <parameter-definition>9096a3cc-1850-445e-b020-1ec508c4c8a9</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$DedupeEnabled">
+                            <parameter-definition>e34fa983-43ba-4390-aa59-b10a48e200ee</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>524a67c5-e804-464e-ab2a-b63bcfa53fb1</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$IOPSThrottle">
+                            <parameter-definition>e35c98e0-fc95-4caa-b6d7-935acf5f7d2e</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>a23327ec-c423-4b8d-a282-f103752091f4</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$ThickOrThin">
+                            <parameter-definition>213b9c79-0ff4-4775-a452-884762a1685d</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$StorageServiceName">
+                            <parameter-definition>83f65758-1d5e-4620-ac42-cbeb7702eff3</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="THIN_PROVISIONING_PERCENT_GAIN">
+                            <parameter-definition>c25816b8-f0be-46a0-8319-6e991c2c907b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>a8bcb1d8-3eef-4f1e-8772-eec6efb92e76</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>48b17f08-2a5a-4587-b024-d092b6e098c4</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>0c7e2853-5fbe-4f09-aca3-3fa867d9230f</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>13ece12e-36a0-40d6-958d-f0de48ecb4fd</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="($minSLA * 100)/$IOPSThrottle">
+                            <parameter-definition>5dc6a60a-98c8-4237-885b-ceffe5ef6a9d</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>21fd4f01-4c7c-40b7-adb5-54fcd1917247</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>d30ce513-b9ca-4409-b5e2-8ac30fef2fdb</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$aggrRegExEnabled == &quot;true&quot;?$aggrIncludeRegex:''">
+                            <parameter-definition>a1ac639b-8fd6-4444-8854-07d578aee859</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$aggrRegExEnabled">
+                            <parameter-definition>9f43ea0b-0a08-460a-aa4f-9abe88122ed0</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="false">
+                            <parameter-definition>2e59f575-8479-4ad5-8bf0-8139c0aa6baf</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>832563dd-75fd-4f67-b489-e2c09771f68f</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$Action == &quot;Remove SSL&quot;"/>
+                    <other-parameters>
+                        <command-parameter-value value="Remove SSL">
+                            <parameter-definition>6c43b595-6149-4d0b-b3f5-8a03a778f830</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>4de8ee47-b733-4bfe-b089-b1810c609909</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>645df95a-c5fc-4193-8626-2b100a2fc884</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>bb70d0f2-7b7e-483c-b3ef-2ad3b9fce790</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>6a9dd201-401a-4fd4-8416-2fa863b8edd6</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>e7fbad6c-1dda-4367-953c-47dc3ceb12cd</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$StorageServiceName">
+                            <parameter-definition>428b9575-0a86-43cb-87b5-d7da8aaaf8af</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>d7229fdd-fd0b-46c9-894b-ed54c1bac58e</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+        </row>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$Action == 'Add SSL' || $Action == 'Update SSL' "/>
+                    <other-parameters>
+                        <command-parameter-value value="update">
+                            <parameter-definition>529dc22e-3445-443c-8666-4e26c254ab63</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>fc38170d-a7b3-4c39-8864-dd7044c41e52</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($aggrlist,AggrIndex, 1)">
+                            <parameter-definition>a7cecbc5-dce2-4199-ab84-640ad537e67c</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>77b993bf-6478-436a-93c2-cdd602dca114</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>ff407d09-5cb3-4ad2-a4ec-0185db7fe184</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>a4d5a8c3-a8d1-4475-be27-053d9d0cdd6a</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>53332105-4ef8-47cb-a1e8-c84dbd8b8ec7</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>a02c5854-df1d-4f20-9a54-4abe5c77b52b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>288c154e-721f-4b53-8af4-d988040e7042</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>d0a822b9-da45-4d8b-86fb-2ac289303a54</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$StorageServiceName">
+                            <parameter-definition>c3d514c2-c955-466a-a268-5da4f10e06c2</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>0a50a1df-fb15-4bc2-a98a-d9040d45ee75</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>e17f9ac9-75fd-4924-a08f-46308e590e9b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>d8bc7394-a1b8-41a5-97a3-3fee095ba2c8</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>c54517f1-364f-475e-be19-9966a0b8f586</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="true">
+                            <parameter-definition>0ab7e371-e009-4a8f-935d-c676d155de94</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="false">
+                            <parameter-definition>824ce783-27d6-4033-80ec-9bc6aaa57c18</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>deefc2ff-31a0-4309-ad6d-e3d623778f5a</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$Action == 'Add SSL' || $Action == 'Update SSL' "/>
+                    <other-parameters>
+                        <command-parameter-value value="$Action == &quot;Add SSL&quot;? &quot;Add Aggregate to SSL&quot;: $Action == &quot;Update SSL&quot;? &quot;Add Aggregate to SSL&quot; : &quot;Add Aggregate to SSL&quot;">
+                            <parameter-definition>6c43b595-6149-4d0b-b3f5-8a03a778f830</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($aggrlist,AggrIndex, 1)">
+                            <parameter-definition>4de8ee47-b733-4bfe-b089-b1810c609909</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($aggrlist,AggrIndex, 5)">
+                            <parameter-definition>645df95a-c5fc-4193-8626-2b100a2fc884</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$comment">
+                            <parameter-definition>bb70d0f2-7b7e-483c-b3ef-2ad3b9fce790</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($aggrlist,AggrIndex, 4)">
+                            <parameter-definition>6a9dd201-401a-4fd4-8416-2fa863b8edd6</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="PRIMARY_POOL">
+                            <parameter-definition>e7fbad6c-1dda-4367-953c-47dc3ceb12cd</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$StorageServiceName">
+                            <parameter-definition>428b9575-0a86-43cb-87b5-d7da8aaaf8af</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>d7229fdd-fd0b-46c9-894b-ed54c1bac58e</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+            <row-loop-info iteratorName="AggrIndex" numberOfIterationsExpression="getSize($aggrlist)">
+                <loop-variables/>
+            </row-loop-info>
+        </row>
+        <row>
+            <command-details>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$Action == 'Remove Aggregate from SSL' "/>
+                    <other-parameters>
+                        <command-parameter-value value="update">
+                            <parameter-definition>529dc22e-3445-443c-8666-4e26c254ab63</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>fc38170d-a7b3-4c39-8864-dd7044c41e52</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>a7cecbc5-dce2-4199-ab84-640ad537e67c</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>77b993bf-6478-436a-93c2-cdd602dca114</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>ff407d09-5cb3-4ad2-a4ec-0185db7fe184</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>a4d5a8c3-a8d1-4475-be27-053d9d0cdd6a</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>53332105-4ef8-47cb-a1e8-c84dbd8b8ec7</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>a02c5854-df1d-4f20-9a54-4abe5c77b52b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>288c154e-721f-4b53-8af4-d988040e7042</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>d0a822b9-da45-4d8b-86fb-2ac289303a54</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$StorageServiceName">
+                            <parameter-definition>c3d514c2-c955-466a-a268-5da4f10e06c2</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>0a50a1df-fb15-4bc2-a98a-d9040d45ee75</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>e17f9ac9-75fd-4924-a08f-46308e590e9b</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value>
+                            <parameter-definition>d8bc7394-a1b8-41a5-97a3-3fee095ba2c8</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($MappedAggrList,AggrIndex1, 1)">
+                            <parameter-definition>c54517f1-364f-475e-be19-9966a0b8f586</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="true">
+                            <parameter-definition>0ab7e371-e009-4a8f-935d-c676d155de94</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="false">
+                            <parameter-definition>824ce783-27d6-4033-80ec-9bc6aaa57c18</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>deefc2ff-31a0-4309-ad6d-e3d623778f5a</workflow-command>
+                </command-detail>
+                <command-detail>
+                    <command-mapped-objects/>
+                    <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="expressionCondition" expression="$Action == 'Remove Aggregate from SSL'  ||  $Action == &quot;Remove SSL&quot;"/>
+                    <other-parameters>
+                        <command-parameter-value value="Remove Aggregate from SSL">
+                            <parameter-definition>6c43b595-6149-4d0b-b3f5-8a03a778f830</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($MappedAggrList,AggrIndex1, 1)">
+                            <parameter-definition>4de8ee47-b733-4bfe-b089-b1810c609909</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($MappedAggrList,AggrIndex1, 3)">
+                            <parameter-definition>645df95a-c5fc-4193-8626-2b100a2fc884</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>bb70d0f2-7b7e-483c-b3ef-2ad3b9fce790</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="getValueAt2D($MappedAggrList,AggrIndex1, 2)">
+                            <parameter-definition>6a9dd201-401a-4fd4-8416-2fa863b8edd6</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="">
+                            <parameter-definition>e7fbad6c-1dda-4367-953c-47dc3ceb12cd</parameter-definition>
+                        </command-parameter-value>
+                        <command-parameter-value value="$StorageServiceName">
+                            <parameter-definition>428b9575-0a86-43cb-87b5-d7da8aaaf8af</parameter-definition>
+                        </command-parameter-value>
+                    </other-parameters>
+                    <workflow-command>d7229fdd-fd0b-46c9-894b-ed54c1bac58e</workflow-command>
+                </command-detail>
+            </command-details>
+            <execution-condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="alwaysCondition"/>
+            <row-loop-info iteratorName="AggrIndex1" numberOfIterationsExpression="$Action == &quot;Remove Aggregate from SSL&quot;? getSize($MappedAggrList) : 0">
+                <loop-variables/>
+            </row-loop-info>
+        </row>
+    </rows>
+    <user-input-groups>
+        <user-input-group expandByDefault="false" name="">
+            <user-inputs>
+                <user-input defaultValue="Update SSL" description="Add SSL (new SSLC)&#xA;Update SSL (modify existing SSLC)&#xA;Remove SSL (delete SSLC) - (Make sure PSLC referring to this SSLC are updated after deleting this SSLC using workflow to manage PSLC)&#xA;Remove Aggregate from SSL (remove a aggregate from set of mapped aggregate to SSLC, an aggregate can be mapped to only one SSLC)" displayName="Action?" locked="true" mandatory="true" name="$Action" uuid="3dac38ab-b510-479c-aa72-025a400d4431">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumUserInputType" enumValues="Add SSL,Update SSL,Remove SSL,Remove Aggregate from SSL" viewAsRadio="false"/>
+                </user-input>
+                <user-input defaultValue="" description="Name of the SSLC" displayName="Storage Service Level Class" locked="false" mandatory="true" name="$StorageServiceName" uuid="99ffcd72-cc5e-44c1-afd7-4f171e3ad02d">
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.storage_service_name AS 'Name',&#xA;    playground.storage_service_level.iops_throttle AS 'IOPS Throttle(IOPS/TB)',&#xA;    CAST(playground.storage_service_level.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED) AS 'Minimim SLA(IOPS/TB)',&#xA;    playground.storage_service_level.space_guarantee AS 'ThickOrThin',&#xA;    playground.storage_service_level.deduplication_enabled AS 'Dedupe Enabled?',&#xA;    playground.storage_service_level.compression_enabled AS 'Compression Enabled?',&#xA;    playground.storage_service_level.comment AS 'Comment'&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    '${Action}' != 'Add SSL'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add SSL,Update SSL" defaultValue="" description="QoS Throttle in Protocol IOPS/TB Stored. This setting will be used by Adaptive QoS Policy manager to manage IOPS usage of volume as per service definition." displayName="SLO Burst Performance (IOPS/TB)" locked="false" mandatory="true" name="$IOPSThrottle" uuid="9aff07e5-52c1-4733-8852-8f8ee337a895">
+                    <conditional-user-input>3dac38ab-b510-479c-aa72-025a400d4431</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.iops_throttle&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    '${Action}' != 'Add'&#xA;    AND playground.storage_service_level.storage_service_name = '${StorageServiceName}'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add SSL,Update SSL" defaultValue="" description="Protocol IOPS/TB allocated." displayName="Minimum &quot;SLA&quot; to Consumer (IOPS/TB)" locked="false" mandatory="true" name="$minSLA" uuid="1aed8a1e-af22-4944-9506-8110756ccac8">
+                    <conditional-user-input>3dac38ab-b510-479c-aa72-025a400d4431</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    IF(playground.storage_service_level.thin_min IS NOT NULL,&#xA;    CAST(playground.storage_service_level.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED),&#xA;    CAST(playground.qos_default_values.thin_min * playground.storage_service_level.iops_throttle / 100 AS SIGNED)) AS &quot;SLA&quot;&#xA;FROM&#xA;    playground.storage_service_level,&#xA;    playground.qos_default_values&#xA;WHERE&#xA;    '${Action}' != 'Add'&#xA;    AND playground.storage_service_level.storage_service_name = '${StorageServiceName}'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add SSL,Update SSL" defaultValue="" description="Whether volume should be thick provisioned or thin provisioned.&#xA;Thick (No write can fail)&#xA;Thin-Type 1 (Overwrites cannot fail)&#xA;Thin-Type 2 (Both overwrites and hole fills can fail) " displayName="Thick/Thin?" locked="true" mandatory="true" name="$ThickOrThin" uuid="7457b23c-6768-4af3-8970-0da31e94101d">
+                    <conditional-user-input>3dac38ab-b510-479c-aa72-025a400d4431</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.space_guarantee&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    '${Action}' != 'Add'&#xA;    AND playground.storage_service_level.storage_service_name = '${StorageServiceName}'&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    &quot;Thick&quot;&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    &quot;Thin-Type 1&quot;&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    &quot;Thin-Type 2&quot;"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add SSL,Update SSL" defaultValue="" description="Enables/disables deduplication." displayName="Enable Dedupe?" locked="true" mandatory="true" name="$DedupeEnabled" uuid="20fcd54d-e66a-4965-be5d-296eea2cb262">
+                    <conditional-user-input>3dac38ab-b510-479c-aa72-025a400d4431</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.deduplication_enabled&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    '${Action}' != 'Add'&#xA;    AND playground.storage_service_level.storage_service_name = '${StorageServiceName}'&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    &quot;true&quot;&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    &quot;false&quot;"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add SSL,Update SSL" defaultValue="" description="Configures compression setting on the volume." displayName="Enable Compresion?" locked="true" mandatory="true" name="$CompressionType" uuid="5cbda09a-d869-4dd9-8be6-14cab64bf40b">
+                    <conditional-user-input>3dac38ab-b510-479c-aa72-025a400d4431</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.compression_enabled&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    '${Action}' != 'Add'&#xA;    AND playground.storage_service_level.storage_service_name = '${StorageServiceName}'&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    &quot;inline&quot;&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    &quot;background&quot;&#xA;UNION&#xA;DISTINCT&#xA;SELECT&#xA;    &quot;disabled&quot;"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Add SSL,Update SSL" description="Specific comment for a storage service" displayName="Comment" locked="false" mandatory="false" name="$comment" uuid="7401f564-71d8-439e-a57e-294785973a69">
+                    <conditional-user-input>3dac38ab-b510-479c-aa72-025a400d4431</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="stringUserInputType" regularExpression=""/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+        <user-input-group expandByDefault="true" name="Aggregate Details">
+            <user-inputs>
+                <user-input conditionalUserInputValues="Add SSL,Update SSL,Add Aggregate to SSL" defaultValue="" displayName="Enable to select aggregate by regular expression" locked="false" mandatory="false" name="$aggrRegExEnabled" uuid="e51e0fdd-6797-4147-b598-d523ebb0b689">
+                    <conditional-user-input>3dac38ab-b510-479c-aa72-025a400d4431</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.aggr_regex_enabled AS 'Regex Eabled'&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    playground.storage_service_level.storage_service_name = '${StorageServiceName}'&#xA;UNION&#xA;SELECT&#xA;    'true' AS 'Regex Eabled'&#xA;UNION&#xA;SELECT&#xA;    'false' AS 'Regex Eabled' "/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" displayName="Aggregate Include by Regular Expression" locked="false" mandatory="false" name="$aggrIncludeRegex" uuid="17b0876a-bbae-4693-89d5-30829fc074e1">
+                    <conditional-user-input>e51e0fdd-6797-4147-b598-d523ebb0b689</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.aggr_include_regex&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    playground.storage_service_level.storage_service_name = '${StorageServiceName}'&#xA;    AND '${aggrRegExEnabled}' = 'true'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="true" defaultValue="" description="String which is regular expression. Adaptive QoS Policy service will using this to exclude set of aggregates from list of aggregates short listed from other parameters. Volume provisioning is not using this parameter for ignoring aggregates.&#xA;&#xA;E.g.&#xA;&quot;old&quot; value will ignore all the aggregates which got &quot;old&quot; as substring in their aggregate names" displayName="Aggregate Exclude by Regular Expression" locked="false" mandatory="false" name="$aggrExcludeRegex" uuid="bf4a78ca-950a-4fd3-a892-c522c7dcd4b7">
+                    <conditional-user-input>e51e0fdd-6797-4147-b598-d523ebb0b689</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryUserInputType" query="SELECT&#xA;    playground.storage_service_level.aggr_exclude_regex&#xA;FROM&#xA;    playground.storage_service_level&#xA;WHERE&#xA;    playground.storage_service_level.storage_service_name = '${StorageServiceName}'&#xA;    AND '${aggrRegExEnabled}' = 'true'"/>
+                </user-input>
+                <user-input conditionalUserInputValues="false" defaultValue="" description="List of aggregates available and not yet mapped to any of the SSLC.&#xA;Valid only when Aggregate selection by regex is not enabled." displayName="Available Aggregates for mapping" locked="true" mandatory="false" name="$aggrlist" uuid="70ba1151-daf3-4db5-bb33-1e24bea8bf6e">
+                    <conditional-user-input>e51e0fdd-6797-4147-b598-d523ebb0b689</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryMultiSelectUserInputType" query="SELECT&#xA;    DISTINCT aggr.name AS 'Aggregate',&#xA;    aggr.state AS 'State',&#xA;    aggr.is_hybrid AS 'Is Hybrid',&#xA;    node.name AS 'Node',&#xA;    cluster.primary_address AS 'Cluster IP',&#xA;    CONCAT(disk.type) AS 'Disk Types',&#xA;    aggr.available_size_mb AS 'Available Capacity(MB)',&#xA;    aggr.size_mb AS 'Total Capacity(MB)',&#xA;    aggr.volume_count AS 'Volume Count'&#xA;FROM&#xA;    cm_storage.aggregate AS aggr&#xA;JOIN&#xA;    cm_storage.node AS node&#xA;        ON aggr.node_id=node.id&#xA;JOIN&#xA;    cm_storage.cluster AS cluster&#xA;        ON node.cluster_id =cluster.id&#xA;JOIN&#xA;    cm_storage.disk_aggregate AS disk_aggrs&#xA;        ON aggr.id =disk_aggrs.aggregate_id&#xA;JOIN&#xA;    cm_storage.disk AS disk&#xA;        ON disk.id = disk_aggrs.disk_id&#xA;WHERE&#xA;    (&#xA;        aggr.has_local_root = 0&#xA;        AND aggr.has_partner_root = 0&#xA;    )&#xA;    AND aggr.name NOT IN (&#xA;        select&#xA;            playground.aggregate_service_map.aggregate_name&#xA;        from&#xA;            playground.aggregate_service_map&#xA;        WHERE&#xA;            cm_storage.cluster.primary_address = playground.aggregate_service_map.cluster_ip&#xA;            AND cm_storage.node.name = playground.aggregate_service_map.node_name&#xA;    )&#xA;    AND '${aggrRegExEnabled}' = 'false'" rowSelectionType="Multiple"/>
+                </user-input>
+                <user-input conditionalUserInputValues="Remove Aggregate from SSL" defaultValue="" description="List of aggregates which are already mapped to a specific SSLC.&#xA;Valid only when Aggregate selection by regex is not enabled." displayName="Mapped Aggregates" locked="true" mandatory="true" name="$MappedAggrList" uuid="74c7a5a8-3e91-4202-843c-f5182973d2a1">
+                    <conditional-user-input>3dac38ab-b510-479c-aa72-025a400d4431</conditional-user-input>
+                    <user-input-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="queryMultiSelectUserInputType" query="SELECT&#xA;    aggr.name AS 'Aggregate',&#xA;    node.name AS 'Node',&#xA;    cluster.primary_address AS 'Cluster IP',&#xA;    aggr.available_size_mb AS 'Available Capacity(MB)',&#xA;    aggr.size_mb AS 'Total Capacity(MB)',&#xA;    aggr.number_of_disks AS 'Disk Count',&#xA;    aggr.volume_count AS 'Volume Count',&#xA;    aggr.is_hybrid AS 'Is Hybrid'&#xA;FROM&#xA;    cm_storage.aggregate AS aggr&#xA;JOIN&#xA;    cm_storage.node AS node&#xA;        ON aggr.node_id=node.id&#xA;JOIN&#xA;    cm_storage.cluster AS cluster&#xA;        ON node.cluster_id =cluster.id&#xA;WHERE&#xA;    (&#xA;        aggr.has_local_root = 0&#xA;        AND aggr.has_partner_root = 0&#xA;    )&#xA;    AND (&#xA;        aggr.name IN (&#xA;            select&#xA;                playground.aggregate_service_map.aggregate_name&#xA;            from&#xA;                playground.aggregate_service_map&#xA;            WHERE&#xA;                playground.aggregate_service_map.storage_service_name='${StorageServiceName}'&#xA;                AND cm_storage.cluster.primary_address = playground.aggregate_service_map.cluster_ip&#xA;                AND cm_storage.node.name = playground.aggregate_service_map.node_name&#xA;        )&#xA;    )&#xA;    AND '${aggrRegExEnabled}' = 'false' " rowSelectionType="Multiple"/>
+                </user-input>
+            </user-inputs>
+        </user-input-group>
+    </user-input-groups>
+    <workflow-constants>
+        <workflow-constant name="THIN_PROVISIONING_PERCENT_GAIN" value="30">
+            <description>This will be updated in Storage services entry. Change value only when you want to set different value.</description>
+        </workflow-constant>
+        <workflow-constant name="DEDUPE_CLONE_PERCENT_GAIN" value="50">
+            <description>This will be updated in Storage services entry. Change value only when you want to set different value.</description>
+        </workflow-constant>
+        <workflow-constant name="PRIMARY_POOL" value="'Primary'">
+            <description>This is name of the primary pool</description>
+        </workflow-constant>
+    </workflow-constants>
+</tabularWorkflow>
