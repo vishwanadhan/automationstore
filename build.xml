@@ -1,26 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>      
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Set some basic project information and targets -->
+<project name="My ZF Project" default="build">
 
-<project name="newupload" default="build">                    
- <property name="workspace" value="${basedir}" />
- <property name="sourcedir" value="${basedir}" />
- <property name="builddir" value="${workspace}" />
+<target name="build"
+   depends="prepare, lint, phploc, phpmd, phpcpd, phpcs, phpunit"/>  
+   
+<target name="build-parallel"
+   depends="prepare,lint, tools-parallel, phpcpd, phpunit"/>
 
+<property environment="env"/>
 
-<target name="build" depends="phpcs"/>
- 
- <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-   <exec executable="phpcs">
-     <arg value="--standard=PSR2" />
-     <arg path="${sourcedir}" />
-   </exec>
- </target>
-
- <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
-   <exec executable="phpcs">
-     <arg value="--report=checkstyle" />
-     <arg value="--report-file=${builddir}/logs/checkstyle.xml" />
-     <arg value="--standard=PSR2" />
-     <arg path="${sourcedir}" />
-   </exec>
- </target>
+<target name="tools-parallel" description="Run tools in parallel">
+  <parallel threadCount="2">
+   <sequential>
+    <antcall target="phpmd"/>
+   </sequential>
+   <antcall target="phpcpd"/>
+   <antcall target="phpcs"/>
+   <antcall target="phploc"/>
+   <antcall target="phpdox"/>
+  </parallel>
+ </target><!-- PHP Code Sniffer - tokenises PHP, JS and CSS files and detects violations of defined coding standards --> 
+ <target name="phpcs" description="Check code with PHP Code Sniffer">
+ <exec executable="phpcs">
+  <arg value="-n" />
+  <arg path="${basedir}/application" />
+ </exec>
+</target> 
 </project>
