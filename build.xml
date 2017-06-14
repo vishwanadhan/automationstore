@@ -3,11 +3,11 @@
 <project name="newupload" default="build">                    
  
  <property name="workspace" value="${basedir}" />
- <property name="sourcedir" value="${basedir}/includes/classes" />
+ <property name="sourcedir" value="${basedir}" />
  <property name="builddir" value="${workspace}" />
 
 
-<target name="build" depends="phpcs-ci"/>
+<target name="build" depends="prepare,phpcs-ci"/>
 
 <target name="clean" description="Cleanup build artifacts"> 
   <delete dir="${builddir}/logs"/> 
@@ -19,11 +19,11 @@
  
 
  <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
-   <exec executable="phpcs">
+   <exec executable="C:\wamp\bin\php\php5.5.12\phpcs.bat">
      <arg value="--report=checkstyle" />
      <arg value="--report-file=${builddir}/logs/checkstyle.xml" />
      <arg value="--standard=PSR2" />
-     <arg path="${sourcedir}" />
+     <arg path="${sourcedir}/includes/classes" />
    </exec>
  </target>
 </project>
