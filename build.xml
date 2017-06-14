@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>      
 
 <project name="newupload" default="build">                    
- <property name="composer.path" value="${basedir}/composer.phar" />
- <available property="composer.exists" file="${composer.path}" />
  <property name="workspace" value="${basedir}" />
- <property name="sourcedir" value="${basedir}/src" />
+ <property name="sourcedir" value="${basedir}" />
  <property name="builddir" value="${workspace}" />
 
 
-<target name="build"
- depends="phpcs"/>
- 
-
-
+<target name="build" depends="phpcs"/>
  
  <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
    <exec executable="phpcs">
