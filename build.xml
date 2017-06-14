@@ -1,30 +1,47 @@
-<?xml version="1.0" encoding="UTF-8"?>      
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="snap-center" default="build">
+ <!-- By default, we assume all tools to be on the $PATH -->
+ <property name="phpcs" value="phpcs"/>
 
-<project name="newupload" default="build">                    
- <property name="workspace" value="${basedir}" />
- <property name="sourcedir" value="${basedir}" />
- <property name="builddir" value="${workspace}" />
-
-
-<target name="build"
- depends="phpcs"/>
- 
-
-
- 
- <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-   <exec executable="phpcs">
-     <arg value="--standard=Symfony2" />
-     <arg path="${sourcedir}" />
-   </exec>
+ <!-- Adjust the threadCount attribute's value to the number of CPUs -->
+ <target name="static-analysis-parallel"
+         description="Performs static analysis (executing the tools in parallel)">
+  <parallel threadCount="2">
+   <antcall target="phpcs-ci"/>
+  </parallel>
  </target>
 
- <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
-   <exec executable="phpcs">
-     <arg value="--report=checkstyle" />
-     <arg value="--report-file=${builddir}/logs/checkstyle.xml" />
-     <arg value="--standard=PSR2" />
-     <arg path="${sourcedir}" />
-   </exec>
+
+ <target name="phpcs"
+         unless="phpcs.done"
+         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+  <exec executable="${phpcs}" taskname="phpcs">
+   <arg value="--standard=PSR2" />
+   <arg value="--extensions=php" />
+   <arg value="--ignore=autoload.php" />
+   <arg path="${basedir}/src" />
+   <arg path="${basedir}/tests" />
+  </exec>
+
+  <property name="phpcs.done" value="true"/>
  </target>
+
+ <target name="phpcs-ci"
+         unless="phpcs.done"
+         depends="prepare"
+         description="Find coding standard violations using PHP_CodeSniffer and log result in XML format. Intended for usage within a continuous integration environment.">
+  <exec executable="${phpcs}" output="/dev/null" taskname="phpcs">
+   <arg value="--report=checkstyle" />
+   <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+   <arg value="--standard=PSR2" />
+   <arg value="--extensions=php" />
+   <arg value="--ignore=autoload.php" />
+   <arg path="${basedir}/src" />
+   <arg path="${basedir}/tests" />
+  </exec>
+
+  <property name="phpcs.done" value="true"/>
+ </target>
+
+
 </project>
