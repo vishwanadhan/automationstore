@@ -25,6 +25,22 @@
      <arg value="--standard=PSR2" />
      <arg path="${sourcedir}/includes/classes/SnapPack.php" />
      <arg path="${sourcedir}/includes/classes/SnapEntity.php" />
+     <arg path="${sourcedir}/includes/classes/MySqlDriverPDO.php" />
+     <arg path="${sourcedir}/clickCancelSnap.php" />
+     <arg path="${sourcedir}/how-to-create-a-snap-pack.php" />
+     <arg path="${sourcedir}/snapcenterHelp.php" />
+     <arg path="${sourcedir}/snap-detail.php" />
+     <arg path="${sourcedir}/snap-list.php" />
+     <arg path="${sourcedir}/snap-list.php" />
+     <arg path="${sourcedir}/snappack-listNC.php" />
+     <arg path="${sourcedir}/snap-pack-review.php" />
+     <arg path="${sourcedir}/snap-pack-review-confirm.php" />
+     <arg path="${sourcedir}/snap-pack-upload-confirm.php" />
+     <arg path="${sourcedir}/snap-pack-upload-edit.php" />
+     <arg path="${sourcedir}/snap-upload.php" />
+     <arg path="${sourcedir}/uploadsnapEula.php" />
+     <arg path="${sourcedir}/user_snapprofile.php" />
+     <arg path="${sourcedir}/snapreport.php" />
    </exec>
  </target>
 </project>
